@@ -48,7 +48,12 @@ Window::Window( int width,int height,LPCWSTR pWndName )
 	rect.right = width + rect.left;
 	rect.top = 100;
 	rect.bottom = height + rect.top;
-	AdjustWindowRect( &rect,WS_OVERLAPPEDWINDOW,FALSE );
+
+	if ( !AdjustWindowRect( &rect,WS_OVERLAPPEDWINDOW,FALSE ) )
+	{
+		throw MWND_LAST_EXCEPT();
+	}
+
 	hWnd = CreateWindowEx(
 		0,
 		WindowClass::getName(),
@@ -61,6 +66,10 @@ Window::Window( int width,int height,LPCWSTR pWndName )
 		WindowClass::gethInst(),
 		this
 	);
+	if ( hWnd == nullptr )
+	{
+		throw MWND_LAST_EXCEPT();
+	}
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
 }
 
@@ -135,4 +144,60 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	/*Mouse Messegas Ends*/
 	}
 	return DefWindowProc( hWnd,uMsg,wParam,lParam );
+}
+
+//Exception Stuff
+Window::Exception::Exception( int line,const char* file,HRESULT hr ) noexcept
+	:
+	MorException( line,file ),
+	hr( hr )
+{
+}
+
+const char* Window::Exception::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << GetType() << std::endl
+		<< "[ErrorCode] " << GetErrorCode() << std::endl
+		<< "[Description] " << GetErrorString() << std::endl
+		<< GetOriginString();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
+}
+
+const char* Window::Exception::GetType() const noexcept
+{
+	return "Mor Window Exeption";
+}
+
+std::string Window::Exception::TranslateErrorCode( HRESULT hr ) noexcept
+{
+	char* pMsgBuf = nullptr;
+	// windows will allocate memory for err string and make our pointer point to it
+	const DWORD nMsgLen = FormatMessageA(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		nullptr,hr,MAKELANGID( LANG_NEUTRAL,SUBLANG_DEFAULT ),
+		reinterpret_cast<LPSTR>( &pMsgBuf ),0,nullptr
+	);
+	// 0 string length returned indicates a failure
+	if ( nMsgLen == 0 )
+	{
+		return "Unidentified error code";
+	}
+	// copy error string from windows-allocated buffer to std::string
+	std::string errorString = pMsgBuf;
+	// free windows buffer
+	LocalFree( pMsgBuf );
+	return errorString;
+}
+
+HRESULT Window::Exception::GetErrorCode() const noexcept
+{
+	return hr;
+}
+
+std::string Window::Exception::GetErrorString() const noexcept
+{
+	return TranslateErrorCode( hr );
 }

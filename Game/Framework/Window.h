@@ -1,10 +1,25 @@
 #pragma once
 
 #include "MorWin.h"
+#include "MorExeption.h"
 #include "Mouse.h"
+#include <string>
 
 class Window
 {
+public:
+	class Exception : public MorException
+	{
+	public:
+		Exception( int line,const char* file,HRESULT hr ) noexcept;
+		const char* what() const noexcept override;
+		const char* GetType() const noexcept override;
+		static std::string TranslateErrorCode( HRESULT hr ) noexcept;
+		HRESULT GetErrorCode() const noexcept;
+		std::string GetErrorString() const noexcept;
+	private:
+		HRESULT hr;
+	};
 private:
 	class WindowClass
 	{
@@ -49,3 +64,6 @@ private:
 public:
 	HWND hWnd;
 };
+
+#define MWND_EXEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
+#define MWND_LAST_EXCEPT() Window::Exception( __LINE__,__FILE__,GetLastError() )

@@ -1,5 +1,6 @@
 
 #include "Window.h"
+#include "MorExeption.h"
 #include <sstream>
 
 class App
@@ -33,11 +34,27 @@ private:
 
 int WINAPI wWinMain( HINSTANCE hInstance,HINSTANCE hPrevInstance,PWSTR pCmdLine,int nCmdShow )
 {
-	Window wnd( 800,600,L"SexyWindow" );
-	App app( wnd );
-	while ( wnd.ProcessingMessage() )
+	try
 	{
-		app.Go();
+		Window wnd( 800,600,L"SexyWindow" );
+		App app( wnd );
+		while ( wnd.ProcessingMessage() )
+		{
+			app.Go();
+		}
+		return 0;
 	}
-	return 0;
+	catch ( const MorException& e )
+	{
+		MessageBoxA( nullptr,e.what(),e.GetType(),MB_OK | MB_ICONEXCLAMATION );
+	}
+	catch( const std::exception & e )
+	{
+		MessageBoxA( nullptr,e.what(),"Standart Exception",MB_OK | MB_ICONEXCLAMATION );
+	}
+	catch ( ... )
+	{
+		MessageBoxA( nullptr,"No details available","Unknown Exception",MB_OK | MB_ICONEXCLAMATION );
+	}
+	return -1;
 }
