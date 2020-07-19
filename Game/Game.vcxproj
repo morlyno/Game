@@ -159,11 +159,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Mouse.cpp" />
     <ClCompile Include="Framework\Window.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\MorWin.h" />
+    <ClInclude Include="Framework\Mouse.h" />
     <ClInclude Include="Framework\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
