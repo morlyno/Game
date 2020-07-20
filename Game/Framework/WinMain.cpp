@@ -40,11 +40,14 @@ int WINAPI wWinMain( HINSTANCE hInstance,HINSTANCE hPrevInstance,PWSTR pCmdLine,
 	{
 		Window wnd( 800,600,L"SexyWindow" );
 		App app( wnd );
-		while ( wnd.ProcessingMessage() )
+		while ( true )
 		{
+			if ( const auto ecode = Window::ProcessingMessage() )
+			{
+				return *ecode;
+			}
 			app.Go();
 		}
-		return 0;
 	}
 	catch ( const MorException& e )
 	{

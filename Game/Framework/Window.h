@@ -4,6 +4,7 @@
 #include "MorExeption.h"
 #include "Mouse.h"
 #include <string>
+#include <optional>
 
 class Window
 {
@@ -39,20 +40,20 @@ private:
 public:
 	Window( int width,int height,LPCWSTR pWndName );
 	~Window();
-	bool ProcessingMessage() const
+	static std::optional<int> ProcessingMessage()
 	{
 		MSG msg = {};
 		while ( PeekMessage( &msg,nullptr,0,0,PM_REMOVE ) )
 		{
-			TranslateMessage( &msg );
-			DispatchMessageW( &msg );
 			if ( msg.message == WM_QUIT )
 			{
-				return false;
+				return (int)msg.wParam;
 			}
+			TranslateMessage( &msg );
+			DispatchMessageW( &msg );
 		}
-		return true;
-	}
+		return {};
+	};
 public:
 	Mouse mouse;
 private:
