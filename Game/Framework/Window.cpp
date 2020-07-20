@@ -106,11 +106,28 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		PostQuitMessage( 0 );
 		return 0;
 	/*Mouse Messages*/
-	case WM_NCMOUSEMOVE:
-		mouse.LeaveWindow( pt.x,pt.y );
-		break;
 	case WM_MOUSEMOVE:
-		mouse.MouseMove( pt.x,pt.y );
+		if ( pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height )
+		{
+			mouse.MouseMove( pt.x,pt.y );
+			if ( !mouse.inwindow )
+			{
+				SetCapture( hWnd );
+				mouse.EnterWindow( pt.x,pt.y );
+			}
+		}
+		else
+		{
+			if ( wParam & ( MK_LBUTTON | MK_RBUTTON ) )
+			{
+				mouse.MouseMove( pt.x,pt.y );
+			}
+			else
+			{
+				mouse.LeaveWindow( pt.x,pt.y );
+				ReleaseCapture();
+			}
+		}
 		break;
 	case WM_LBUTTONDOWN:
 		mouse.LeftPresst( pt.x,pt.y );
@@ -118,14 +135,14 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	case WM_RBUTTONDOWN:
 		mouse.RightPresst( pt.x,pt.y );
 		break;
+	case WM_MBUTTONDOWN:
+		mouse.MittelPresst( pt.x,pt.y );
+		break;
 	case WM_LBUTTONUP:
 		mouse.LeftReleast( pt.x,pt.y );
 		break;
 	case WM_RBUTTONUP:
 		mouse.RightReleast( pt.x,pt.y );
-		break;
-	case WM_MBUTTONDOWN:
-		mouse.MittelPresst( pt.x,pt.y );
 		break;
 	case WM_MBUTTONUP:
 		mouse.MittelReleast( pt.x,pt.y );
@@ -142,6 +159,22 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		}
 	}
 	/*Mouse Messegas Ends*/
+	}
+	if ( uMsg == WM_LBUTTONUP )
+	{
+		OutputDebugString( L"L Up\n" );
+	}
+	if ( uMsg == WM_LBUTTONDOWN )
+	{
+		OutputDebugString( L"L Down\n" );
+	}
+	if ( uMsg == WM_RBUTTONUP )
+	{
+		OutputDebugString( L"R Up\n" );
+	}
+	if ( uMsg == WM_RBUTTONDOWN )
+	{
+		OutputDebugString( L"R Down\n" );
 	}
 	return DefWindowProc( hWnd,uMsg,wParam,lParam );
 }

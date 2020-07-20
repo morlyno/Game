@@ -20,6 +20,8 @@ public:
 			MittelReleas,
 			WheelUp,
 			WheelDown,
+			Enter,
+			Leave,
 			Invalid
 		};
 		Event()
@@ -93,6 +95,7 @@ private:
 	void MittelReleast( int x,int y );
 	void WheelUp( int x,int y );
 	void WheelDown( int x,int y );
+	void EnterWindow( int x,int y );
 	void LeaveWindow( int x,int y );
 	void TrimBuffer();
 private:
@@ -103,6 +106,5 @@ private:
 	int x = 0;
 	int y = 0;
 	static constexpr unsigned int MaxBufferSize = 4u;
-public:
 	std::queue<Event> buffer;
 };

@@ -46,7 +46,6 @@ bool Mouse::isEmpty()
 
 void Mouse::MouseMove( int newx,int newy )
 {
-	inwindow = true;
 	x = newx;
 	y = newy;
 
@@ -114,9 +113,20 @@ void Mouse::WheelDown( int x,int y )
 	TrimBuffer();
 }
 
+void Mouse::EnterWindow( int x,int y )
+{
+	inwindow = true;
+
+	buffer.emplace( Event::Type::Enter,*this );
+	TrimBuffer();
+}
+
 void Mouse::LeaveWindow( int x,int y )
 {
 	inwindow = false;
+
+	buffer.emplace( Event::Type::Leave,*this );
+	TrimBuffer();
 }
 
 void Mouse::TrimBuffer()
