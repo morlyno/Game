@@ -49,7 +49,7 @@ Window::Window( int width,int height,LPCWSTR pWndName )
 	rect.top = 100;
 	rect.bottom = height + rect.top;
 
-	if ( !AdjustWindowRect( &rect,WS_OVERLAPPEDWINDOW,FALSE ) )
+	if ( AdjustWindowRect( &rect,WS_OVERLAPPEDWINDOW,FALSE ) == 0 )
 	{
 		throw MWND_LAST_EXCEPT();
 	}
