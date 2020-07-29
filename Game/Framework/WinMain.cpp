@@ -17,18 +17,25 @@ public:
 public:
 	void Go()
 	{
-		auto pos = wnd.mouse.getPos();
-		bool lp = wnd.mouse.LeftIsPresst();
-		bool rp = wnd.mouse.RightIsPresst();
-		std::wstringstream ss;
-		ss << L"( x: " << pos.first << L" y: " << pos.second << L" ) "<< L"left: " << std::boolalpha << lp << L" right: " << std::boolalpha << rp;
-		SetWindowText( wnd.hWnd,ss.str().c_str() );
-		Mouse::Event e = wnd.mouse.Read();
-		std::wstringstream m;
+		//auto pos = wnd.mouse.getPos();
+		//bool lp = wnd.mouse.LeftIsPresst();
+		//bool rp = wnd.mouse.RightIsPresst();
+		//std::wstringstream ss;
+		//ss << L"( x: " << pos.first << L" y: " << pos.second << L" ) ";
+		//ss << L"left: " << std::boolalpha << lp << L" right: " << std::boolalpha << rp;
+		//SetWindowText( wnd.hWnd,ss.str().c_str() );
+		//Mouse::Event e = wnd.mouse.Read();
+		//std::wstringstream m;
 		//m << L"pos: " << e.getPosX() << L" , " << e.getPosY() << std::endl;
 		//m << std::boolalpha << e.getLPresst() << L" | " << std::boolalpha << e.getRPresst() << std::endl;
 		//m << std::boolalpha << wnd.mouse.inWindow() << std::endl;
-		OutputDebugString( m.str().c_str() );
+		//OutputDebugString( m.str().c_str() );
+
+		const auto c = wnd.kbd.ReadChar();
+
+		std::wstringstream k;
+		k << c;
+		SetWindowText( wnd.hWnd,k.str().c_str() );
 	}
 private:
 	Window& wnd;

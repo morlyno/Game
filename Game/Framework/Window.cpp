@@ -58,8 +58,8 @@ Window::Window( int width,int height,LPCWSTR pWndName )
 		0,
 		WindowClass::getName(),
 		pWndName,
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,CW_USEDEFAULT,
+		WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
+		200,200,
 		rect.right - rect.left,rect.bottom - rect.top,
 		nullptr,
 		nullptr,
@@ -105,6 +105,7 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	case WM_CLOSE:
 		PostQuitMessage( 0 );
 		return 0;
+
 	/*Mouse Messages*/
 	case WM_MOUSEMOVE:
 		if ( pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height )
@@ -125,7 +126,10 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			else
 			{
 				mouse.LeaveWindow( pt.x,pt.y );
-				ReleaseCapture();
+				if ( ReleaseCapture() == 0 )
+				{
+					throw MWND_LAST_EXCEPT();
+				}
 			}
 		}
 		break;
@@ -159,23 +163,20 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		}
 	}
 	/*Mouse Messegas Ends*/
+
+	/*Keyboard Messegas*/
+	case WM_KEYDOWN:
+		kbd.OnKeyPresst( wParam );
+		break;
+	case WM_KEYUP:
+		kbd.OnKeyReleas( wParam );
+		break;
+	case WM_CHAR:
+		kbd.OnChar( wParam );
+		break;
 	}
-	if ( uMsg == WM_LBUTTONUP )
-	{
-		OutputDebugString( L"L Up\n" );
-	}
-	if ( uMsg == WM_LBUTTONDOWN )
-	{
-		OutputDebugString( L"L Down\n" );
-	}
-	if ( uMsg == WM_RBUTTONUP )
-	{
-		OutputDebugString( L"R Up\n" );
-	}
-	if ( uMsg == WM_RBUTTONDOWN )
-	{
-		OutputDebugString( L"R Down\n" );
-	}
+	/*Keyboard Messegas Ends*/
+
 	return DefWindowProc( hWnd,uMsg,wParam,lParam );
 }
 

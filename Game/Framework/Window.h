@@ -3,6 +3,7 @@
 #include "MorWin.h"
 #include "MorExeption.h"
 #include "Mouse.h"
+#include "Keyboard.h"
 #include <string>
 #include <optional>
 
@@ -56,6 +57,7 @@ public:
 	};
 public:
 	Mouse mouse;
+	Keyboard kbd;
 private:
 	static LRESULT WINAPI WindowProcStartUp( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam );
 	static LRESULT WINAPI WindowProc( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam );
