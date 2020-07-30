@@ -1,5 +1,6 @@
 #include "Window.h"
 #include <sstream>
+#include <cassert>
 
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -25,7 +26,7 @@ Window::WindowClass::WindowClass()
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInst;
 	wc.hIcon = nullptr;
-	wc.hCursor = nullptr;
+	wc.hCursor = LoadCursor( nullptr,IDC_ARROW );
 	wc.hbrBackground = nullptr;
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = pName;
@@ -38,10 +39,11 @@ Window::WindowClass::~WindowClass()
 	UnregisterClass( pName,hInst );
 }
 
-Window::Window( int width,int height,LPCWSTR pWndName )
+Window::Window( int width,int height,LPCWSTR pWndName,bool CloseAll )
 	:
 	width( width ),
-	height( height )
+	height( height ),
+	CloseAll( CloseAll )
 {
 	RECT rect;
 	rect.left = 100;
@@ -49,17 +51,17 @@ Window::Window( int width,int height,LPCWSTR pWndName )
 	rect.top = 100;
 	rect.bottom = height + rect.top;
 
-	if ( AdjustWindowRect( &rect,WS_OVERLAPPEDWINDOW,FALSE ) == 0 )
+	if ( AdjustWindowRect( &rect,WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX,FALSE ) == 0 )
 	{
-		throw MWND_LAST_EXCEPT();
+		throw WND_LAST_EXCEPT();
 	}
 
 	hWnd = CreateWindowEx(
 		0,
 		WindowClass::getName(),
 		pWndName,
-		WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
-		200,200,
+		WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX,
+		CW_USEDEFAULT,CW_USEDEFAULT,
 		rect.right - rect.left,rect.bottom - rect.top,
 		nullptr,
 		nullptr,
@@ -68,14 +70,45 @@ Window::Window( int width,int height,LPCWSTR pWndName )
 	);
 	if ( hWnd == nullptr )
 	{
-		throw MWND_LAST_EXCEPT();
+		throw WND_LAST_EXCEPT();
 	}
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
+	UpdateWindow( hWnd );
 }
 
 Window::~Window()
 {
 	DestroyWindow( hWnd );
+}
+
+std::optional<int> Window::ProcessingMessage()
+{
+	MSG msg = {};
+	while ( PeekMessage( &msg,nullptr,0,0,PM_REMOVE ) )
+	{
+		if ( msg.message == WM_QUIT )
+		{
+			return (int)msg.wParam;
+		}
+		TranslateMessage( &msg );
+		DispatchMessageW( &msg );
+	}
+	return {};
+}
+
+BOOL Window::SetWindowTitle( LPCWSTR Title )
+{
+	return SetWindowTextW( hWnd,Title );
+}
+
+int Window::GetWidth() const
+{
+	return (int)width;
+}
+
+int Window::GetHeight() const
+{
+	return (int)height;
 }
 
 LRESULT WINAPI Window::WindowProcStartUp( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam )
@@ -84,6 +117,7 @@ LRESULT WINAPI Window::WindowProcStartUp( HWND hWnd,UINT uMsg,WPARAM wParam,LPAR
 	{
 		const CREATESTRUCTW* const pCreateStruct = reinterpret_cast<CREATESTRUCTW*>( lParam );
 		Window* const pWindow = static_cast<Window*>( pCreateStruct->lpCreateParams );
+		assert( pWindow && "Window pointer not created" );
 		SetWindowLongPtr( hWnd,GWLP_USERDATA,reinterpret_cast<LONG_PTR>( pWindow ) );
 		SetWindowLongPtr( hWnd,GWLP_WNDPROC,reinterpret_cast<LONG_PTR>( &WindowProc ) );
 		return pWindow->HandleMsg( hWnd,uMsg,wParam,lParam );
@@ -99,81 +133,125 @@ LRESULT WINAPI Window::WindowProc( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPar
 
 LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
-	const POINTS pt = MAKEPOINTS( lParam );
 	switch ( uMsg )
 	{
-	case WM_CLOSE:
-		PostQuitMessage( 0 );
-		return 0;
-
+	case WM_DESTROY:
+		{
+			if ( CloseAll )
+			{
+				PostQuitMessage( 0 );
+			}
+			return 0;
+		}
+	case WM_SIZE:
+		{
+			if ( !( wParam & SIZE_MINIMIZED ) )
+			{
+				auto w = LOWORD( lParam );
+				auto h = HIWORD( lParam );
+				width = (UINT)w;
+				height = (UINT)h;
+			}
+			break;
+		}
 	/*Mouse Messages*/
 	case WM_MOUSEMOVE:
-		if ( pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height )
 		{
-			mouse.MouseMove( pt.x,pt.y );
-			if ( !mouse.inwindow )
-			{
-				SetCapture( hWnd );
-				mouse.EnterWindow( pt.x,pt.y );
-			}
-		}
-		else
-		{
-			if ( wParam & ( MK_LBUTTON | MK_RBUTTON ) )
+			const POINTS pt = MAKEPOINTS( lParam );
+			if ( pt.x >= 0 && pt.x < (short)width && pt.y >= 0 && pt.y < (short)height )
 			{
 				mouse.MouseMove( pt.x,pt.y );
+				if ( !mouse.inwindow )
+				{
+					SetCapture( hWnd );
+					mouse.EnterWindow( pt.x,pt.y );
+				}
 			}
 			else
 			{
-				mouse.LeaveWindow( pt.x,pt.y );
-				if ( ReleaseCapture() == 0 )
+				const POINTS pt = MAKEPOINTS( lParam );
+				if ( wParam & ( MK_LBUTTON | MK_RBUTTON ) )
 				{
-					throw MWND_LAST_EXCEPT();
+					mouse.MouseMove( pt.x,pt.y );
+				}
+				else
+				{
+					mouse.LeaveWindow( pt.x,pt.y );
+					if ( ReleaseCapture() == 0 )
+					{
+						throw WND_LAST_EXCEPT();
+					}
 				}
 			}
+			break;
 		}
-		break;
 	case WM_LBUTTONDOWN:
-		mouse.LeftPresst( pt.x,pt.y );
-		break;
+		{
+			const POINTS pt = MAKEPOINTS( lParam );
+			mouse.LeftPresst( pt.x,pt.y );
+			break;
+		}
 	case WM_RBUTTONDOWN:
-		mouse.RightPresst( pt.x,pt.y );
-		break;
+		{
+			const POINTS pt = MAKEPOINTS( lParam );
+			mouse.RightPresst( pt.x,pt.y );
+			break;
+		}
 	case WM_MBUTTONDOWN:
-		mouse.MittelPresst( pt.x,pt.y );
-		break;
+		{
+			const POINTS pt = MAKEPOINTS( lParam );
+			mouse.MittelPresst( pt.x,pt.y );
+			break;
+		}
 	case WM_LBUTTONUP:
-		mouse.LeftReleast( pt.x,pt.y );
-		break;
+		{
+			const POINTS pt = MAKEPOINTS( lParam );
+			mouse.LeftReleast( pt.x,pt.y );
+			break;
+		}
 	case WM_RBUTTONUP:
-		mouse.RightReleast( pt.x,pt.y );
-		break;
+		{
+			const POINTS pt = MAKEPOINTS( lParam );
+			mouse.RightReleast( pt.x,pt.y );
+			break;
+		}
 	case WM_MBUTTONUP:
-		mouse.MittelReleast( pt.x,pt.y );
-		break;
+		{
+			const POINTS pt = MAKEPOINTS( lParam );
+			mouse.MittelReleast( pt.x,pt.y );
+			break;
+		}
 	case WM_MOUSEWHEEL:
-	{
-		if ( GET_WHEEL_DELTA_WPARAM( wParam ) > 0 )
 		{
-			mouse.WheelUp( pt.x,pt.y );
+			const POINTS pt = MAKEPOINTS( lParam );
+			if ( GET_WHEEL_DELTA_WPARAM( wParam ) > 0 )
+			{
+				mouse.WheelUp( pt.x,pt.y );
+			}
+			if ( GET_WHEEL_DELTA_WPARAM( wParam ) < 0 )
+			{
+				mouse.WheelDown( pt.x,pt.y );
+			}
+			break;
 		}
-		if ( GET_WHEEL_DELTA_WPARAM( wParam ) < 0 )
-		{
-			mouse.WheelDown( pt.x,pt.y );
-		}
-	}
 	/*Mouse Messegas Ends*/
 
 	/*Keyboard Messegas*/
 	case WM_KEYDOWN:
-		kbd.OnKeyPresst( wParam );
-		break;
+		{
+			kbd.OnKeyPresst( wParam );
+			break;
+		}
 	case WM_KEYUP:
-		kbd.OnKeyReleas( wParam );
-		break;
+		{
+			kbd.OnKeyReleas( wParam );
+			break;
+		}
 	case WM_CHAR:
-		kbd.OnChar( wParam );
-		break;
+		{
+			kbd.OnChar( wParam );
+			break;
+		}
 	}
 	/*Keyboard Messegas Ends*/
 

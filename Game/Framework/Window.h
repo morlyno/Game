@@ -39,22 +39,12 @@ private:
 		HINSTANCE hInst;
 	};
 public:
-	Window( int width,int height,LPCWSTR pWndName );
+	Window( int width,int height,LPCWSTR pWndName,bool CloseAll = true );
 	~Window();
-	static std::optional<int> ProcessingMessage()
-	{
-		MSG msg = {};
-		while ( PeekMessage( &msg,nullptr,0,0,PM_REMOVE ) )
-		{
-			if ( msg.message == WM_QUIT )
-			{
-				return (int)msg.wParam;
-			}
-			TranslateMessage( &msg );
-			DispatchMessageW( &msg );
-		}
-		return {};
-	};
+	static std::optional<int> ProcessingMessage();
+	BOOL SetWindowTitle( LPCWSTR Title );
+	int GetWidth() const;
+	int GetHeight() const;
 public:
 	Mouse mouse;
 	Keyboard kbd;
@@ -62,11 +52,11 @@ private:
 	static LRESULT WINAPI WindowProcStartUp( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam );
 	static LRESULT WINAPI WindowProc( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam );
 	LRESULT WINAPI HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam );
-	int width;
-	int height;
-public:
+	UINT width;
+	UINT height;
+	bool CloseAll;
 	HWND hWnd;
 };
 
-#define MWND_EXEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
-#define MWND_LAST_EXCEPT() Window::Exception( __LINE__,__FILE__,GetLastError() )
+#define WND_EXEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
+#define WND_LAST_EXCEPT() Window::Exception( __LINE__,__FILE__,GetLastError() )
