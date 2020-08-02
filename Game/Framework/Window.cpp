@@ -118,7 +118,7 @@ Graphics& Window::Gfx() const
 {
 	if ( !pGfx )
 	{
-		assert( true && "No Graphics constructed" );
+		throw NO_GFX();
 	}
 	return *pGfx;
 }
@@ -270,15 +270,15 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	return DefWindowProc( hWnd,uMsg,wParam,lParam );
 }
 
-//Exception Stuff
-Window::Exception::Exception( int line,const char* file,HRESULT hr ) noexcept
+//hr Exception Stuff
+Window::HrException::HrException( int line,const char* file,HRESULT hr ) noexcept
 	:
-	MorException( line,file ),
+	Exception( line,file ),
 	hr( hr )
 {
 }
 
-const char* Window::Exception::what() const noexcept
+const char* Window::HrException::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
@@ -289,12 +289,12 @@ const char* Window::Exception::what() const noexcept
 	return whatBuffer.c_str();
 }
 
-const char* Window::Exception::GetType() const noexcept
+const char* Window::HrException::GetType() const noexcept
 {
 	return "Mor Window Exeption";
 }
 
-std::string Window::Exception::TranslateErrorCode( HRESULT hr ) noexcept
+std::string Window::HrException::TranslateErrorCode( HRESULT hr ) noexcept
 {
 	char* pMsgBuf = nullptr;
 	// windows will allocate memory for err string and make our pointer point to it
@@ -316,12 +316,18 @@ std::string Window::Exception::TranslateErrorCode( HRESULT hr ) noexcept
 	return errorString;
 }
 
-HRESULT Window::Exception::GetErrorCode() const noexcept
+HRESULT Window::HrException::GetErrorCode() const noexcept
 {
 	return hr;
 }
 
-std::string Window::Exception::GetErrorString() const noexcept
+std::string Window::HrException::GetErrorString() const noexcept
 {
 	return TranslateErrorCode( hr );
+}
+
+//gfx Exception Stuff
+const char* Window::NoGfxException::GetType() const noexcept
+{
+	return "Mor Window Exception No Gfx";
 }

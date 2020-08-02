@@ -7,8 +7,7 @@ int WINAPI wWinMain( HINSTANCE hInstance,HINSTANCE hPrevInstance,PWSTR pCmdLine,
 {
 	try
 	{
-		App app;
-		return app.Go();
+		return App{}.Go();
 	}
 	catch ( const MorException& e )
 	{
