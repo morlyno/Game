@@ -282,7 +282,8 @@ const char* Window::HrException::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
-		<< "[ErrorCode] " << GetErrorCode() << std::endl
+		<< "[ErrorCode] 0x" << std::hex << std::uppercase << GetErrorCode()
+		<< std::dec << " (" << (unsigned long)GetErrorCode() << ")" << std::endl
 		<< "[Description] " << GetErrorString() << std::endl
 		<< GetOriginString();
 	whatBuffer = oss.str();
