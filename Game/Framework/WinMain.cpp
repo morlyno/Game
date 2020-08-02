@@ -14,9 +14,11 @@ int WINAPI wWinMain( HINSTANCE hInstance,HINSTANCE hPrevInstance,PWSTR pCmdLine,
 			{
 				return *ecode;
 			}
+			wnd.Gfx().ClearBuffer( 1.0f,0.0f,0.0f );
 			std::wostringstream oss;
 			oss << L"width: " << wnd.GetWidth() << L" height: " << wnd.GetHeight();
 			wnd.SetWindowTitle( oss.str().c_str() );
+			wnd.Gfx().EndFrame();
 		}
 	}
 	catch ( const MorException& e )

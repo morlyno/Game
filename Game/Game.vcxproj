@@ -179,6 +179,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Keyboard.cpp" />
     <ClCompile Include="Framework\MorExeption.cpp" />
     <ClCompile Include="Framework\Mouse.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Framework\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Keyboard.h" />
     <ClInclude Include="Framework\MorExeption.h" />
     <ClInclude Include="Framework\MorWin.h" />

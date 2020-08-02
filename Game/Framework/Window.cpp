@@ -72,6 +72,9 @@ Window::Window( int width,int height,LPCWSTR pWndName,bool CloseAll )
 	{
 		throw WND_LAST_EXCEPT();
 	}
+
+	pGfx = std::make_unique<Graphics>( hWnd );
+
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
 	UpdateWindow( hWnd );
 }
@@ -111,6 +114,15 @@ int Window::GetHeight() const
 	return (int)height;
 }
 
+Graphics& Window::Gfx() const
+{
+	if ( !pGfx )
+	{
+		assert( true && "No Graphics constructed" );
+	}
+	return *pGfx;
+}
+
 LRESULT WINAPI Window::WindowProcStartUp( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
 	if ( uMsg == WM_NCCREATE )
@@ -143,17 +155,17 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			}
 			return 0;
 		}
-	case WM_SIZE:
-		{
-			if ( !( wParam & SIZE_MINIMIZED ) )
-			{
-				auto w = LOWORD( lParam );
-				auto h = HIWORD( lParam );
-				width = (UINT)w;
-				height = (UINT)h;
-			}
-			break;
-		}
+	//case WM_SIZE:
+	//	{
+	//		if ( !( wParam & SIZE_MINIMIZED ) )
+	//		{
+	//			auto w = LOWORD( lParam );
+	//			auto h = HIWORD( lParam );
+	//			width = (UINT)w;
+	//			height = (UINT)h;
+	//		}
+	//		break;
+	//	}
 	/*Mouse Messages*/
 	case WM_MOUSEMOVE:
 		{

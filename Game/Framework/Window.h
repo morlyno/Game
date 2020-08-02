@@ -4,8 +4,10 @@
 #include "MorExeption.h"
 #include "Mouse.h"
 #include "Keyboard.h"
+#include "Graphics.h"
 #include <string>
 #include <optional>
+#include <memory>
 
 class Window
 {
@@ -48,6 +50,7 @@ public:
 public:
 	Mouse mouse;
 	Keyboard kbd;
+	Graphics& Gfx() const;
 private:
 	static LRESULT WINAPI WindowProcStartUp( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam );
 	static LRESULT WINAPI WindowProc( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam );
@@ -56,6 +59,7 @@ private:
 	UINT height;
 	bool CloseAll;
 	HWND hWnd;
+	std::unique_ptr<Graphics> pGfx;
 };
 
 #define WND_EXEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
