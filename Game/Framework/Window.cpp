@@ -99,9 +99,9 @@ std::optional<int> Window::ProcessingMessage()
 	return {};
 }
 
-BOOL Window::SetWindowTitle( LPCWSTR Title )
+BOOL Window::SetWindowTitle( const std::wstring& title )
 {
-	return SetWindowTextW( hWnd,Title );
+	return SetWindowText( hWnd,title.c_str() );
 }
 
 int Window::GetWidth() const

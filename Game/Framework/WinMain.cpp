@@ -1,5 +1,5 @@
 
-#include "Window.h"
+#include "App.h"
 #include "MorExeption.h"
 #include <sstream>
 
@@ -7,19 +7,8 @@ int WINAPI wWinMain( HINSTANCE hInstance,HINSTANCE hPrevInstance,PWSTR pCmdLine,
 {
 	try
 	{
-		Window wnd( 800,600,L"SexyWindow" );
-		while ( true )
-		{
-			if ( const auto ecode = Window::ProcessingMessage() )
-			{
-				return *ecode;
-			}
-			wnd.Gfx().ClearBuffer( 1.0f,0.0f,0.0f );
-			std::wostringstream oss;
-			oss << L"width: " << wnd.GetWidth() << L" height: " << wnd.GetHeight();
-			wnd.SetWindowTitle( oss.str().c_str() );
-			wnd.Gfx().EndFrame();
-		}
+		App app;
+		return app.Go();
 	}
 	catch ( const MorException& e )
 	{

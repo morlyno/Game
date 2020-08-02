@@ -44,7 +44,7 @@ public:
 	Window( int width,int height,LPCWSTR pWndName,bool CloseAll = true );
 	~Window();
 	static std::optional<int> ProcessingMessage();
-	BOOL SetWindowTitle( LPCWSTR Title );
+	BOOL SetWindowTitle( const std::wstring& title );
 	int GetWidth() const;
 	int GetHeight() const;
 public:
