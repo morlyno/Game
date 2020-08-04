@@ -92,13 +92,24 @@ void Graphics::Drawsdjsgldfg()
 	{
 		float x;
 		float y;
+
+		float r;
+		float g;
+		float b;
 	};
 
 	const Vertex vertecies[] =
 	{
-		{ 0.0f, 0.5f },
-		{ 0.5f,-0.5f },
-		{ -0.5f,-0.5f },
+		{ 0.0f,0.5f,1.0f,0.0f,0.0f },
+		{ 0.5f,-0.5f,0.0f,1.0f,0.0f },
+		{ -0.5f,-0.5f,0.0f,0.0f,1.0f },
+
+		//{ -1.0f,-1.0f,0.0f,0.0f,0.0f },
+		//{ -0.9f,-0.8f,1.0f,0.0f,0.0f },
+		//{ -0.7f,-0.9f,0.0f,1.0f,0.0f },
+		//{ -0.85f,-0.4f,0.0f,0.0f,1.0f },
+		//{ 1.0f,1.0f,0.0f,0.0f,0.0f },
+		//{ -0.5f,0.5f,1.0f,1.0f,0.0f },
 	};
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
@@ -148,7 +159,8 @@ void Graphics::Drawsdjsgldfg()
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
-		{ "POSITION",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 }
+		{ "Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Color",0,DXGI_FORMAT_R32G32B32_FLOAT,0,8u,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
 	GFX_THROW_INFO( pDevice->CreateInputLayout(
@@ -173,7 +185,7 @@ void Graphics::Drawsdjsgldfg()
 
 
 	//Set Primitve Topology
-	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
 
 
 	//Set ViewPort

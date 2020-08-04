@@ -19,7 +19,7 @@ int App::Go()
 		{
 			return *ecode;
 		}
-		wnd.Gfx().ClearBuffer( 0.0f,0.0f,1.0f );
+		wnd.Gfx().ClearBuffer( 0.0f,0.0f,0.0f );
 		DoFrame();
 		wnd.Gfx().EndFrame();
 	}
