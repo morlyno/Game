@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "WindowThrowMacros.h"
 #include <sstream>
 #include <cassert>
 
@@ -73,7 +74,7 @@ Window::Window( int width,int height,LPCWSTR pWndName,bool CloseAll )
 		throw WND_LAST_EXCEPT();
 	}
 
-	pGfx = std::make_unique<Graphics>( hWnd );
+	pGfx = std::make_unique<Graphics>( width,height,hWnd );
 
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
 	UpdateWindow( hWnd );

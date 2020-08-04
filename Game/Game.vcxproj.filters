@@ -36,6 +36,9 @@
     <ClCompile Include="Framework\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\DxgiInfoManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Window.h">
@@ -59,5 +62,18 @@
     <ClInclude Include="Framework\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\DxgiInfoManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GraphicsThrowMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\WindowThrowMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Framework\Shader\VertexShader.hlsl" />
+    <FxCompile Include="Framework\Shader\PixelShader.hlsl" />
   </ItemGroup>
 </Project>
