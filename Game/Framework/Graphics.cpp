@@ -100,16 +100,13 @@ void Graphics::Drawsdjsgldfg()
 
 	const Vertex vertecies[] =
 	{
-		{ 0.0f,0.5f,1.0f,0.0f,0.0f },
-		{ 0.5f,-0.5f,0.0f,1.0f,0.0f },
-		{ -0.5f,-0.5f,0.0f,0.0f,1.0f },
-
-		//{ -1.0f,-1.0f,0.0f,0.0f,0.0f },
-		//{ -0.9f,-0.8f,1.0f,0.0f,0.0f },
-		//{ -0.7f,-0.9f,0.0f,1.0f,0.0f },
-		//{ -0.85f,-0.4f,0.0f,0.0f,1.0f },
-		//{ 1.0f,1.0f,0.0f,0.0f,0.0f },
-		//{ -0.5f,0.5f,1.0f,1.0f,0.0f },
+		{ 0.1f,0.8f,1.0f,0.0f,0.0f },
+		{ 0.5f,0.5f,0.0f,1.0f,0.0f },
+		{ 0.2f,-0.7f,0.0f,0.0f,1.0f },
+		{ 0.0f,-1.0f,1.0f,1.0f,0.0f },
+		{ -0.2f,-0.7f,1.0f,0.0f,1.0f },
+		{ -0.5f,0.5f,0.0f,1.0f,1.0f },
+		{ -0.1f,0.8f,1.0f,1.0f,1.0f },
 	};
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
@@ -136,6 +133,36 @@ void Graphics::Drawsdjsgldfg()
 
 	pContext->IASetVertexBuffers( 0u,1u,pVertexBuffer.GetAddressOf(),&stride,&offset );
 
+
+	//Index Buffer
+	const unsigned short indices[] =
+	{
+		//0,1,2,
+		//0,2,3,
+		//0,3,6,
+		//6,3,4,
+		//6,4,5,
+		0,1,2,3,4,5,6,0
+	};
+
+	auto i = sizeof( indices );
+
+	D3D11_BUFFER_DESC bdi = {};
+	bdi.ByteWidth = sizeof( indices );
+	bdi.StructureByteStride = sizeof( unsigned int );
+	bdi.Usage = D3D11_USAGE_DEFAULT;
+	bdi.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bdi.CPUAccessFlags = 0u;
+	bdi.MiscFlags = 0u;
+
+	D3D11_SUBRESOURCE_DATA sdi = {};
+	sdi.pSysMem = indices;
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pIndexBuffer;
+
+	GFX_THROW_INFO( pDevice->CreateBuffer( &bdi,&sdi,&pIndexBuffer ) );
+
+	pContext->IASetIndexBuffer( pIndexBuffer.Get(),DXGI_FORMAT_R16_UINT,0u );
 
 	//Create PixelShader
 	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
@@ -185,7 +212,7 @@ void Graphics::Drawsdjsgldfg()
 
 
 	//Set Primitve Topology
-	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
+	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP );
 
 
 	//Set ViewPort
@@ -200,7 +227,8 @@ void Graphics::Drawsdjsgldfg()
 
 
 	//Draw
-	GFX_THROW_INFO_ONLY( pContext->Draw( (UINT)std::size( vertecies ),0u ) );
+	//GFX_THROW_INFO_ONLY( pContext->Draw( (UINT)std::size( vertecies ),0u ) );
+	GFX_THROW_INFO_ONLY( pContext->DrawIndexed( std::size( indices ),0u,0u ) );
 }
 
 Graphics::HrException::HrException( int line,const char* file,HRESULT hr,std::vector<std::string> infoMsg ) noexcept
