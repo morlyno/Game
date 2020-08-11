@@ -207,6 +207,7 @@
     <ClInclude Include="Framework\GraphicsThrowMacros.h" />
     <ClInclude Include="Framework\Keyboard.h" />
     <ClInclude Include="Framework\MorExeption.h" />
+    <ClInclude Include="Framework\MorTimer.h" />
     <ClInclude Include="Framework\MorWin.h" />
     <ClInclude Include="Framework\Mouse.h" />
     <ClInclude Include="Framework\Window.h" />

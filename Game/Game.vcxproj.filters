@@ -71,6 +71,9 @@
     <ClInclude Include="Framework\WindowThrowMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\MorTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\VertexShader.hlsl" />

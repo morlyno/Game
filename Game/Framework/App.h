@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Window.h"
-#include <random>
+#include "MorTimer.h"
 
 class App
 {
@@ -15,4 +15,5 @@ private:
 	void DoFrame();
 private:
 	Window wnd;
+	MorTimer timer;
 };

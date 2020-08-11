@@ -84,7 +84,7 @@ void Graphics::ClearBuffer( float red,float green,float blue )
 	pContext->ClearRenderTargetView( pRenderTargetView.Get(),color );
 }
 
-void Graphics::Drawsdjsgldfg()
+void Graphics::Drawsdjsgldfg( float angle )
 {
 	HRESULT hr;
 
@@ -145,7 +145,6 @@ void Graphics::Drawsdjsgldfg()
 		0,1,2,3,4,5,6,0
 	};
 
-	auto i = sizeof( indices );
 
 	D3D11_BUFFER_DESC bdi = {};
 	bdi.ByteWidth = sizeof( indices );
@@ -163,6 +162,44 @@ void Graphics::Drawsdjsgldfg()
 	GFX_THROW_INFO( pDevice->CreateBuffer( &bdi,&sdi,&pIndexBuffer ) );
 
 	pContext->IASetIndexBuffer( pIndexBuffer.Get(),DXGI_FORMAT_R16_UINT,0u );
+
+
+	//Constand Buffer
+	struct ConstantBuffer
+	{
+		struct
+		{
+			float element[4][4];
+		} transformation;
+	};
+
+	const ConstantBuffer cb =
+	{
+		{
+			std::cos( angle ),	std::sin( angle ),	0.0f,	0.0f,
+			-std::sin( angle ),	std::cos( angle ),	0.0f,	0.0f,
+			0.0f,				0.0f,				1.0f,	0.0f,
+			0.0f,				0.0f,				0.0f,	1.0f,
+		}
+	};
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer;
+	D3D11_BUFFER_DESC cbd = {};
+	cbd.ByteWidth = sizeof( cb );
+	cbd.Usage = D3D11_USAGE_DYNAMIC;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd.MiscFlags = 0u;
+	cbd.StructureByteStride = 0u;
+
+	D3D11_SUBRESOURCE_DATA csd = {};
+	csd.pSysMem = &cb;
+
+	GFX_THROW_INFO( pDevice->CreateBuffer( &cbd,&csd,&pConstantBuffer ) );
+
+	pContext->VSSetConstantBuffers( 0u,1u,pConstantBuffer.GetAddressOf() );
+
+
 
 	//Create PixelShader
 	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;

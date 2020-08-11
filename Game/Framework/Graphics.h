@@ -50,7 +50,7 @@ public:
 	~Graphics() = default;
 	void EndFrame();
 	void ClearBuffer( float red,float green,float blue );
-	void Drawsdjsgldfg();
+	void Drawsdjsgldfg( float angle );
 	//void Resize( UINT width,UINT height )
 	//{
 	//	DXGI_MODE_DESC md = { 0 };
