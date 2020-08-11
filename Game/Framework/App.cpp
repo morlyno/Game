@@ -19,7 +19,8 @@ int App::Go()
 		{
 			return *ecode;
 		}
-		wnd.Gfx().ClearBuffer( 0.0f,0.0f,0.0f );
+		const auto c = sin( timer.Peek() ) / 2.0f + 0.5f;
+		wnd.Gfx().ClearBuffer( c,c,1.0f );
 		DoFrame();
 		wnd.Gfx().EndFrame();
 	}
@@ -27,5 +28,5 @@ int App::Go()
 
 void App::DoFrame()
 {
-	wnd.Gfx().Drawsdjsgldfg( timer.Peek() );
+	wnd.Gfx().Drawsdjsgldfg( 0.0f );
 }

@@ -92,21 +92,17 @@ void Graphics::Drawsdjsgldfg( float angle )
 	{
 		float x;
 		float y;
-
-		float r;
-		float g;
-		float b;
 	};
 
 	const Vertex vertecies[] =
 	{
-		{ 0.1f,0.8f,1.0f,0.0f,0.0f },
-		{ 0.5f,0.5f,0.0f,1.0f,0.0f },
-		{ 0.2f,-0.7f,0.0f,0.0f,1.0f },
-		{ 0.0f,-1.0f,1.0f,1.0f,0.0f },
-		{ -0.2f,-0.7f,1.0f,0.0f,1.0f },
-		{ -0.5f,0.5f,0.0f,1.0f,1.0f },
-		{ -0.1f,0.8f,1.0f,1.0f,1.0f },
+		{ 0.1f,0.8f },
+		{ 0.5f,0.5f },
+		{ 0.2f,-0.7f },
+		{ 0.0f,-1.0f },
+		{ -0.2f,-0.7f },
+		{ -0.5f,0.5f },
+		{ -0.1f,0.8f },
 	};
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
@@ -137,12 +133,11 @@ void Graphics::Drawsdjsgldfg( float angle )
 	//Index Buffer
 	const unsigned short indices[] =
 	{
-		//0,1,2,
-		//0,2,3,
-		//0,3,6,
-		//6,3,4,
-		//6,4,5,
-		0,1,2,3,4,5,6,0
+		0,1,2,
+		0,2,3,
+		0,3,6,
+		6,3,4,
+		6,4,5,
 	};
 
 
@@ -200,6 +195,44 @@ void Graphics::Drawsdjsgldfg( float angle )
 	pContext->VSSetConstantBuffers( 0u,1u,pConstantBuffer.GetAddressOf() );
 
 
+	//const color
+	struct constantbuffer2
+	{
+		struct
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+		} colors;
+	};
+
+	const constantbuffer2 cb2[5] =
+	{
+		{ 1.0f,0.0f,0.0f },
+		{ 0.0f,1.0f,0.0f },
+		{ 0.0f,0.0f,1.0f },
+		{ 1.0f,1.0f,0.0f },
+		{ 1.0f,0.0f,1.0f },
+	};
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer2;
+	D3D11_BUFFER_DESC cbd2 = {};
+	cbd2.ByteWidth = sizeof( cb2 );
+	cbd2.Usage = D3D11_USAGE_DYNAMIC;
+	cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd2.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd2.MiscFlags = 0u;
+	cbd2.StructureByteStride = 0u;
+
+	D3D11_SUBRESOURCE_DATA csd2 = {};
+	csd2.pSysMem = &cb2;
+
+	GFX_THROW_INFO( pDevice->CreateBuffer( &cbd2,&csd2,&pConstantBuffer2 ) );
+
+	pContext->PSSetConstantBuffers( 0u,1u,pConstantBuffer2.GetAddressOf() );
+
+
 
 	//Create PixelShader
 	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
@@ -224,7 +257,6 @@ void Graphics::Drawsdjsgldfg( float angle )
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		{ "Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "Color",0,DXGI_FORMAT_R32G32B32_FLOAT,0,8u,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
 	GFX_THROW_INFO( pDevice->CreateInputLayout(
@@ -249,7 +281,7 @@ void Graphics::Drawsdjsgldfg( float angle )
 
 
 	//Set Primitve Topology
-	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP );
+	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 
 	//Set ViewPort
