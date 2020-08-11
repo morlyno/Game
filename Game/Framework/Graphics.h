@@ -2,8 +2,8 @@
 #include "MorWin.h"
 #include <d3d11.h>
 #include <wrl.h>
-#include "MorExeption.h"
-#include "DxgiInfoManager.h"
+#include "ErrorHandle/MorExeption.h"
+#include "ErrorHandle/DxgiInfoManager.h"
 #include <vector>
 
 class Graphics

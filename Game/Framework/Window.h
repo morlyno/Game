@@ -1,9 +1,9 @@
 #pragma once
 
 #include "MorWin.h"
-#include "MorExeption.h"
-#include "Mouse.h"
-#include "Keyboard.h"
+#include "ErrorHandle/MorExeption.h"
+#include "Inputs/Mouse.h"
+#include "Inputs/Keyboard.h"
 #include "Graphics.h"
 #include <string>
 #include <optional>

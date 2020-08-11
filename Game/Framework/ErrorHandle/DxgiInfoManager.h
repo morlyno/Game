@@ -1,5 +1,5 @@
 #pragma once
-#include "MorWin.h"
+#include "../MorWin.h"
 #include <wrl.h>
 #include <vector>
 #include <dxgidebug.h>

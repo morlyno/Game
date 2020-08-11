@@ -21,22 +21,22 @@
     <ClCompile Include="Framework\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Mouse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\MorExeption.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Keyboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Framework\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\DxgiInfoManager.cpp">
+    <ClCompile Include="Framework\Inputs\Keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Inputs\Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\ErrorHandle\MorExeption.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,31 +47,31 @@
     <ClInclude Include="Framework\MorWin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Mouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\MorExeption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Keyboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\DxgiInfoManager.h">
+    <ClInclude Include="Framework\Inputs\Keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\GraphicsThrowMacros.h">
+    <ClInclude Include="Framework\Inputs\Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\WindowThrowMacros.h">
+    <ClInclude Include="Framework\ThrowMacros\WindowThrowMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\MorTimer.h">
+    <ClInclude Include="Framework\ThrowMacros\GraphicsThrowMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ErrorHandle\MorExeption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Utility\MorTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -28,5 +28,5 @@ int App::Go()
 
 void App::DoFrame()
 {
-	wnd.Gfx().Drawsdjsgldfg( 0.0f );
+	wnd.Gfx().Drawsdjsgldfg( timer.Peek() / 2 );
 }

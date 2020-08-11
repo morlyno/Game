@@ -1,10 +1,10 @@
 #include "DxgiInfoManager.h"
-#include "Window.h"
-#include "Graphics.h"
+#include "../Window.h"
+#include "../Graphics.h"
 #include <dxgidebug.h>
 #include <memory>
-#include "GraphicsThrowMacros.h"
-#include "WindowThrowMacros.h"
+#include "../ThrowMacros/GraphicsThrowMacros.h"
+#include "../ThrowMacros/WindowThrowMacros.h"
 
 #pragma comment(lib, "dxguid.lib")
 

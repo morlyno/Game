@@ -192,26 +192,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Framework\App.cpp" />
-    <ClCompile Include="Framework\DxgiInfoManager.cpp" />
+    <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
-    <ClCompile Include="Framework\Keyboard.cpp" />
-    <ClCompile Include="Framework\MorExeption.cpp" />
-    <ClCompile Include="Framework\Mouse.cpp" />
+    <ClCompile Include="Framework\Inputs\Keyboard.cpp" />
+    <ClCompile Include="Framework\ErrorHandle\MorExeption.cpp" />
+    <ClCompile Include="Framework\Inputs\Mouse.cpp" />
     <ClCompile Include="Framework\Window.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\App.h" />
-    <ClInclude Include="Framework\DxgiInfoManager.h" />
+    <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
     <ClInclude Include="Framework\Graphics.h" />
-    <ClInclude Include="Framework\GraphicsThrowMacros.h" />
-    <ClInclude Include="Framework\Keyboard.h" />
-    <ClInclude Include="Framework\MorExeption.h" />
-    <ClInclude Include="Framework\MorTimer.h" />
+    <ClInclude Include="Framework\ThrowMacros\GraphicsThrowMacros.h" />
+    <ClInclude Include="Framework\Inputs\Keyboard.h" />
+    <ClInclude Include="Framework\ErrorHandle\MorExeption.h" />
+    <ClInclude Include="Framework\Utility\MorTimer.h" />
     <ClInclude Include="Framework\MorWin.h" />
-    <ClInclude Include="Framework\Mouse.h" />
+    <ClInclude Include="Framework\Inputs\Mouse.h" />
     <ClInclude Include="Framework\Window.h" />
-    <ClInclude Include="Framework\WindowThrowMacros.h" />
+    <ClInclude Include="Framework\ThrowMacros\WindowThrowMacros.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\PixelShader.hlsl">

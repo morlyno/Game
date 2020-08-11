@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Window.h"
-#include "MorTimer.h"
+#include "Utility/MorTimer.h"
 
 class App
 {

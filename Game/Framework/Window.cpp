@@ -1,5 +1,5 @@
 #include "Window.h"
-#include "WindowThrowMacros.h"
+#include "ThrowMacros/WindowThrowMacros.h"
 #include <sstream>
 #include <cassert>
 
