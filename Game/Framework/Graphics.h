@@ -1,6 +1,8 @@
 #pragma once
 #include "MorWin.h"
 #include <d3d11.h>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
 #include <wrl.h>
 #include "ErrorHandle/MorExeption.h"
 #include "ErrorHandle/DxgiInfoManager.h"
@@ -8,6 +10,7 @@
 
 class Graphics
 {
+	friend class Bindable;
 public:
 	class Exception : public MorException
 	{
@@ -49,8 +52,11 @@ public:
 	Graphics operator=( const Graphics ) = delete;
 	~Graphics() = default;
 	void EndFrame();
-	void ClearBuffer( float red,float green,float blue );
-	void Drawsdjsgldfg( float angle );
+	void ClearBuffer( float red,float green,float blue ) noexcept;
+	void DrawIndexed( UINT indexcount ) noexcept( !IS_DEBUG );
+	void SetProjection( const DirectX::XMMATRIX& proj ) noexcept;
+	DirectX::XMMATRIX GetProjection() const noexcept;
+	//void Drawsdjsgldfg( float angle );
 	//void Resize( UINT width,UINT height )
 	//{
 	//	DXGI_MODE_DESC md = { 0 };
@@ -66,9 +72,10 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		pContext;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	pRenderTargetView;
-	Microsoft::WRL::ComPtr<ID3D11VertexShader>		pVertexShader;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader>		pPixelShader;
+	//Microsoft::WRL::ComPtr<ID3D11VertexShader>		pVertexShader;
+	//Microsoft::WRL::ComPtr<ID3D11PixelShader>		pPixelShader;
 	UINT											WindowWidth;
 	UINT											WindowHeight;
 	HWND											hWnd;
+	DirectX::XMMATRIX								projection;
 };

@@ -94,7 +94,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEBUG;IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -119,7 +119,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);RELEASE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);RELEASE;IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -144,7 +144,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);DEBUG;IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -169,7 +169,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);RELEASE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);RELEASE;IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -192,6 +192,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Framework\App.cpp" />
+    <ClCompile Include="Framework\Bindable\Bindable.cpp" />
+    <ClCompile Include="Framework\Bindable\IndexBuffer.cpp" />
+    <ClCompile Include="Framework\Bindable\InputLayout.cpp" />
+    <ClCompile Include="Framework\Bindable\PixelShader.cpp" />
+    <ClCompile Include="Framework\Bindable\Topology.cpp" />
+    <ClCompile Include="Framework\Bindable\TransformCBuf.cpp" />
+    <ClCompile Include="Framework\Bindable\VertexBuffer.cpp" />
+    <ClCompile Include="Framework\Bindable\VertexShader.cpp" />
+    <ClCompile Include="Framework\Drawable\Drawable.cpp" />
+    <ClCompile Include="Framework\Drawable\Triangle.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Inputs\Keyboard.cpp" />
@@ -202,16 +212,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\App.h" />
+    <ClInclude Include="Framework\Bindable\Bindable.h" />
+    <ClInclude Include="Framework\Bindable\BindableBase.h" />
+    <ClInclude Include="Framework\Bindable\ConstantBuffers.h" />
+    <ClInclude Include="Framework\Bindable\TransformCBuf.h" />
+    <ClInclude Include="Framework\Bindable\IndexBuffer.h" />
+    <ClInclude Include="Framework\Bindable\InputLayout.h" />
+    <ClInclude Include="Framework\Bindable\PixelShader.h" />
+    <ClInclude Include="Framework\Bindable\Topology.h" />
+    <ClInclude Include="Framework\Bindable\VertexBuffer.h" />
+    <ClInclude Include="Framework\Bindable\VertexShader.h" />
+    <ClInclude Include="Framework\Drawable\Drawable.h" />
+    <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
     <ClInclude Include="Framework\Graphics.h" />
-    <ClInclude Include="Framework\ThrowMacros\GraphicsThrowMacros.h" />
+    <ClInclude Include="Framework\Macros\GraphicsThrowMacros.h" />
     <ClInclude Include="Framework\Inputs\Keyboard.h" />
     <ClInclude Include="Framework\ErrorHandle\MorExeption.h" />
     <ClInclude Include="Framework\Utility\MorTimer.h" />
     <ClInclude Include="Framework\MorWin.h" />
     <ClInclude Include="Framework\Inputs\Mouse.h" />
     <ClInclude Include="Framework\Window.h" />
-    <ClInclude Include="Framework\ThrowMacros\WindowThrowMacros.h" />
+    <ClInclude Include="Framework\Macros\WindowThrowMacros.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\PixelShader.hlsl">
