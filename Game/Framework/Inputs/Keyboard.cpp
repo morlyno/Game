@@ -10,7 +10,7 @@ Keyboard::Event Keyboard::ReadKey()
 	if ( KeyStateBuffer.size() > 0 )
 	{
 		const auto e = KeyStateBuffer.front();
-		TrimBuffer( KeyStateBuffer );
+		KeyStateBuffer.pop();
 		return e;
 	}
 	return Keyboard::Event();
@@ -34,7 +34,7 @@ char Keyboard::ReadChar()
 	if ( CharBuffer.size() > 0 )
 	{
 		const auto c = CharBuffer.front();
-		TrimBuffer( CharBuffer );
+		CharBuffer.pop();
 		return c;
 	}
 	return 0;

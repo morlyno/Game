@@ -1,7 +1,7 @@
-#include "Triangle.h"
+#include "Square.h"
 #include "../Bindable/BindableBase.h"
 
-Triangle::Triangle( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle )
+Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle )
     :
     x( x ),
     y( y ),
@@ -18,15 +18,17 @@ Triangle::Triangle( Graphics& gfx,float x,float y,float dx,float dy,float angle,
     };
     const std::vector<Vertex> vertecis =
     {
-        { 0.0f,1.0f,0.0f },
+        { 1.0f,1.0f,0.0f },
         { 1.0f,-1.0f,0.0f },
         { -1.0f,-1.0f,0.0f },
+        { -1.0f,1.0f,0.0f },
     };
     AddBind( std::make_unique<VertexBuffer>( gfx,vertecis ) );
 
     const std::vector<unsigned short> indecies =
     {
         0,1,2,
+        2,3,0,
     };
     AddIndexBuffer( std::make_unique<IndexBuffer>( gfx,indecies ) );
 
@@ -50,6 +52,7 @@ Triangle::Triangle( Graphics& gfx,float x,float y,float dx,float dy,float angle,
     {
         {
             { 1.0f,0.0f,0.0f },
+            //{ 0.0f,1.0f,0.0f },
         }
     };
     AddBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cb ) );
@@ -65,16 +68,29 @@ Triangle::Triangle( Graphics& gfx,float x,float y,float dx,float dy,float angle,
     AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
 }
 
-void Triangle::Update( float dt ) noexcept
+void Square::Update( float dt ) noexcept
 {
+    //if ( x > 10.0f && MoveRight )
+    //{
+    //    MoveRight = false;
+    //    dx = -dx;
+    //}
+    //if ( x < -10.0f && !MoveRight )
+    //{
+    //    MoveRight = true;
+    //    dx = -dx;
+    //}
+
+
     x += dx * dt;
     y += dy * dt;
     angle += dangle * dt;
 }
 
-DirectX::XMMATRIX Triangle::GetTransformXM() const noexcept
+DirectX::XMMATRIX Square::GetTransformXM() const noexcept
 {
     return DirectX::XMMatrixRotationRollPitchYaw( 0.0f,0.0f,angle ) *
-        DirectX::XMMatrixTranslation( sinf( x ) * 2,cosf( y ) * 2,0.0f ) *
+        //DirectX::XMMatrixTranslation( sinf( x ) * 2,cosf( y ) * 2,0.0f ) *
+        DirectX::XMMatrixTranslation( x,y,0.0f ) *
         DirectX::XMMatrixTranslation( 0.0f,0.0f,10.0f );
 }

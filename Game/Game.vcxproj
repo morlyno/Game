@@ -201,6 +201,7 @@
     <ClCompile Include="Framework\Bindable\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Bindable\VertexShader.cpp" />
     <ClCompile Include="Framework\Drawable\Drawable.cpp" />
+    <ClCompile Include="Framework\Drawable\Square.cpp" />
     <ClCompile Include="Framework\Drawable\Triangle.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Framework\Bindable\VertexBuffer.h" />
     <ClInclude Include="Framework\Bindable\VertexShader.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
+    <ClInclude Include="Framework\Drawable\Square.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
     <ClInclude Include="Framework\Graphics.h" />

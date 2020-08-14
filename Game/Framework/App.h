@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "Utility/MorTimer.h"
+#include "Drawable/Square.h"
 #include "Drawable/Triangle.h"
 
 class App
@@ -17,7 +18,6 @@ private:
 private:
 	Window wnd;
 	MorTimer timer;
-	//Square square;
-	std::vector<std::unique_ptr<Square>> square;
+	std::vector<std::unique_ptr<Drawable>> drawable;
 	float scale = 1.0f;
 };
