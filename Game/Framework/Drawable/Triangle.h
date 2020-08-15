@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Drawable.h"
+#include "DrawableBase.h"
 
-class Triangle : public Drawable
+class Triangle : public DrawableBase<Triangle>
 {
 public:
 	Triangle( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle );

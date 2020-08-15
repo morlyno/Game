@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Drawable.h"
+#include "DrawableBase.h"
 
-class Square : public Drawable
+class Square : public DrawableBase<Square>
 {
 public:
 	Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle );

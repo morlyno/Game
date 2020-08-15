@@ -44,7 +44,6 @@ void App::DoFrame()
 	{
 		if ( e.GetKeyCode() == VK_DOWN )
 		{
-			OutputDebugString( L"Down" );
 			scale > 0.1f ? scale -= 0.1 : scale = 0.1f;
 			wnd.Gfx().SetProjection(
 				DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,40.0f ) *
@@ -53,7 +52,6 @@ void App::DoFrame()
 		}
 		else if ( e.GetKeyCode() == VK_UP )
 		{
-			OutputDebugString( L"Up" );
 			scale += 0.1f;
 			wnd.Gfx().SetProjection(
 				DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,40.0f ) *

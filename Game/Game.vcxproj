@@ -119,7 +119,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);RELEASE;IS_DEBUG=false</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);NDEBUG;IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -169,7 +169,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);RELEASE;IS_DEBUG=false</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);NDEBUG;IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -224,6 +224,7 @@
     <ClInclude Include="Framework\Bindable\VertexBuffer.h" />
     <ClInclude Include="Framework\Bindable\VertexShader.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
+    <ClInclude Include="Framework\Drawable\DrawableBase.h" />
     <ClInclude Include="Framework\Drawable\Square.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
