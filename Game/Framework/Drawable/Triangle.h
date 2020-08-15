@@ -9,6 +9,9 @@ public:
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
+	float tx = 0;
+	float ty = 0;
+
 	float x;
 	float y;
 

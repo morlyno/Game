@@ -82,15 +82,15 @@ void Square::Update( float dt ) noexcept
     //}
 
 
-    x += dx * dt;
-    y += dy * dt;
+    tx += dx * dt;
+    ty += dy * dt;
     angle += dangle * dt;
 }
 
 DirectX::XMMATRIX Square::GetTransformXM() const noexcept
 {
     return DirectX::XMMatrixRotationRollPitchYaw( 0.0f,0.0f,angle ) *
-        //DirectX::XMMatrixTranslation( sinf( x ) * 2,cosf( y ) * 2,0.0f ) *
-        DirectX::XMMatrixTranslation( x,y,0.0f ) *
-        DirectX::XMMatrixTranslation( 0.0f,0.0f,10.0f );
+        DirectX::XMMatrixTranslation( cosf( tx ) * 2,sinf( ty ) * 2,0.0f ) *
+        //DirectX::XMMatrixTranslation( x,y,0.0f ) *
+        DirectX::XMMatrixTranslation( x,y,10.0f );
 }

@@ -12,6 +12,9 @@ private:
 	float x;
 	float y;
 	
+	float tx = 0;
+	float ty = 0;
+
 	float dx;
 	float dy;
 
