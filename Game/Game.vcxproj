@@ -196,11 +196,14 @@
     <ClCompile Include="Framework\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="Framework\Bindable\InputLayout.cpp" />
     <ClCompile Include="Framework\Bindable\PixelShader.cpp" />
+    <ClCompile Include="Framework\Bindable\Sampler.cpp" />
+    <ClCompile Include="Framework\Bindable\Texture.cpp" />
     <ClCompile Include="Framework\Bindable\Topology.cpp" />
     <ClCompile Include="Framework\Bindable\TransformCBuf.cpp" />
     <ClCompile Include="Framework\Bindable\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Bindable\VertexShader.cpp" />
     <ClCompile Include="Framework\Drawable\Drawable.cpp" />
+    <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\Square.cpp" />
     <ClCompile Include="Framework\Drawable\Triangle.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
@@ -218,6 +221,8 @@
     <ClInclude Include="Framework\Bindable\Bindable.h" />
     <ClInclude Include="Framework\Bindable\BindableBase.h" />
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h" />
+    <ClInclude Include="Framework\Bindable\Sampler.h" />
+    <ClInclude Include="Framework\Bindable\Texture.h" />
     <ClInclude Include="Framework\Bindable\TransformCBuf.h" />
     <ClInclude Include="Framework\Bindable\IndexBuffer.h" />
     <ClInclude Include="Framework\Bindable\InputLayout.h" />
@@ -227,6 +232,7 @@
     <ClInclude Include="Framework\Bindable\VertexShader.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
     <ClInclude Include="Framework\Drawable\DrawableBase.h" />
+    <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\Drawable\Square.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
@@ -256,6 +262,26 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Framework\Shader\TexturePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Framework\Shader\TextureVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Framework\Shader\VertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>

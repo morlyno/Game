@@ -19,7 +19,7 @@ Graphics::Graphics( UINT width,UINT height,HWND hWnd )
 	scd.BufferDesc.Height = 0u;
 	scd.BufferDesc.RefreshRate.Denominator = 0u;
 	scd.BufferDesc.RefreshRate.Numerator = 0u;
-	scd.BufferDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	scd.SampleDesc.Count = 1u;

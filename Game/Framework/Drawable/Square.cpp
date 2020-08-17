@@ -18,21 +18,21 @@ Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,floa
             float y;
             float z;
         };
-        const std::vector<Vertex> vertecis =
+        const std::vector<Vertex> vertices =
         {
             { 1.0f,1.0f,0.0f },
             { 1.0f,-1.0f,0.0f },
             { -1.0f,-1.0f,0.0f },
             { -1.0f,1.0f,0.0f },
         };
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertecis ) );
+        AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
 
-        const std::vector<unsigned short> indecies =
+        const std::vector<unsigned short> indices =
         {
             0,1,2,
             2,3,0,
         };
-        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indecies ) );
+        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indices ) );
 
         auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/VertexShader.cso" );
         auto pvsbc = pvs->GetBytecode();
