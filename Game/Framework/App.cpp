@@ -6,7 +6,7 @@ App::App()
     wnd( 800,600,L"SexyWindow" )
 {
 	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,5.0f,0.0f,0.0f,1.0f ) );
-	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,5.0f,2.5f,0.0f,0.0f,2.0f ) );
+	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,5.0f,0.0f,0.0f,0.0f,0.0f ) );
 
 	//drawable.push_back( std::make_unique<Square>( wnd.Gfx(),2.0f,2.0f,0.0f,0.0f,0.0f,2.0f ) );
 

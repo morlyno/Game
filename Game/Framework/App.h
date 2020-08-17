@@ -4,6 +4,7 @@
 #include "Utility/MorTimer.h"
 #include "Drawable/Square.h"
 #include "Drawable/Triangle.h"
+#include "Surface.h"
 
 class App
 {
@@ -19,5 +20,6 @@ private:
 	Window wnd;
 	MorTimer timer;
 	std::vector<std::unique_ptr<Drawable>> drawable;
+	Surface surf = Surface::FromFile( L"Framework/kappa.jpg" );
 	float scale = 1.0f;
 };

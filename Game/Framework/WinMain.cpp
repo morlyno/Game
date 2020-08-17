@@ -2,9 +2,11 @@
 #include "App.h"
 #include "ErrorHandle/MorExeption.h"
 #include <sstream>
+#include "GDIPlusManager.h"
 
 int WINAPI wWinMain( HINSTANCE hInstance,HINSTANCE hPrevInstance,PWSTR pCmdLine,int nCmdShow )
 {
+	GDIPlusManager gdiplusman;
 	try
 	{
 		return App{}.Go();

@@ -204,10 +204,12 @@
     <ClCompile Include="Framework\Drawable\Square.cpp" />
     <ClCompile Include="Framework\Drawable\Triangle.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
+    <ClCompile Include="Framework\GDIPlusManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Inputs\Keyboard.cpp" />
     <ClCompile Include="Framework\ErrorHandle\MorExeption.cpp" />
     <ClCompile Include="Framework\Inputs\Mouse.cpp" />
+    <ClCompile Include="Framework\Surface.cpp" />
     <ClCompile Include="Framework\Window.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
   </ItemGroup>
@@ -228,10 +230,12 @@
     <ClInclude Include="Framework\Drawable\Square.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
+    <ClInclude Include="Framework\GDIPlusManager.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Macros\GraphicsThrowMacros.h" />
     <ClInclude Include="Framework\Inputs\Keyboard.h" />
     <ClInclude Include="Framework\ErrorHandle\MorExeption.h" />
+    <ClInclude Include="Framework\Surface.h" />
     <ClInclude Include="Framework\Utility\MorTimer.h" />
     <ClInclude Include="Framework\MorWin.h" />
     <ClInclude Include="Framework\Inputs\Mouse.h" />
