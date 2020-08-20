@@ -209,6 +209,7 @@
     <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
     <ClCompile Include="Framework\GDIPlusManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
+    <ClCompile Include="Framework\ImGuiManager.cpp" />
     <ClCompile Include="Framework\ImGui\imgui.cpp" />
     <ClCompile Include="Framework\ImGui\imgui_demo.cpp" />
     <ClCompile Include="Framework\ImGui\imgui_draw.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
     <ClInclude Include="Framework\GDIPlusManager.h" />
     <ClInclude Include="Framework\Graphics.h" />
+    <ClInclude Include="Framework\ImGuiManager.h" />
     <ClInclude Include="Framework\ImGui\imconfig.h" />
     <ClInclude Include="Framework\ImGui\imgui.h" />
     <ClInclude Include="Framework\ImGui\imgui_impl_dx11.h" />

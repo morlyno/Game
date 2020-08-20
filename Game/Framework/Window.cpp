@@ -2,6 +2,7 @@
 #include "Macros/WindowThrowMacros.h"
 #include <sstream>
 #include <cassert>
+#include "ImGui/imgui_impl_win32.h"
 
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -74,6 +75,9 @@ Window::Window( int width,int height,LPCWSTR pWndName,bool CloseAll )
 		throw WND_LAST_EXCEPT();
 	}
 
+	// ImGui Setup
+	ImGui_ImplWin32_Init( hWnd );
+
 	pGfx = std::make_unique<Graphics>( width,height,hWnd );
 
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
@@ -82,6 +86,7 @@ Window::Window( int width,int height,LPCWSTR pWndName,bool CloseAll )
 
 Window::~Window()
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow( hWnd );
 }
 
@@ -115,6 +120,11 @@ int Window::GetHeight() const
 	return (int)height;
 }
 
+void Window::Kill()
+{
+	PostQuitMessage( 69 );
+}
+
 Graphics& Window::Gfx() const
 {
 	if ( !pGfx )
@@ -146,6 +156,11 @@ LRESULT WINAPI Window::WindowProc( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPar
 
 LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam )
 {
+	if ( ImGui_ImplWin32_WndProcHandler( hWnd,uMsg,wParam,lParam ) )
+	{
+		return true;
+	}
+
 	switch ( uMsg )
 	{
 	case WM_DESTROY:

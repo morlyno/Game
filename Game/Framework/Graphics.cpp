@@ -1,6 +1,7 @@
 #include "Graphics.h"
 #include <sstream>
 #include "Macros/GraphicsThrowMacros.h"
+#include "ImGui/imgui_impl_dx11.h"
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
@@ -74,6 +75,14 @@ Graphics::Graphics( UINT width,UINT height,HWND hWnd )
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	pContext->RSSetViewports( 1u,&vp );
+
+	//ImGui Setup
+	ImGui_ImplDX11_Init( pDevice.Get(),pContext.Get() );
+}
+
+Graphics::~Graphics()
+{
+	ImGui_ImplDX11_Shutdown();
 }
 
 void Graphics::EndFrame()

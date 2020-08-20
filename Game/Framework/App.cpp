@@ -1,6 +1,10 @@
 #include "App.h"
 #include <sstream>
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_dx11.h"
+#include "ImGui/imgui_impl_win32.h"
+
 App::App()
     :
     wnd( 800,600,L"SexyWindow" )
@@ -69,4 +73,32 @@ void App::DoFrame()
 		d->Update( dt );
 		d->Draw( wnd.Gfx() );
 	}
+
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	static bool show_demo_window = true;
+	if ( show_demo_window )
+	{
+		ImGui::ShowDemoWindow( &show_demo_window );
+	}
+
+	ImGui::Begin( "Test Window" );
+	ImGui::Text( "Some Text stuf" );
+	ImGui::Checkbox( "Demo Window",&show_demo_window );
+	ImGui::SliderFloat( "float slider: ",&scale,0.0f,10.0f );
+	if ( ImGui::Button( "Close" ) )
+	{
+		wnd.Kill();
+	}
+	ImGui::End();
+
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+
+	wnd.Gfx().SetProjection(
+		DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,40.0f ) *
+		DirectX::XMMatrixScaling( scale,scale,1.0f )
+	);
 }

@@ -57,6 +57,7 @@ public:
 	BOOL SetWindowTitle( const std::wstring& title );
 	int GetWidth() const;
 	int GetHeight() const;
+	void Kill();
 public:
 	Mouse mouse;
 	Keyboard kbd;
