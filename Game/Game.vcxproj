@@ -102,7 +102,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
@@ -127,7 +127,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
@@ -152,7 +152,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
@@ -177,7 +177,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
@@ -209,6 +209,12 @@
     <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
     <ClCompile Include="Framework\GDIPlusManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
+    <ClCompile Include="Framework\ImGui\imgui.cpp" />
+    <ClCompile Include="Framework\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Framework\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Framework\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Framework\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Framework\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Framework\Inputs\Keyboard.cpp" />
     <ClCompile Include="Framework\ErrorHandle\MorExeption.cpp" />
     <ClCompile Include="Framework\Inputs\Mouse.cpp" />
@@ -238,6 +244,14 @@
     <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
     <ClInclude Include="Framework\GDIPlusManager.h" />
     <ClInclude Include="Framework\Graphics.h" />
+    <ClInclude Include="Framework\ImGui\imconfig.h" />
+    <ClInclude Include="Framework\ImGui\imgui.h" />
+    <ClInclude Include="Framework\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="Framework\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Framework\ImGui\imgui_internal.h" />
+    <ClInclude Include="Framework\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Framework\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Framework\ImGui\imstb_truetype.h" />
     <ClInclude Include="Framework\Macros\GraphicsThrowMacros.h" />
     <ClInclude Include="Framework\Inputs\Keyboard.h" />
     <ClInclude Include="Framework\ErrorHandle\MorExeption.h" />
