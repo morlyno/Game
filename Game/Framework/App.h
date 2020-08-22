@@ -7,6 +7,7 @@
 #include "Drawable/Sheet.h"
 #include "Surface.h"
 #include "ImGuiManager.h"
+#include "Camera.h"
 
 class App
 {
@@ -20,6 +21,7 @@ private:
 	void DoFrame();
 private:
 	ImGuiManager imgui;
+	Camera cam;
 	Window wnd;
 	MorTimer timer;
 	std::vector<std::unique_ptr<Drawable>> drawable;

@@ -13,7 +13,6 @@ App::App()
 	drawable.push_back( std::make_unique<Triangle>( wnd.Gfx(),1.0f,0.0f,0.0f,0.0f,0.0f,1.0f ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,400.0f ) );
-	wnd.Gfx().SetCamera( DirectX::XMMatrixTranslation( 0.0f,0.0f,20.0f ) );
 }
 
 App::~App()
@@ -42,6 +41,7 @@ int App::Go()
 
 void App::DoFrame()
 {
+	wnd.Gfx().SetCamera( cam.GetMatrix() );
 
 	const auto dt = timer.Mark();
 	for ( auto& d : drawable )
@@ -49,17 +49,6 @@ void App::DoFrame()
 		d->Update( dt );
 		d->Draw( wnd.Gfx() );
 	}
-
-	ImGui::Begin( "Test Window" );
-	ImGui::Text( "Some Text stuf" );
-	ImGui::SliderFloat( "X: ",&camx,-40.0f,40.0f );
-	ImGui::SliderFloat( "Y: ",&camy,-40.0f,40.0f );
-	ImGui::SliderFloat( "Z: ",&camz,0.0f,40.0f );
-	if ( ImGui::Button( "Close" ) )
-	{
-		wnd.Kill();
-	}
-	ImGui::End();
 
 	auto z = dynamic_cast<Triangle*>( drawable[1].get() );
 	ImGui::Begin( "Triangle" );
@@ -70,6 +59,5 @@ void App::DoFrame()
 	}
 	ImGui::End();
 
-	wnd.Gfx().SetCamera( DirectX::XMMatrixTranslation( camx,camy,camz ) );
-
+	cam.ShowControlWindow();
 }

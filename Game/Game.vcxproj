@@ -202,6 +202,7 @@
     <ClCompile Include="Framework\Bindable\TransformCBuf.cpp" />
     <ClCompile Include="Framework\Bindable\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Bindable\VertexShader.cpp" />
+    <ClCompile Include="Framework\Camera.cpp" />
     <ClCompile Include="Framework\Drawable\Drawable.cpp" />
     <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\Square.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="Framework\Bindable\Topology.h" />
     <ClInclude Include="Framework\Bindable\VertexBuffer.h" />
     <ClInclude Include="Framework\Bindable\VertexShader.h" />
+    <ClInclude Include="Framework\Camera.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
     <ClInclude Include="Framework\Drawable\DrawableBase.h" />
     <ClInclude Include="Framework\Drawable\Sheet.h" />
