@@ -66,6 +66,7 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		pContext;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	pRenderTargetView;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	pDeathStencilView;
 	UINT											WindowWidth;
 	UINT											WindowHeight;
 	HWND											hWnd;

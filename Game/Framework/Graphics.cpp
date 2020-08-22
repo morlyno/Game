@@ -54,18 +54,12 @@ Graphics::Graphics( UINT width,UINT height,HWND hWnd )
 	) );
 
 	Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
-	GFX_THROW_INFO( pSwapChain->GetBuffer( 0u,__uuidof( ID3D11Resource ),&pBackBuffer ) );
+	GFX_THROW_INFO( pSwapChain->GetBuffer( 0u,__uuidof(ID3D11Texture2D),&pBackBuffer ) );
 	GFX_THROW_INFO( pDevice->CreateRenderTargetView(
 		pBackBuffer.Get(),
 		nullptr,
 		&pRenderTargetView
 	) );
-
-	pContext->OMSetRenderTargets(
-		1u,
-		pRenderTargetView.GetAddressOf(),
-		nullptr
-	);
 
 	D3D11_VIEWPORT vp = {};
 	vp.TopLeftX = 0;
@@ -75,6 +69,44 @@ Graphics::Graphics( UINT width,UINT height,HWND hWnd )
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	pContext->RSSetViewports( 1u,&vp );
+
+	// Z-Buffer
+	D3D11_DEPTH_STENCIL_DESC dsd = {};
+	dsd.DepthEnable = TRUE;
+	dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsd.DepthFunc = D3D11_COMPARISON_LESS;
+
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDeathStencil;
+	GFX_THROW_INFO( pDevice->CreateDepthStencilState( &dsd,&pDeathStencil ) );
+
+	pContext->OMSetDepthStencilState( pDeathStencil.Get(),1u );
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
+	D3D11_TEXTURE2D_DESC td = {};
+	td.Width = width;
+	td.Height = height;
+	td.MipLevels = 1u;
+	td.ArraySize = 1u;
+	td.Format = DXGI_FORMAT_D32_FLOAT;
+	td.SampleDesc.Count = 1u;
+	td.SampleDesc.Quality = 0u;
+	td.Usage = D3D11_USAGE_DEFAULT;
+	td.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	td.CPUAccessFlags = 0u;
+	GFX_THROW_INFO( pDevice->CreateTexture2D( &td,nullptr,&pTexture ) );
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd = {};
+	dsvd.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	dsvd.Texture2D.MipSlice = 0u;
+
+	GFX_THROW_INFO( pDevice->CreateDepthStencilView( pTexture.Get(),&dsvd,&pDeathStencilView ) );
+	
+	pContext->OMSetRenderTargets(
+		1u,
+		pRenderTargetView.GetAddressOf(),
+		pDeathStencilView.Get()
+	);
 
 	//ImGui Setup
 	ImGui_ImplDX11_Init( pDevice.Get(),pContext.Get() );
@@ -105,6 +137,7 @@ void Graphics::ClearBuffer( float red,float green,float blue ) noexcept
 {
 	const float color[] = { red,green,blue,1.0f };
 	pContext->ClearRenderTargetView( pRenderTargetView.Get(),color );
+	pContext->ClearDepthStencilView( pDeathStencilView.Get(),D3D11_CLEAR_DEPTH,1u,0u );
 }
 
 void Graphics::DrawIndexed( UINT indexcount ) noexcept( !IS_DEBUG )
