@@ -45,7 +45,7 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float dx,float dy,float angle,float 
         };
         AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indices ) );
 
-        AddStaticBind( std::make_unique<Texture>( gfx,Surface::FromFile( L"Framework/kappa.jpg" ) ) );
+        AddStaticBind( std::make_unique<Texture>( gfx,Surface::FromFile( L"Test.png" ) ) );
 
         AddStaticBind( std::make_unique<Sampler>( gfx ) );
 

@@ -9,8 +9,10 @@ App::App()
     :
     wnd( 800,600,L"SexyWindow" )
 {
-	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f ) );
-	drawable.push_back( std::make_unique<Triangle>( wnd.Gfx(),1.0f,0.0f,0.0f,0.0f,0.0f,1.0f ) );
+	drawable.push_back( std::make_unique<Sheet>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f ) );
+
+	//drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f ) );
+	//drawable.push_back( std::make_unique<Triangle>( wnd.Gfx(),1.0f,0.0f,0.0f,0.0f,0.0f,1.0f ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,400.0f ) );
 }
@@ -27,7 +29,6 @@ int App::Go()
 		{
 			return *ecode;
 		}
-		const auto c = sin( timer.Peek() ) / 2.0f + 0.5f;
 		wnd.Gfx().ClearBuffer( 0.0f,0.0f,0.0f );
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
