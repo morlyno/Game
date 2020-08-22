@@ -1,5 +1,5 @@
 #include "Sampler.h"
-#include "../Macros/GraphicsThrowMacros.h"
+#include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
 
 Sampler::Sampler( Graphics& gfx )
 {

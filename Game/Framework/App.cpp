@@ -50,14 +50,5 @@ void App::DoFrame()
 		d->Draw( wnd.Gfx() );
 	}
 
-	auto z = dynamic_cast<Triangle*>( drawable[1].get() );
-	ImGui::Begin( "Triangle" );
-	ImGui::SliderFloat( "Z: ",z->GetZ(),-20.0f,40.0f );
-	if ( ImGui::Button( "Reset" ) )
-	{
-		*z->GetZ() = 0.0f;
-	}
-	ImGui::End();
-
 	cam.ShowControlWindow();
 }

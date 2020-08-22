@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "../Macros/GraphicsThrowMacros.h"
+#include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
 
 Texture::Texture( Graphics& gfx,const Surface& s )
 {

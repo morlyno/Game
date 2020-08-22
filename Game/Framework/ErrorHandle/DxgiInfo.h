@@ -1,17 +1,17 @@
 #pragma once
-#include "../MorWin.h"
+#include "../Utility/MorWin.h"
 #include <wrl.h>
 #include <vector>
 #include <dxgidebug.h>
 #include <string>
 
-class DxgiInfoManager
+class DxgiInfo
 {
 public:
-	DxgiInfoManager();
-	~DxgiInfoManager() = default;
-	DxgiInfoManager( const DxgiInfoManager& ) = delete;
-	DxgiInfoManager& operator=( const DxgiInfoManager& ) = delete;
+	DxgiInfo();
+	~DxgiInfo() = default;
+	DxgiInfo( const DxgiInfo& ) = delete;
+	DxgiInfo& operator=( const DxgiInfo& ) = delete;
 	void Set() noexcept;
 	std::vector<std::string> GetMessages() const;
 private:

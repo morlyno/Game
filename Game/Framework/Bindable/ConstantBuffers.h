@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Bindable.h"
-#include "../Macros/GraphicsThrowMacros.h"
+#include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
 
 template<typename C>
 class ConstantBuffers : public Bindable

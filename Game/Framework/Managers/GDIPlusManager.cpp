@@ -1,5 +1,5 @@
 #define FULL_WINTARD
-#include "MorWin.h"
+#include "../Utility/MorWin.h"
 
 #include "GDIPlusManager.h"
 

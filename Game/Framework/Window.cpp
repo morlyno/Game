@@ -1,5 +1,5 @@
 #include "Window.h"
-#include "Macros/WindowThrowMacros.h"
+#include "Errorhandle/Macros/WindowThrowMacros.h"
 #include <sstream>
 #include <cassert>
 #include "ImGui/imgui_impl_win32.h"
@@ -298,9 +298,9 @@ const char* Window::HrException::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
-		<< "[ErrorCode] 0x" << std::hex << std::uppercase << GetErrorCode()
+		<< "\n[ErrorCode]\n" << "0x" << std::hex << std::uppercase << GetErrorCode()
 		<< std::dec << " (" << (unsigned long)GetErrorCode() << ")" << std::endl
-		<< "[Description] " << GetErrorString() << std::endl
+		<< "\n[Description]\n" << GetErrorString() << std::endl
 		<< GetOriginString();
 	whatBuffer = oss.str();
 	return whatBuffer.c_str();

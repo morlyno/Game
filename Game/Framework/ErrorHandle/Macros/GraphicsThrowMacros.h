@@ -17,7 +17,7 @@
 #endif
 
 #ifdef DEBUG
-#define INFOMAN(gfx) HRESULT hr; DxgiInfoManager& infoManager = GetInfoManager(gfx)
+#define INFOMAN(gfx) HRESULT hr; DxgiInfo& infoManager = GetInfoManager(gfx)
 #else
 #define INFOMAN(gfx) HRESULT hr
 #endif

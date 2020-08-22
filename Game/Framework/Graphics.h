@@ -1,11 +1,11 @@
 #pragma once
-#include "MorWin.h"
+#include "Utility/MorWin.h"
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <wrl.h>
 #include "ErrorHandle/MorExeption.h"
-#include "ErrorHandle/DxgiInfoManager.h"
+#include "ErrorHandle/DxgiInfo.h"
 #include <vector>
 
 class Graphics
@@ -60,7 +60,7 @@ public:
 	DirectX::XMMATRIX GetCamera() const noexcept;
 private:
 #ifdef DEBUG
-	DxgiInfoManager infoManager;
+	DxgiInfo infoManager;
 #endif
 	Microsoft::WRL::ComPtr<ID3D11Device>			pDevice;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			pSwapChain;

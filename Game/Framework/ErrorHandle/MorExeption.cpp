@@ -35,7 +35,7 @@ const std::string& MorException::GetFile() const noexcept
 std::string MorException::GetOriginString() const noexcept
 {
     std::ostringstream oss;
-    oss << "[File] " << file << std::endl
-        << "[Line] " << line;
+    oss << "\n[File]\n" << file << std::endl
+        << "\n[Line]\n" << line;
     return oss.str();
 }

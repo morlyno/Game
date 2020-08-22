@@ -6,7 +6,7 @@
 #include "Drawable/Triangle.h"
 #include "Drawable/Sheet.h"
 #include "Surface.h"
-#include "ImGuiManager.h"
+#include "Managers/ImGuiManager.h"
 #include "Camera.h"
 
 class App
@@ -25,7 +25,4 @@ private:
 	Window wnd;
 	MorTimer timer;
 	std::vector<std::unique_ptr<Drawable>> drawable;
-	float camx = 0.0f;
-	float camy = 0.0f;
-	float camz = 20.0f;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MorWin.h"
+#include "../Utility/MorWin.h"
 
 class GDIPlusManager
 {

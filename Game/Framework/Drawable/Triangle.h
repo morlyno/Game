@@ -8,10 +8,6 @@ public:
 	Triangle( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle );
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	float* GetZ()
-	{
-		return &z;
-	}
 private:
 	float tx = 0;
 	float ty = 0;

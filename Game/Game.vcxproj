@@ -207,10 +207,10 @@
     <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\Square.cpp" />
     <ClCompile Include="Framework\Drawable\Triangle.cpp" />
-    <ClCompile Include="Framework\ErrorHandle\DxgiInfoManager.cpp" />
-    <ClCompile Include="Framework\GDIPlusManager.cpp" />
+    <ClCompile Include="Framework\ErrorHandle\DxgiInfo.cpp" />
+    <ClCompile Include="Framework\Managers\GDIPlusManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
-    <ClCompile Include="Framework\ImGuiManager.cpp" />
+    <ClCompile Include="Framework\Managers\ImGuiManager.cpp" />
     <ClCompile Include="Framework\ImGui\imgui.cpp" />
     <ClCompile Include="Framework\ImGui\imgui_demo.cpp" />
     <ClCompile Include="Framework\ImGui\imgui_draw.cpp" />
@@ -244,10 +244,10 @@
     <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\Drawable\Square.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />
-    <ClInclude Include="Framework\ErrorHandle\DxgiInfoManager.h" />
-    <ClInclude Include="Framework\GDIPlusManager.h" />
+    <ClInclude Include="Framework\ErrorHandle\DxgiInfo.h" />
+    <ClInclude Include="Framework\Managers\GDIPlusManager.h" />
     <ClInclude Include="Framework\Graphics.h" />
-    <ClInclude Include="Framework\ImGuiManager.h" />
+    <ClInclude Include="Framework\Managers\ImGuiManager.h" />
     <ClInclude Include="Framework\ImGui\imconfig.h" />
     <ClInclude Include="Framework\ImGui\imgui.h" />
     <ClInclude Include="Framework\ImGui\imgui_impl_dx11.h" />
@@ -256,15 +256,15 @@
     <ClInclude Include="Framework\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Framework\ImGui\imstb_textedit.h" />
     <ClInclude Include="Framework\ImGui\imstb_truetype.h" />
-    <ClInclude Include="Framework\Macros\GraphicsThrowMacros.h" />
+    <ClInclude Include="Framework\ErrorHandle\Macros\GraphicsThrowMacros.h" />
     <ClInclude Include="Framework\Inputs\Keyboard.h" />
     <ClInclude Include="Framework\ErrorHandle\MorExeption.h" />
     <ClInclude Include="Framework\Surface.h" />
     <ClInclude Include="Framework\Utility\MorTimer.h" />
-    <ClInclude Include="Framework\MorWin.h" />
+    <ClInclude Include="Framework\Utility\MorWin.h" />
     <ClInclude Include="Framework\Inputs\Mouse.h" />
     <ClInclude Include="Framework\Window.h" />
-    <ClInclude Include="Framework\Macros\WindowThrowMacros.h" />
+    <ClInclude Include="Framework\ErrorHandle\Macros\WindowThrowMacros.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\PixelShader.hlsl">

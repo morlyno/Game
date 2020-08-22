@@ -2,9 +2,22 @@
 
 #include <memory>
 #include <string>
+#include "ErrorHandle/MorExeption.h"
 
 class Surface
 {
+public:
+	class SurfaceException : public MorException
+	{
+	public:
+		SurfaceException( int line,const char* file,const char* msg ) noexcept;
+		SurfaceException( int line,const char* file,const char* msg,const std::wstring& filename ) noexcept;
+		const char* what() const noexcept override;
+		const char* GetType() const noexcept override;
+	private:
+		std::string msg;
+		std::wstring filename;
+	};
 public:
 	class Color
 	{
@@ -69,6 +82,7 @@ public:
 	Color* GetBufferPointer() noexcept;
 	const Color* GetBufferPointer() const noexcept;
 	const Color* GetBufferPointerConst() const noexcept;
+	void Copy( const Surface& s ) noexcept( !IS_DEBUG );
 private:
 	Surface( unsigned int width,unsigned int height,std::unique_ptr<Color[]> pBufferParent ) noexcept;
 private:

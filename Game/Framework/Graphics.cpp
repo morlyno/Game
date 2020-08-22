@@ -1,6 +1,6 @@
 #include "Graphics.h"
 #include <sstream>
-#include "Macros/GraphicsThrowMacros.h"
+#include "ErrorHandle/Macros/GraphicsThrowMacros.h"
 #include "ImGui/imgui_impl_dx11.h"
 
 #pragma comment(lib,"d3d11.lib")
@@ -185,12 +185,12 @@ const char* Graphics::HrException::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
-		<< "[ErrorCode] 0x" << std::hex << std::uppercase << GetErrorCode()
+		<< "\n[ErrorCode]\n" << "0x" << std::hex << std::uppercase << GetErrorCode()
 		<< std::dec << " (" << (unsigned long)GetErrorCode() << ")" << std::endl
-		<< "[Desciption] " << GetErrorDesciption() << std::endl;
+		<< "\n[Desciption]\n" << GetErrorDesciption() << std::endl;
 	if ( !info.empty() )
 	{
-		oss << "[Error Info] " << GetErrorInfo() << std::endl << std::endl;
+		oss << "\n[Error Info]\n" << GetErrorInfo() << std::endl << std::endl;
 	}
 	oss << GetOriginString();
 	whatBuffer = oss.str();
@@ -263,7 +263,7 @@ const char* Graphics::InfoException::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
-		<< "[Error Info]" << std::endl
+		<< "\n[Error Info]\n" << std::endl
 		<< GetErrorInfo() << std::endl
 		<< GetOriginString();
 	whatBuffer = oss.str();

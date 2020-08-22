@@ -2,7 +2,7 @@
 #include "App.h"
 #include "ErrorHandle/MorExeption.h"
 #include <sstream>
-#include "GDIPlusManager.h"
+#include "Managers/GDIPlusManager.h"
 
 int WINAPI wWinMain( HINSTANCE hInstance,HINSTANCE hPrevInstance,PWSTR pCmdLine,int nCmdShow )
 {

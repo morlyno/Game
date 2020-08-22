@@ -1,15 +1,15 @@
-#include "DxgiInfoManager.h"
+#include "DxgiInfo.h"
 #include "../Window.h"
 #include "../Graphics.h"
 #include <dxgidebug.h>
 #include <memory>
-#include "../Macros/GraphicsThrowMacros.h"
-#include "../Macros/WindowThrowMacros.h"
+#include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
+#include "../ErrorHandle/Macros/WindowThrowMacros.h"
 
 #pragma comment(lib, "dxguid.lib")
 
 
-DxgiInfoManager::DxgiInfoManager()
+DxgiInfo::DxgiInfo()
 {
 	// define function signature of DXGIGetDebugInterface
 	typedef HRESULT( WINAPI* DXGIGetDebugInterface )( REFIID,void** );
@@ -34,14 +34,14 @@ DxgiInfoManager::DxgiInfoManager()
 	GFX_THROW_FAILD( DxgiGetDebugInterface( __uuidof( IDXGIInfoQueue ),&pDxgiInfoQueue ) );
 }
 
-void DxgiInfoManager::Set() noexcept
+void DxgiInfo::Set() noexcept
 {
 	// set the index (next) so that the next all to GetMessages()
 	// will only get errors generated after this call
 	next = pDxgiInfoQueue->GetNumStoredMessages( DXGI_DEBUG_ALL );
 }
 
-std::vector<std::string> DxgiInfoManager::GetMessages() const
+std::vector<std::string> DxgiInfo::GetMessages() const
 {
 	std::vector<std::string> messages;
 	const auto end = pDxgiInfoQueue->GetNumStoredMessages( DXGI_DEBUG_ALL );
