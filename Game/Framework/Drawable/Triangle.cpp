@@ -82,6 +82,5 @@ void Triangle::Update( float dt ) noexcept
 DirectX::XMMATRIX Triangle::GetTransformXM() const noexcept
 {
     return DirectX::XMMatrixRotationRollPitchYaw( 0.0f,0.0f,angle ) *
-        DirectX::XMMatrixTranslation( cosf( tx ) * 2,sinf( ty ) * 2,0.0f ) *
-        DirectX::XMMatrixTranslation( x,y,10.0f );
+        DirectX::XMMatrixTranslation( x,y,z );
 }

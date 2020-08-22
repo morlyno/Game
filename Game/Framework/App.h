@@ -23,5 +23,7 @@ private:
 	Window wnd;
 	MorTimer timer;
 	std::vector<std::unique_ptr<Drawable>> drawable;
-	float scale = 1.0f;
+	float camx = 0.0f;
+	float camy = 0.0f;
+	float camz = 20.0f;
 };

@@ -75,14 +75,12 @@ void Sheet::Update( float dt ) noexcept
 {
     tx += dx * dt;
     ty += dy * dt;
-
+    
     angle += dangle * dt;
 }
 
 DirectX::XMMATRIX Sheet::GetTransformXM() const noexcept
 {
     return DirectX::XMMatrixTranslation( tx,ty,0.0f ) *
-        //return DirectX::XMMatrixRotationRollPitchYaw( 0.0f,0.0f,angle ) *
-        DirectX::XMMatrixTranslation( oreginx,oreginy,10.0f );
-    //    DirectX::XMMatrixRotationRollPitchYaw( angle,0.0f,0.0f );
+        DirectX::XMMatrixTranslation( oreginx,oreginy,0.0f );
 }

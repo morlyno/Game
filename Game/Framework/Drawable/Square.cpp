@@ -53,8 +53,7 @@ Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,floa
         const ConstBuffer cb =
         {
             {
-                { 1.0f,0.0f,0.0f },
-                //{ 0.0f,1.0f,0.0f },
+                { 0.0f,0.0f,1.0f },
             }
         };
         AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cb ) );
@@ -77,17 +76,6 @@ Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,floa
 
 void Square::Update( float dt ) noexcept
 {
-    //if ( x > 10.0f && MoveRight )
-    //{
-    //    MoveRight = false;
-    //    dx = -dx;
-    //}
-    //if ( x < -10.0f && !MoveRight )
-    //{
-    //    MoveRight = true;
-    //    dx = -dx;
-    //}
-
 
     tx += dx * dt;
     ty += dy * dt;
@@ -97,7 +85,5 @@ void Square::Update( float dt ) noexcept
 DirectX::XMMATRIX Square::GetTransformXM() const noexcept
 {
     return DirectX::XMMatrixRotationRollPitchYaw( 0.0f,0.0f,angle ) *
-        DirectX::XMMatrixTranslation( cosf( tx ) * 2,sinf( ty ) * 2,0.0f ) *
-        //DirectX::XMMatrixTranslation( x,y,0.0f ) *
-        DirectX::XMMatrixTranslation( x,y,10.0f );
+        DirectX::XMMatrixTranslation( x,y,0.0f );
 }

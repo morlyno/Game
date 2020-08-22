@@ -56,14 +56,8 @@ public:
 	void DrawIndexed( UINT indexcount ) noexcept( !IS_DEBUG );
 	void SetProjection( const DirectX::XMMATRIX& proj ) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
-	//void Drawsdjsgldfg( float angle );
-	//void Resize( UINT width,UINT height )
-	//{
-	//	DXGI_MODE_DESC md = { 0 };
-	//	md.Width = width;
-	//	md.Height = height;
-	//	pSwapChain->ResizeTarget( &md );
-	//}
+	void SetCamera( DirectX::CXMMATRIX cam ) noexcept;
+	DirectX::XMMATRIX GetCamera() const noexcept;
 private:
 #ifdef DEBUG
 	DxgiInfoManager infoManager;
@@ -72,10 +66,9 @@ private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>			pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>		pContext;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	pRenderTargetView;
-	//Microsoft::WRL::ComPtr<ID3D11VertexShader>		pVertexShader;
-	//Microsoft::WRL::ComPtr<ID3D11PixelShader>		pPixelShader;
 	UINT											WindowWidth;
 	UINT											WindowHeight;
 	HWND											hWnd;
 	DirectX::XMMATRIX								projection;
+	DirectX::XMMATRIX								camera;
 };
