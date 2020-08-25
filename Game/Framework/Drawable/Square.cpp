@@ -1,7 +1,7 @@
 #include "Square.h"
 #include "../Bindable/BindableBase.h"
 
-Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle )
+Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle,int divishions_x,int divishions_y )
     :
     x( x ),
     y( y ),
@@ -14,24 +14,31 @@ Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,floa
     {
         struct Vertex
         {
-            float x;
-            float y;
-            float z;
+            DirectX::XMFLOAT3 pos;
         };
-        const std::vector<Vertex> vertices =
-        {
-            { 1.0f,1.0f,0.0f },
-            { 1.0f,-1.0f,0.0f },
-            { -1.0f,-1.0f,0.0f },
-            { -1.0f,1.0f,0.0f },
-        };
+        //struct Vertex
+        //{
+        //    float x;
+        //    float y;
+        //    float z;
+        //};
+        //const std::vector<Vertex> vertices =
+        //{
+        //    { 1.0f,1.0f,0.0f },
+        //    { 1.0f,-1.0f,0.0f },
+        //    { -1.0f,-1.0f,0.0f },
+        //    { -1.0f,1.0f,0.0f },
+        //};
+        //const std::vector<unsigned short> indices =
+        //{
+        //    0,1,2,
+        //    2,3,0,
+        //};
+
+        const auto[vertices,indices] = test::Make<Vertex>( divishions_x,divishions_y );
+
         AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
 
-        const std::vector<unsigned short> indices =
-        {
-            0,1,2,
-            2,3,0,
-        };
         AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indices ) );
 
         auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/VertexShader.cso" );
@@ -48,12 +55,14 @@ Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,floa
                 float g;
                 float b;
                 float a;
-            } color[1];
+            } color[2];
         };
         const ConstBuffer cb =
         {
             {
                 { 0.0f,0.0f,1.0f },
+                //{ 0.0f,0.0f,1.0f },
+                { 0.0f,1.0f,0.0f },
             }
         };
         AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cb ) );

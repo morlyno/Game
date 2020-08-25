@@ -20,6 +20,9 @@ public:
 private:
 	void DoFrame();
 private:
+	float c[3] = { 0.0f,0.0f,0.0f };
+	int dx = 0;
+	int dy = 0;
 	ImGuiManager imgui;
 	Camera cam;
 	Window wnd;

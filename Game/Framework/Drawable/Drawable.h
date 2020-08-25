@@ -19,6 +19,10 @@ public:
 	void AddBind( std::unique_ptr<Bindable> addbind ) noexcept( !IS_DEBUG );
 	void AddIndexBuffer( std::unique_ptr<class IndexBuffer> indexBuffer ) noexcept( !IS_DEBUG );
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
+	void Clear()
+	{
+		binds.clear();
+	}
 private:
 	virtual	const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
 private:
