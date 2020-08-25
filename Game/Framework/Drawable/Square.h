@@ -81,7 +81,7 @@ public:
 	Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle,int divishions_x,int divishions_y );
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void Clearall()
+	void Clearall() noexcept
 	{
 		Clear();
 		ClearStatic();

@@ -38,8 +38,8 @@ private:
 	class WindowClass
 	{
 	public:
-		static HINSTANCE gethInst();
-		static LPCWSTR getName();
+		static HINSTANCE gethInst() noexcept;
+		static LPCWSTR getName() noexcept;
 	private:
 		WindowClass();
 		~WindowClass();
@@ -53,11 +53,10 @@ private:
 public:
 	Window( int width,int height,LPCWSTR pWndName,bool CloseAll = true );
 	~Window();
-	static std::optional<int> ProcessingMessage();
-	BOOL SetWindowTitle( const std::wstring& title );
-	int GetWidth() const;
-	int GetHeight() const;
-	void Kill();
+	static std::optional<int> ProcessingMessage() noexcept;
+	void SetWindowTitle( const std::wstring& title ); // ?(Mor): noexcept if debug
+	int GetWidth() const noexcept;
+	int GetHeight() const noexcept;
 public:
 	Mouse mouse;
 	Keyboard kbd;

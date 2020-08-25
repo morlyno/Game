@@ -35,7 +35,7 @@ public:
 		}
 		assert( "Faild to find IndexBuffer form Static" && pIndexBuffer == nullptr );
 	}
-	void ClearStatic()
+	void ClearStatic() noexcept
 	{
 		staticbinds.clear();
 	}

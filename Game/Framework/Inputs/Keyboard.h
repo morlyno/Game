@@ -16,21 +16,21 @@ public:
 			Releas,
 			Invalid
 		};
-		Event()
+		Event() noexcept
 			:
 			type( Type::Invalid ),
 			keycode( 0 )
 		{}
-		Event( Type type,unsigned char keycode )
+		Event( Type type,unsigned char keycode ) noexcept
 			:
 			type( type ),
 			keycode( keycode )
 		{}
-		Type GetType() const
+		Type GetType() const noexcept
 		{
 			return type;
 		}
-		unsigned char GetKeyCode() const
+		unsigned char GetKeyCode() const noexcept
 		{
 			return keycode;
 		}
@@ -40,20 +40,20 @@ public:
 	};
 public:
 	//Key
-	bool KeyIsPresst( unsigned char keycode ) const;
-	Event ReadKey();
-	void KeyFlush();
-	bool KeyIsEmpty() const;
+	bool KeyIsPresst( unsigned char keycode ) const noexcept;
+	Event ReadKey() noexcept;
+	void KeyFlush() noexcept;
+	bool KeyIsEmpty() const noexcept;
 	//Char
-	char ReadChar();
-	void CharFlush();
-	bool CharIsEmpty() const;
+	char ReadChar() noexcept;
+	void CharFlush() noexcept;
+	bool CharIsEmpty() const noexcept;
 private:
-	void OnKeyPresst( unsigned char keycode );
-	void OnKeyReleas( unsigned char keycode );
-	void OnChar( unsigned char keycode );
+	void OnKeyPresst( unsigned char keycode ) noexcept;
+	void OnKeyReleas( unsigned char keycode ) noexcept;
+	void OnChar( unsigned char keycode ) noexcept;
 	template<typename T>
-	void TrimBuffer( std::queue<T>& container )
+	void TrimBuffer( std::queue<T>& container ) noexcept
 	{
 		while ( container.size() > maxBufferSize )
 		{

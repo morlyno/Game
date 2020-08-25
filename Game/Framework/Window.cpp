@@ -1,17 +1,18 @@
 #include "Window.h"
-#include "Errorhandle/Macros/WindowThrowMacros.h"
+#include "ErrorHandle/Macros/WindowThrowMacros.h"
 #include <sstream>
 #include <cassert>
 #include "ImGui/imgui_impl_win32.h"
+#include "ErrorHandle/Macros/ThorwMacros.h"
 
 Window::WindowClass Window::WindowClass::wndClass;
 
-HINSTANCE Window::WindowClass::gethInst()
+HINSTANCE Window::WindowClass::gethInst() noexcept
 {
 	return wndClass.hInst;
 }
 
-LPCWSTR Window::WindowClass::getName()
+LPCWSTR Window::WindowClass::getName() noexcept
 {
 	return pName;
 }
@@ -90,7 +91,7 @@ Window::~Window()
 	DestroyWindow( hWnd );
 }
 
-std::optional<int> Window::ProcessingMessage()
+std::optional<int> Window::ProcessingMessage() noexcept
 {
 	MSG msg = {};
 	while ( PeekMessage( &msg,nullptr,0,0,PM_REMOVE ) )
@@ -105,24 +106,22 @@ std::optional<int> Window::ProcessingMessage()
 	return {};
 }
 
-BOOL Window::SetWindowTitle( const std::wstring& title )
+void Window::SetWindowTitle( const std::wstring& title )
 {
-	return SetWindowText( hWnd,title.c_str() );
+	if ( SetWindowText( hWnd,title.c_str() ) == FALSE )
+	{
+		throw WND_LAST_EXCEPT();
+	}
 }
 
-int Window::GetWidth() const
+int Window::GetWidth() const noexcept
 {
 	return (int)width;
 }
 
-int Window::GetHeight() const
+int Window::GetHeight() const noexcept
 {
 	return (int)height;
-}
-
-void Window::Kill()
-{
-	PostQuitMessage( 69 );
 }
 
 Graphics& Window::Gfx() const

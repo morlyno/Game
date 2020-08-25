@@ -4,7 +4,16 @@
 MorException::MorException( int line,const char* file ) noexcept
     :
     line( line ),
-    file( file )
+    file( file ),
+    msg( std::string() )
+{
+}
+
+MorException::MorException( int line,const char* file,const char* msg ) noexcept
+    :
+    line( line ),
+    file( file ),
+    msg( msg )
 {
 }
 
@@ -13,6 +22,11 @@ const char* MorException::what() const noexcept
     std::ostringstream oss;
     oss << GetType() << std::endl
         << GetOriginString();
+    if ( !msg.empty() )
+    {
+        oss << "\n[Message]\n"
+            << msg;
+    }
     whatBuffer = oss.str();
     return whatBuffer.c_str();
 }
@@ -30,6 +44,11 @@ int MorException::GetLine() const noexcept
 const std::string& MorException::GetFile() const noexcept
 {
     return file;
+}
+
+const std::string& MorException::GetMsg() const noexcept
+{
+    return msg;
 }
 
 std::string MorException::GetOriginString() const noexcept

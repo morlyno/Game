@@ -245,6 +245,7 @@
     <ClInclude Include="Framework\Drawable\Square.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfo.h" />
+    <ClInclude Include="Framework\ErrorHandle\Macros\ThorwMacros.h" />
     <ClInclude Include="Framework\Managers\GDIPlusManager.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Managers\ImGuiManager.h" />

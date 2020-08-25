@@ -1,26 +1,26 @@
 #include "Mouse.h"
 
-std::pair<int,int> Mouse::getPos() const
+std::pair<int,int> Mouse::getPos() const noexcept
 {
 	return std::make_pair( x,y );
 }
 
-bool Mouse::LeftIsPresst() const
+bool Mouse::LeftIsPresst() const noexcept
 {
 	return leftispresst;
 }
 
-bool Mouse::RightIsPresst() const
+bool Mouse::RightIsPresst() const noexcept
 {
 	return rightispresst;
 }
 
-bool Mouse::inWindow() const
+bool Mouse::inWindow() const noexcept
 {
 	return inwindow;
 }
 
-Mouse::Event Mouse::Read()
+Mouse::Event Mouse::Read() noexcept
 {
 	if ( buffer.size() > 0u )
 	{
@@ -31,20 +31,17 @@ Mouse::Event Mouse::Read()
 	return Mouse::Event();
 }
 
-void Mouse::Flush()
+void Mouse::Flush() noexcept
 {
-	while ( buffer.size() > 0 )
-	{
-		buffer.pop();
-	}
+	buffer = std::queue<Event>();
 }
 
-bool Mouse::isEmpty()
+bool Mouse::isEmpty() noexcept
 {
 	return buffer.empty();
 }
 
-void Mouse::MouseMove( int newx,int newy )
+void Mouse::MouseMove( int newx,int newy ) noexcept
 {
 	x = newx;
 	y = newy;
@@ -53,7 +50,7 @@ void Mouse::MouseMove( int newx,int newy )
 	TrimBuffer();
 }
 
-void Mouse::RightPresst( int newx,int newy )
+void Mouse::RightPresst( int newx,int newy ) noexcept
 {
 	rightispresst = true;
 
@@ -61,7 +58,7 @@ void Mouse::RightPresst( int newx,int newy )
 	TrimBuffer();
 }
 
-void Mouse::LeftPresst( int newx,int newy )
+void Mouse::LeftPresst( int newx,int newy ) noexcept
 {
 	leftispresst = true;
 
@@ -69,7 +66,7 @@ void Mouse::LeftPresst( int newx,int newy )
 	TrimBuffer();
 }
 
-void Mouse::RightReleast( int newx,int newy )
+void Mouse::RightReleast( int newx,int newy ) noexcept
 {
 	rightispresst = false;
 
@@ -77,7 +74,7 @@ void Mouse::RightReleast( int newx,int newy )
 	TrimBuffer();
 }
 
-void Mouse::LeftReleast( int newx,int newy )
+void Mouse::LeftReleast( int newx,int newy ) noexcept
 {
 	leftispresst = false;
 
@@ -85,7 +82,7 @@ void Mouse::LeftReleast( int newx,int newy )
 	TrimBuffer();
 }
 
-void Mouse::MittelPresst( int newx,int newy )
+void Mouse::MittelPresst( int newx,int newy ) noexcept
 {
 	mittelispresst = true;
 
@@ -93,7 +90,7 @@ void Mouse::MittelPresst( int newx,int newy )
 	TrimBuffer();
 }
 
-void Mouse::MittelReleast( int newx,int newy )
+void Mouse::MittelReleast( int newx,int newy ) noexcept
 {
 	mittelispresst = false;
 
@@ -101,19 +98,19 @@ void Mouse::MittelReleast( int newx,int newy )
 	TrimBuffer();
 }
 
-void Mouse::WheelUp( int x,int y )
+void Mouse::WheelUp( int x,int y ) noexcept
 {
 	buffer.emplace( Event::Type::WheelUp,*this );
 	TrimBuffer();
 }
 
-void Mouse::WheelDown( int x,int y )
+void Mouse::WheelDown( int x,int y ) noexcept
 {
 	buffer.emplace( Event::Type::WheelDown,*this );
 	TrimBuffer();
 }
 
-void Mouse::EnterWindow( int x,int y )
+void Mouse::EnterWindow( int x,int y ) noexcept
 {
 	inwindow = true;
 
@@ -121,7 +118,7 @@ void Mouse::EnterWindow( int x,int y )
 	TrimBuffer();
 }
 
-void Mouse::LeaveWindow( int x,int y )
+void Mouse::LeaveWindow( int x,int y ) noexcept
 {
 	inwindow = false;
 
@@ -129,7 +126,7 @@ void Mouse::LeaveWindow( int x,int y )
 	TrimBuffer();
 }
 
-void Mouse::TrimBuffer()
+void Mouse::TrimBuffer() noexcept
 {
 	while ( buffer.size() > MaxBufferSize )
 	{

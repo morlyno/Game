@@ -1,11 +1,11 @@
 #include "Keyboard.h"
 
-bool Keyboard::KeyIsPresst( unsigned char keycode ) const
+bool Keyboard::KeyIsPresst( unsigned char keycode ) const noexcept
 {
 	return KeyState[keycode];
 }
 
-Keyboard::Event Keyboard::ReadKey()
+Keyboard::Event Keyboard::ReadKey() noexcept
 {
 	if ( KeyStateBuffer.size() > 0 )
 	{
@@ -16,7 +16,7 @@ Keyboard::Event Keyboard::ReadKey()
 	return Keyboard::Event();
 }
 
-void Keyboard::KeyFlush()
+void Keyboard::KeyFlush() noexcept
 {
 	while ( !KeyStateBuffer.empty() )
 	{
@@ -24,12 +24,12 @@ void Keyboard::KeyFlush()
 	}
 }
 
-bool Keyboard::KeyIsEmpty() const
+bool Keyboard::KeyIsEmpty() const noexcept
 {
 	return KeyStateBuffer.empty();
 }
 
-char Keyboard::ReadChar()
+char Keyboard::ReadChar() noexcept
 {
 	if ( CharBuffer.size() > 0 )
 	{
@@ -40,7 +40,7 @@ char Keyboard::ReadChar()
 	return 0;
 }
 
-void Keyboard::CharFlush()
+void Keyboard::CharFlush() noexcept
 {
 	while ( !CharBuffer.empty() )
 	{
@@ -48,12 +48,12 @@ void Keyboard::CharFlush()
 	}
 }
 
-bool Keyboard::CharIsEmpty() const
+bool Keyboard::CharIsEmpty() const noexcept
 {
 	return CharBuffer.empty();
 }
 
-void Keyboard::OnKeyPresst( unsigned char keycode )
+void Keyboard::OnKeyPresst( unsigned char keycode ) noexcept
 {
 	KeyState[keycode] = true;
 	keyispresst = true;
@@ -62,7 +62,7 @@ void Keyboard::OnKeyPresst( unsigned char keycode )
 	TrimBuffer( KeyStateBuffer );
 }
 
-void Keyboard::OnKeyReleas( unsigned char keycode )
+void Keyboard::OnKeyReleas( unsigned char keycode ) noexcept
 {
 	KeyState[keycode] = false;
 	keyispresst = false;
@@ -71,7 +71,7 @@ void Keyboard::OnKeyReleas( unsigned char keycode )
 	TrimBuffer( KeyStateBuffer );
 }
 
-void Keyboard::OnChar( unsigned char keycode )
+void Keyboard::OnChar( unsigned char keycode ) noexcept
 {
 	CharBuffer.emplace( keycode );
 	TrimBuffer( CharBuffer );
