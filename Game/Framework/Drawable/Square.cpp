@@ -17,37 +17,37 @@ Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
 {
     if ( !IsInitialized() )
     {
-        struct Vertex
-        {
-            DirectX::XMFLOAT3 pos;
-        };
-
-
         //struct Vertex
         //{
-        //    float x;
-        //    float y;
-        //    float z;
-        //};
-        //const std::vector<Vertex> vertices =
-        //{
-        //    { 1.0f,1.0f,0.0f },
-        //    { 1.0f,-1.0f,0.0f },
-        //    { -1.0f,-1.0f,0.0f },
-        //    { -1.0f,1.0f,0.0f },
-
-        //    { -1.0f,1.0f,1.0f },
-        //    { 1.0f,1.0f,1.0f },
-        //};
-        //const std::vector<unsigned short> indices =
-        //{
-        //    0,1,2,
-        //    2,3,0,
-        //    3,4,0,
-        //    4,5,0,
+        //    DirectX::XMFLOAT3 pos;
         //};
 
-        const auto[vertices,indices] = test::Make<Vertex>( 0,0 );
+
+        struct Vertex
+        {
+            float x;
+            float y;
+            float z;
+        };
+        const std::vector<Vertex> vertices =
+        {
+            { 1.0f,1.0f,0.0f },
+            { 1.0f,-1.0f,0.0f },
+            { -1.0f,-1.0f,0.0f },
+            { -1.0f,1.0f,0.0f },
+
+            { -1.0f,1.0f,1.0f },
+            { 1.0f,1.0f,1.0f },
+        };
+        const std::vector<unsigned short> indices =
+        {
+            0,1,2,
+            2,3,0,
+            3,4,0,
+            4,5,0,
+        };
+
+        //const auto[vertices,indices] = test::Make<Vertex>( 0,0 );
 
 
 
@@ -60,26 +60,6 @@ Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
         AddStaticBind( std::move( pvs ) );
 
         AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/PixelShader.cso" ) );
-
-        struct ConstBuffer
-        {
-            struct
-            {
-                float r;
-                float g;
-                float b;
-                float a;
-            } color[2];
-        };
-        const ConstBuffer cb =
-        {
-            {
-                { 0.0f,0.0f,1.0f },
-                //{ 0.0f,0.0f,1.0f },
-                { 0.0f,1.0f,0.0f },
-            }
-        };
-        AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cb ) );
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
         {
@@ -110,6 +90,11 @@ DirectX::XMMATRIX Square::GetTransformXM() const noexcept
         DirectX::XMMatrixScaling( scale_width,scale_height,scale_depth ) *
         DirectX::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
         DirectX::XMMatrixTranslation( x,y,z );
+}
+
+DirectX::XMFLOAT4 Square::GetColorXM() const noexcept
+{
+    return { color[0],color[1],color[2],color[3] };
 }
 
 void Square::SpawnControlWindow() noexcept
@@ -145,5 +130,7 @@ void Square::SpawnControlWindow() noexcept
         scale_height = 1.0f;
         scale_depth = 1.0f;
     }
+    ImGui::Text( "Coloring" );
+    ImGui::ColorEdit4( "Color",color );
     ImGui::End();
 }

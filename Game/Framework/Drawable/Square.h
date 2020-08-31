@@ -80,6 +80,7 @@ public:
 	Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth );
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
+	DirectX::XMFLOAT4 GetColorXM() const noexcept override;
 	void SpawnControlWindow() noexcept;
 private:
 	float x;
@@ -93,4 +94,6 @@ private:
 	float scale_width = 1;
 	float scale_height = 1;
 	float scale_depth = 1;
+
+	float color[4];
 };

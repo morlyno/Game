@@ -19,6 +19,7 @@ public:
 	void AddBind( std::unique_ptr<Bindable> addbind ) noexcept( !IS_DEBUG );
 	void AddIndexBuffer( std::unique_ptr<class IndexBuffer> indexBuffer ) noexcept( !IS_DEBUG );
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
+	virtual DirectX::XMFLOAT4 GetColorXM() const noexcept = 0;
 	void Clear() noexcept
 	{
 		binds.clear();

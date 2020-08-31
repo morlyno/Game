@@ -3,7 +3,8 @@
 TransformCBuf::TransformCBuf( Graphics& gfx,const Drawable& parent )
 	:
 	parent( parent ),
-	vcbuf( gfx )
+	vcbuf( gfx ),
+	pcbuf( gfx )
 {
 }
 
@@ -17,5 +18,10 @@ void TransformCBuf::Bind( Graphics& gfx ) noexcept
 			gfx.GetProjection()
 		)
 	);
+	pcbuf.Update(
+		gfx,
+		parent.GetColorXM()
+	);
 	vcbuf.Bind( gfx );
+	pcbuf.Bind( gfx );
 }

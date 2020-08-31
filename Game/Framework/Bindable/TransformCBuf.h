@@ -12,4 +12,5 @@ public:
 private:
 	const Drawable& parent;
 	VertexConstantBuffer<DirectX::XMMATRIX> vcbuf;
+	PixelConstantBuffer<DirectX::XMFLOAT4> pcbuf;
 };
