@@ -10,14 +10,21 @@ T fmod( T a,T b )
 }
 
 template<typename T>
-T wrap_angle( T angle )
+T wrap_angle( T rad )
 {
-	T i = fmod( angle,(T)PI_D );
-	if ( i < (T)-PI )
+	T r = (rad + (T)PI);
+	r = fmod( r,((T)2.0f * (T)PI) );
+	if ( r < (T)0.0f )
 	{
-		i += (T)PI * (T)2.0f;
+		r += ((T)2.0f * (T)PI);
 	}
-	return i;
+	return r - (T)PI;
+	//T i = fmod( rad,(T)PI_D );
+	//if ( i < (T)-PI )
+	//{
+	//	i += ((T)PI * (T)2.0f);
+	//}
+	//return i;
 }
 
 template<typename T>
