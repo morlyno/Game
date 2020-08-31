@@ -236,6 +236,9 @@
     <ClInclude Include="Framework\ErrorHandle\Macros\ThorwMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Utility\MorMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\VertexShader.hlsl" />

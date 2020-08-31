@@ -22,6 +22,4 @@ private:
 	float angle;
 
 	float dangle;
-
-	bool MoveRight = true;
 };

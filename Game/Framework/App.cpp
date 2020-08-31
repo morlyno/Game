@@ -11,7 +11,7 @@ App::App()
 {
 	//drawable.push_back( std::make_unique<Sheet>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f ) );
 
-	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0,0 ) );
+	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f ) );
 	//drawable.push_back( std::make_unique<Triangle>( wnd.Gfx(),1.0f,0.0f,0.0f,0.0f,0.0f,1.0f ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,400.0f ) );
@@ -51,19 +51,21 @@ void App::DoFrame()
 		d->Draw( wnd.Gfx() );
 	}
 
-	ImGui::Begin( "Hi" );
-	ImGui::ColorEdit3( "BackGround",c );
-	ImGui::Text( "Square" );
-	ImGui::SliderInt( "divishions x",&dx,0,10 );
-	ImGui::SliderInt( "divishions y",&dy,0,10 );
-	if ( ImGui::Button( "Create agan" ) )
-	{
-		const auto s = dynamic_cast<Square*>(drawable[0].get());
-		s->Clearall();
-		drawable.pop_back();
-		drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,dx,dy ) );
-	}
-	ImGui::End();
+	//ImGui::Begin( "Hi" );
+	//ImGui::ColorEdit3( "BackGround",c );
+	//ImGui::Text( "Square" );
+	//ImGui::SliderInt( "divishions x",&dx,0,10 );
+	//ImGui::SliderInt( "divishions y",&dy,0,10 );
+	//if ( ImGui::Button( "Create agan" ) )
+	//{
+	//	const auto s = dynamic_cast<Square*>(drawable[0].get());
+	//	s->Clear();
+	//	s->ClearStatic();
+	//	drawable.pop_back();
+	//	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,dx,dy ) );
+	//}
+	//ImGui::End();
 
 	cam.ShowControlWindow();
+	reinterpret_cast<Square*>(drawable[0].get())->SpawnControlWindow(); // TODO(Mor): remove this or dynamic cast
 }

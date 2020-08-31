@@ -261,6 +261,7 @@
     <ClInclude Include="Framework\Inputs\Keyboard.h" />
     <ClInclude Include="Framework\ErrorHandle\MorExeption.h" />
     <ClInclude Include="Framework\Surface.h" />
+    <ClInclude Include="Framework\Utility\MorMath.h" />
     <ClInclude Include="Framework\Utility\MorTimer.h" />
     <ClInclude Include="Framework\Utility\MorWin.h" />
     <ClInclude Include="Framework\Inputs\Mouse.h" />

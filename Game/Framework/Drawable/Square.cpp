@@ -1,14 +1,16 @@
 #include "Square.h"
 #include "../Bindable/BindableBase.h"
+#include "../Utility/MorMath.h"
+#include "../ImGui/imgui.h"
 
-Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle,int divishions_x,int divishions_y )
+Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw )
     :
     x( x ),
     y( y ),
-    dx( dx ),
-    dy( dy ),
-    angle( angle ),
-    dangle( dangle )
+    z( z ),
+    roll( roll ),
+    pitch( pitch ),
+    yaw( yaw )
 {
     if ( !IsInitialized() )
     {
@@ -35,7 +37,7 @@ Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,floa
         //    2,3,0,
         //};
 
-        const auto[vertices,indices] = test::Make<Vertex>( divishions_x,divishions_y );
+        const auto[vertices,indices] = test::Make<Vertex>( 0,0 );
 
         AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
 
@@ -85,14 +87,41 @@ Square::Square( Graphics& gfx,float x,float y,float dx,float dy,float angle,floa
 
 void Square::Update( float dt ) noexcept
 {
-
-    tx += dx * dt;
-    ty += dy * dt;
-    angle += dangle * dt;
+    roll = wrap_angle( roll );
+    pitch = wrap_angle( pitch );
+    yaw = wrap_angle( yaw );
 }
 
 DirectX::XMMATRIX Square::GetTransformXM() const noexcept
 {
-    return DirectX::XMMatrixRotationRollPitchYaw( 0.0f,0.0f,angle ) *
-        DirectX::XMMatrixTranslation( x,y,0.0f );
+    //return DirectX::XMMatrixRotationRollPitchYaw( 0.0f,0.0f,angle ) *
+    //    DirectX::XMMatrixTranslation( x,y,0.0f );
+    return DirectX::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
+        DirectX::XMMatrixTranslation( x,y,z );
+}
+
+void Square::SpawnControlWindow() noexcept
+{
+    ImGui::Begin( "Square" );
+    ImGui::Text( "Position" );
+    ImGui::SliderFloat( "X",&x,-10.0f,10.0f );
+    ImGui::SliderFloat( "Y",&y,-10.0f,10.0f );
+    ImGui::SliderFloat( "Z",&z,-10.0f,10.0f );
+    if ( ImGui::Button( "ResetPosition" ) )
+    {
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+    }
+    ImGui::Text( "Rotation" );
+    ImGui::SliderAngle( "Roll",&roll,-180.0f,180.0f );
+    ImGui::SliderAngle( "Pitch",&pitch,-180.0f,180.0f );
+    ImGui::SliderAngle( "Yaw",&yaw,-180.0f,180.0f );
+    if ( ImGui::Button( "ResetRotaion" ) )
+    {
+        roll = 0.0f;
+        pitch = 0.0f;
+        yaw = 0.0f;
+    }
+    ImGui::End();
 }
