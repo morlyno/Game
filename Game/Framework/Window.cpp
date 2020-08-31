@@ -266,17 +266,17 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	/*Keyboard Messegas*/
 	case WM_KEYDOWN:
 		{
-			kbd.OnKeyPresst( wParam );
+			kbd.OnKeyPresst( (unsigned char)wParam );
 			break;
 		}
 	case WM_KEYUP:
 		{
-			kbd.OnKeyReleas( wParam );
+			kbd.OnKeyReleas( (unsigned char)wParam );
 			break;
 		}
 	case WM_CHAR:
 		{
-			kbd.OnChar( wParam );
+			kbd.OnChar( (unsigned char)wParam );
 			break;
 		}
 	}
