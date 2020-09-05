@@ -7,7 +7,7 @@ template<class T>
 class DrawableBase : public Drawable
 {
 public:
-	bool IsInitialized() const
+	bool IsInitialized() const noexcept
 	{
 		return !staticbinds.empty();
 	}
@@ -34,10 +34,6 @@ public:
 			}
 		}
 		assert( "Faild to find IndexBuffer form Static" && pIndexBuffer == nullptr );
-	}
-	void ClearStatic() noexcept
-	{
-		staticbinds.clear();
 	}
 private:
 	const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept override

@@ -1,28 +1,14 @@
 #include "Square.h"
-#include "../Bindable/BindableBase.h"
+#include "../Bindable/BindableHeaders.h"
 #include "../Utility/MorMath.h"
 #include "../ImGui/imgui.h"
 
-Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth )
+Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index )
     :
-    x( x ),
-    y( y ),
-    z( z ),
-    roll( roll ),
-    pitch( pitch ),
-    yaw( yaw ),
-    scale_width( scale_width ),
-    scale_height( scale_height ),
-    scale_depth( scale_depth )
+    DrawableMemberData( x,y,z,roll,pitch,yaw,scale_width,scale_height,scale_depth,index )
 {
     if ( !IsInitialized() )
     {
-        //struct Vertex
-        //{
-        //    DirectX::XMFLOAT3 pos;
-        //};
-
-
         struct Vertex
         {
             float x;
@@ -46,10 +32,6 @@ Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
             3,4,0,
             4,5,0,
         };
-
-        //const auto[vertices,indices] = test::Make<Vertex>( 0,0 );
-
-
 
         AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
 
@@ -75,6 +57,8 @@ Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
         SetIndexBufferFromStatic();
     }
     AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
+
+    AddBind( std::make_unique<ColorCBuf>( gfx,*this ) );
 }
 
 void Square::Update( float dt ) noexcept
@@ -95,42 +79,4 @@ DirectX::XMMATRIX Square::GetTransformXM() const noexcept
 DirectX::XMFLOAT4 Square::GetColorXM() const noexcept
 {
     return { color[0],color[1],color[2],color[3] };
-}
-
-void Square::SpawnControlWindow() noexcept
-{
-    ImGui::Begin( "Square" );
-    ImGui::Text( "Position" );
-    ImGui::SliderFloat( "X",&x,-10.0f,10.0f );
-    ImGui::SliderFloat( "Y",&y,-10.0f,10.0f );
-    ImGui::SliderFloat( "Z",&z,-10.0f,10.0f );
-    if ( ImGui::Button( "ResetPosition" ) )
-    {
-        x = 0.0f;
-        y = 0.0f;
-        z = 0.0f;
-    }
-    ImGui::Text( "Rotation" );
-    ImGui::SliderAngle( "Roll",&roll,-180.0f,180.0f );
-    ImGui::SliderAngle( "Pitch",&pitch,-180.0f,180.0f );
-    ImGui::SliderAngle( "Yaw",&yaw,-180.0f,180.0f );
-    if ( ImGui::Button( "ResetRotaion" ) )
-    {
-        roll = 0.0f;
-        pitch = 0.0f;
-        yaw = 0.0f;
-    }
-    ImGui::Text( "Scaleing" );
-    ImGui::SliderFloat( "Width",&scale_width,0.0f,10.0f );
-    ImGui::SliderFloat( "Height",&scale_height,0.0f,10.0f );
-    ImGui::SliderFloat( "Depth",&scale_depth,0.0f,10.0f );
-    if ( ImGui::Button( "ResetScaling" ) )
-    {
-        scale_width = 1.0f;
-        scale_height = 1.0f;
-        scale_depth = 1.0f;
-    }
-    ImGui::Text( "Coloring" );
-    ImGui::ColorEdit4( "Color",color );
-    ImGui::End();
 }

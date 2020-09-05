@@ -111,6 +111,9 @@
     <ClCompile Include="Framework\Managers\ImGuiManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Bindable\ColorCBuf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Window.h">
@@ -159,9 +162,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Bindable\TransformCBuf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Bindable\BindableBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h">
@@ -237,6 +237,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Utility\MorMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Drawable\DrawableMemberData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Bindable\ColorCBuf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Bindable\BindableHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

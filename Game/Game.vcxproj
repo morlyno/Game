@@ -106,6 +106,7 @@
   <ItemGroup>
     <ClCompile Include="Framework\App.cpp" />
     <ClCompile Include="Framework\Bindable\Bindable.cpp" />
+    <ClCompile Include="Framework\Bindable\ColorCBuf.cpp" />
     <ClCompile Include="Framework\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="Framework\Bindable\InputLayout.cpp" />
     <ClCompile Include="Framework\Bindable\PixelShader.cpp" />
@@ -140,7 +141,8 @@
   <ItemGroup>
     <ClInclude Include="Framework\App.h" />
     <ClInclude Include="Framework\Bindable\Bindable.h" />
-    <ClInclude Include="Framework\Bindable\BindableBase.h" />
+    <ClInclude Include="Framework\Bindable\BindableHeaders.h" />
+    <ClInclude Include="Framework\Bindable\ColorCBuf.h" />
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h" />
     <ClInclude Include="Framework\Bindable\Sampler.h" />
     <ClInclude Include="Framework\Bindable\Texture.h" />
@@ -154,6 +156,7 @@
     <ClInclude Include="Framework\Camera.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
     <ClInclude Include="Framework\Drawable\DrawableBase.h" />
+    <ClInclude Include="Framework\Drawable\DrawableMemberData.h" />
     <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\Drawable\Square.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />

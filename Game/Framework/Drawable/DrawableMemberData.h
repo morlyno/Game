@@ -1,0 +1,78 @@
+#pragma once
+
+#include "DrawableBase.h"
+#include "../ImGui/imgui.h"
+#include <sstream>
+
+template<class T>
+class DrawableMemberData : public DrawableBase<T>
+{
+public:
+	DrawableMemberData( float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index ) noexcept
+        :
+        x( x ),
+        y( y ),
+        z( z ),
+        roll( roll ),
+        pitch( pitch ),
+        yaw( yaw ),
+        scale_width( scale_width ),
+        scale_height( scale_height ),
+        scale_depth( scale_depth )
+    {
+        (*this).index = std::to_string( index );
+    }
+	virtual void SpawnControlWindow() noexcept override
+    {
+        ImGui::Begin( index.c_str() );
+        ImGui::Text( "Position" );
+        ImGui::SliderFloat( "X",&x,-10.0f,10.0f );
+        ImGui::SliderFloat( "Y",&y,-10.0f,10.0f );
+        ImGui::SliderFloat( "Z",&z,-10.0f,10.0f );
+        if ( ImGui::Button( "ResetPosition" ) )
+        {
+            x = 0.0f;
+            y = 0.0f;
+            z = 0.0f;
+        }
+        ImGui::Text( "Rotation" );
+        ImGui::SliderAngle( "Roll",&roll,-180.0f,180.0f );
+        ImGui::SliderAngle( "Pitch",&pitch,-180.0f,180.0f );
+        ImGui::SliderAngle( "Yaw",&yaw,-180.0f,180.0f );
+        if ( ImGui::Button( "ResetRotaion" ) )
+        {
+            roll = 0.0f;
+            pitch = 0.0f;
+            yaw = 0.0f;
+        }
+        ImGui::Text( "Scaleing" );
+        ImGui::SliderFloat( "Width",&scale_width,0.0f,10.0f );
+        ImGui::SliderFloat( "Height",&scale_height,0.0f,10.0f );
+        ImGui::SliderFloat( "Depth",&scale_depth,0.0f,10.0f );
+        if ( ImGui::Button( "ResetScaling" ) )
+        {
+            scale_width = 1.0f;
+            scale_height = 1.0f;
+            scale_depth = 1.0f;
+        }
+        ImGui::Text( "Coloring" );
+        ImGui::ColorEdit4( "Color",color );
+        ImGui::End();
+    }
+protected:
+	float x;
+	float y;
+	float z;
+
+	float roll;
+	float pitch;
+	float yaw;
+
+	float scale_width;
+	float scale_height;
+	float scale_depth;
+
+	float color[4] = { 1.0f,0.0f,1.0f,1.0f };
+
+    std::string index;
+};

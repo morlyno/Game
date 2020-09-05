@@ -20,10 +20,7 @@ public:
 	void AddIndexBuffer( std::unique_ptr<class IndexBuffer> indexBuffer ) noexcept( !IS_DEBUG );
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	virtual DirectX::XMFLOAT4 GetColorXM() const noexcept = 0;
-	void Clear() noexcept
-	{
-		binds.clear();
-	}
+	virtual void SpawnControlWindow() noexcept = 0;
 private:
 	virtual	const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
 private:

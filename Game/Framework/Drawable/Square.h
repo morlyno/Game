@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DrawableBase.h"
+#include "DrawableMemberData.h"
 
 class test // ?(Mor): switch to tex only but probably still need some geometry drawables
 {
@@ -74,26 +75,11 @@ public:
 	}
 };
 
-class Square : public DrawableBase<Square>
+class Square : public DrawableMemberData<Square>
 {
 public:
-	Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth );
+	Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index );
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	DirectX::XMFLOAT4 GetColorXM() const noexcept override;
-	void SpawnControlWindow() noexcept;
-private:
-	float x;
-	float y;
-	float z;
-
-	float roll;
-	float pitch;
-	float yaw;
-
-	float scale_width = 1;
-	float scale_height = 1;
-	float scale_depth = 1;
-
-	float color[4];
 };

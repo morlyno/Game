@@ -1,14 +1,11 @@
 #include "Sheet.h"
-#include "../Bindable/BindableBase.h"
+#include "../Bindable/BindableHeaders.h"
+#include "../Utility/MorMath.h"
+#include "../ImGui/imgui.h"
 
-Sheet::Sheet( Graphics& gfx,float x,float y,float dx,float dy,float angle,float dangle )
+Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index )
     :
-    oreginx( x ),
-    oreginy( y ),
-    dx( dx ),
-    dy( dy ),
-    angle( angle ),
-    dangle( dangle )
+    DrawableMemberData( x,y,z,roll,pitch,yaw,scale_width,scale_height,scale_depth,index )
 {
     if ( !IsInitialized() )
     {
@@ -69,18 +66,26 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float dx,float dy,float angle,float 
         SetIndexBufferFromStatic();
     }
     AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
+
+    AddBind( std::make_unique<ColorCBuf>( gfx,*this ) );
 }
 
 void Sheet::Update( float dt ) noexcept
 {
-    tx += dx * dt;
-    ty += dy * dt;
-    
-    angle += dangle * dt;
+    roll = wrap_angle( roll );
+    pitch = wrap_angle( pitch );
+    yaw = wrap_angle( yaw );
 }
 
 DirectX::XMMATRIX Sheet::GetTransformXM() const noexcept
 {
-    return DirectX::XMMatrixTranslation( tx,ty,0.0f ) *
-        DirectX::XMMatrixTranslation( oreginx,oreginy,0.0f );
+    return
+        DirectX::XMMatrixScaling( scale_width,scale_height,scale_depth ) *
+        DirectX::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
+        DirectX::XMMatrixTranslation( x,y,z );
+}
+
+DirectX::XMFLOAT4 Sheet::GetColorXM() const noexcept
+{
+    return { color[0],color[1],color[2],color[3] };
 }
