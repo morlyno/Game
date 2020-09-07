@@ -6,6 +6,7 @@
 #include "Surface.h"
 #include "Managers/ImGuiManager.h"
 #include "Camera.h"
+#include <set>
 
 class App
 {
@@ -17,11 +18,15 @@ public:
 	int Go();
 private:
 	void DoFrame();
+	void SpawnDrawableControlWindowMangerWindow() noexcept;
+	void SpawnDrawableControlWindows() noexcept;
 private:
 	float c[3] = { 0.5f,0.5f,0.5f };
 	ImGuiManager imgui;
 	Camera cam;
 	Window wnd;
 	MorTimer timer;
-	std::vector<std::unique_ptr<Drawable>> drawable;
+	std::vector<std::unique_ptr<Drawable>> drawables;
+	std::set<int> DrawableId;
+	std::optional<int> index;
 };

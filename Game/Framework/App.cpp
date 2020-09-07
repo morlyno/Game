@@ -12,11 +12,10 @@ App::App()
     :
     wnd( 800,600,L"SexyWindow" )
 {
-	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,8.0f,1.0f,1.0f,1.0f,(int)drawable.size() ) );
-	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),2.0f,0.0f,0.0f,0.0f,5.0f,0.0f,1.0f,1.0f,1.0f,(int)drawable.size() ) );
-	drawable.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,1.6f,0.0f,17.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawable.size() ) );
-	drawable.push_back( std::make_unique<Triangle>( wnd.Gfx(),0.0f,1.6f,0.0f,17.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawable.size() ) );
-
+	drawables.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,8.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Square>( wnd.Gfx(),2.0f,0.0f,0.0f,0.0f,5.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,1.6f,0.0f,17.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Triangle>( wnd.Gfx(),0.0f,1.6f,0.0f,17.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,400.0f ) );
 }
@@ -49,12 +48,57 @@ void App::DoFrame()
 	wnd.Gfx().SetCamera( cam.GetMatrix() );
 
 	const auto dt = timer.Mark();
-	for ( auto& d : drawable )
+	for ( auto& d : drawables )
 	{
 		d->Update( dt );
 		d->Draw( wnd.Gfx() );
-		d->SpawnControlWindow();
 	}
 
+	SpawnDrawableControlWindowMangerWindow();
+	SpawnDrawableControlWindows();
 	cam.ShowControlWindow();
+}
+
+void App::SpawnDrawableControlWindowMangerWindow() noexcept
+{
+	if ( ImGui::Begin( "Drawables" ) )
+	{
+		if ( ImGui::BeginCombo( "Index",index ? std::to_string( index.value() ).c_str() : "Select Drawable..." ) )
+		{
+			for ( int i = 0; i < drawables.size(); ++i )
+			{
+				const bool selected = i == index;
+				if ( ImGui::Selectable( std::to_string( i ).c_str(),selected ) )
+				{
+					index = i;
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+		if ( ImGui::Button( "SpawnWindow" ) )
+		{
+			if ( index )
+			{
+				DrawableId.insert( *index );
+				index.reset();
+			}
+		}
+	}
+	ImGui::End();
+}
+
+void App::SpawnDrawableControlWindows() noexcept
+{
+	for ( auto i = DrawableId.begin(); i != DrawableId.end(); )
+	{
+		if ( !drawables[*i]->SpawnControlWindow() )
+		{
+			i = DrawableId.erase( i );
+		}
+		else
+		{
+			++i;
+		}
+	}
 }
