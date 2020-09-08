@@ -187,7 +187,7 @@
     <ClInclude Include="Framework\ErrorHandle\Macros\WindowThrowMacros.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Framework\Shader\Color2PS.hlsl">
+    <FxCompile Include="Framework\Shader\6ColorPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>

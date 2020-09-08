@@ -260,6 +260,6 @@
     <FxCompile Include="Framework\Shader\PixelShader.hlsl" />
     <FxCompile Include="Framework\Shader\TextureVS.hlsl" />
     <FxCompile Include="Framework\Shader\TexturePS.hlsl" />
-    <FxCompile Include="Framework\Shader\Color2PS.hlsl" />
+    <FxCompile Include="Framework\Shader\6ColorPS.hlsl" />
   </ItemGroup>
 </Project>

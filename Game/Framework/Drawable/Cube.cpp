@@ -46,7 +46,7 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
         auto pvsbc = pvs->GetBytecode();
         AddStaticBind( std::move( pvs ) );
 
-        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/Color2PS.cso" ) );
+        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/6ColorPS.cso" ) );
 
         struct Color
         {
@@ -56,7 +56,7 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
                 float g;
                 float b;
                 float a;
-            } color[2];
+            } color[6];
         };
 
         Color c =
@@ -64,6 +64,10 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
             {
                 { 1.0f,0.0f,0.0f,1.0f },
                 { 0.0f,1.0f,0.0f,1.0f },
+                { 0.0f,0.0f,1.0f,1.0f },
+                { 1.0f,1.0f,0.0f,1.0f },
+                { 1.0f,0.0f,1.0f,1.0f },
+                { 0.0f,1.0f,1.0f,1.0f },
             }
         };
 
