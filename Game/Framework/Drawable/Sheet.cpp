@@ -89,3 +89,8 @@ DirectX::XMFLOAT4 Sheet::GetColorXM() const noexcept
 {
     return { color[0],color[1],color[2],color[3] };
 }
+
+std::string Sheet::GetType() const noexcept
+{
+    return "[Sheet]";
+}

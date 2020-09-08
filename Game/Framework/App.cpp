@@ -68,7 +68,7 @@ void App::SpawnDrawableControlWindowMangerWindow() noexcept
 			for ( int i = 0; i < drawables.size(); ++i )
 			{
 				const bool selected = i == index;
-				if ( ImGui::Selectable( std::to_string( i ).c_str(),selected ) )
+				if ( ImGui::Selectable( (std::to_string( i ) + " " + drawables[i]->GetType()).c_str(),selected ) )
 				{
 					index = i;
 				}

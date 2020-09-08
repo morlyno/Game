@@ -19,13 +19,13 @@ public:
         scale_width( scale_width ),
         scale_height( scale_height ),
         scale_depth( scale_depth ),
-        index( std::to_string( index ) )
+        index( index )
     {
     }
 	virtual bool SpawnControlWindow() noexcept override
     {
         bool open = true;
-        if ( ImGui::Begin( index.c_str(),&open ) )
+        if ( ImGui::Begin( std::to_string( index ).c_str(),&open ) )
         {
             ImGui::Text( "Position" );
             ImGui::SliderFloat( "X",&x,-10.0f,10.0f );
@@ -78,5 +78,5 @@ protected:
 
 	float color[4] = { 1.0f,0.0f,1.0f,1.0f };
 
-    std::string index;
+    int index;
 };

@@ -72,3 +72,8 @@ DirectX::XMFLOAT4 Triangle::GetColorXM() const noexcept
 {
     return { color[0],color[1],color[2],color[3] };
 }
+
+std::string Triangle::GetType() const noexcept
+{
+    return "[Triangle]";
+}

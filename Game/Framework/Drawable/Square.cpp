@@ -88,3 +88,8 @@ DirectX::XMFLOAT4 Square::GetColorXM() const noexcept
 {
     return { color[0],color[1],color[2],color[3] };
 }
+
+std::string Square::GetType() const noexcept
+{
+    return "[Square]";
+}

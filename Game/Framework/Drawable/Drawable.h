@@ -21,6 +21,7 @@ public:
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	virtual DirectX::XMFLOAT4 GetColorXM() const noexcept = 0;
 	virtual bool SpawnControlWindow() noexcept = 0;
+	virtual std::string GetType() const noexcept = 0;
 private:
 	virtual	const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
 private:

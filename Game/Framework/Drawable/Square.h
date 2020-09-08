@@ -95,4 +95,5 @@ public:
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	DirectX::XMFLOAT4 GetColorXM() const noexcept override;
+	std::string GetType() const noexcept override;
 };
