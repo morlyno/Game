@@ -10,14 +10,14 @@
 
 App::App()
     :
-    wnd( 800,600,L"SexyWindow" )
+    wnd( 1200,800,L"SexyWindow" )
 {
-	drawables.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,8.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Square>( wnd.Gfx(),2.0f,0.0f,0.0f,0.0f,5.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Square>( wnd.Gfx(),0.0f,1.6f,0.0f,17.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Triangle>( wnd.Gfx(),0.0f,1.6f,0.0f,17.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Square>	( wnd.Gfx(),-9.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Square>	( wnd.Gfx(), 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Square>	( wnd.Gfx(),-4.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Triangle>	( wnd.Gfx(), 0.0f,-7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,(int)drawables.size() ) );
 
-	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,3.0f / 4.0f,0.5f,400.0f ) );
+	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }
 
 App::~App()

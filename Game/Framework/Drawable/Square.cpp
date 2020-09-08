@@ -5,33 +5,41 @@
 
 Square::Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index )
     :
-    DrawableMemberData( x,y,z,roll,pitch,yaw,scale_width,scale_height,scale_depth,index )
+    DrawableMemberData( x,y,z,roll,pitch,yaw,1.0f,1.0f,1.0f,index )
 {
     if ( !IsInitialized() )
     {
+        //struct Vertex
+        //{
+        //    float x;
+        //    float y;
+        //    float z;
+        //};
+        //const std::vector<Vertex> vertices =
+        //{
+        //    { 1.0f,1.0f,0.0f },
+        //    { 1.0f,-1.0f,0.0f },
+        //    { -1.0f,-1.0f,0.0f },
+        //    { -1.0f,1.0f,0.0f },
+
+        //    { -1.0f,1.0f,1.0f },
+        //    { 1.0f,1.0f,1.0f },
+        //};
+        //const std::vector<unsigned short> indices =
+        //{
+        //    0,1,2,
+        //    2,3,0,
+        //    3,4,0,
+        //    4,5,0,
+        //};
+
         struct Vertex
         {
-            float x;
-            float y;
-            float z;
+            DirectX::XMFLOAT3 pos;
         };
-        const std::vector<Vertex> vertices =
-        {
-            { 1.0f,1.0f,0.0f },
-            { 1.0f,-1.0f,0.0f },
-            { -1.0f,-1.0f,0.0f },
-            { -1.0f,1.0f,0.0f },
+        auto[vertices,indices] = test::Make<Vertex>( 0,0 );
 
-            { -1.0f,1.0f,1.0f },
-            { 1.0f,1.0f,1.0f },
-        };
-        const std::vector<unsigned short> indices =
-        {
-            0,1,2,
-            2,3,0,
-            3,4,0,
-            4,5,0,
-        };
+        test::SacleVertices( vertices,scale_width,scale_height,scale_depth ); // ?(Mor): (remove?) scales all because of static vertexbuffer
 
         AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
 

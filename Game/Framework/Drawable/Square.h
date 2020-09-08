@@ -7,7 +7,7 @@ class test // ?(Mor): switch to tex only but probably still need some geometry d
 {
 public:
 	template<typename V>
-	static std::pair<std::vector<V>,std::vector<unsigned short>> Make( int divishions_x,int divishions_y )
+	static std::pair<std::vector<V>,std::vector<unsigned short>> Make( int divishions_x,int divishions_y ) noexcept
 	{
 		namespace dx = DirectX;
 
@@ -72,6 +72,19 @@ public:
 		}
 
 		return { std::move( vertices ),std::move( indices ) };
+	}
+	template<typename T>
+	static void SacleVertices( std::vector<T>& vec,float width,float height,float depth) noexcept
+	{
+		const auto matrix = DirectX::XMMatrixScaling( width,height,depth );
+		for ( auto& v : vec )
+		{
+			const DirectX::XMVECTOR pos = DirectX::XMLoadFloat3( &v.pos );
+			DirectX::XMStoreFloat3(
+				&v.pos,
+				DirectX::XMVector3Transform( pos,matrix )
+			);
+		}
 	}
 };
 

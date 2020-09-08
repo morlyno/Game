@@ -16,8 +16,8 @@ Graphics::Graphics( UINT width,UINT height,HWND hWnd )
 	HRESULT hr;
 
 	DXGI_SWAP_CHAIN_DESC scd = { 0 };
-	scd.BufferDesc.Width = 0u;
-	scd.BufferDesc.Height = 0u;
+	scd.BufferDesc.Width = width;
+	scd.BufferDesc.Height = height;
 	scd.BufferDesc.RefreshRate.Denominator = 0u;
 	scd.BufferDesc.RefreshRate.Numerator = 0u;
 	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
