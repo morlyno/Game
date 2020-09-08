@@ -114,6 +114,9 @@
     <ClCompile Include="Framework\Bindable\ColorCBuf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Drawable\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Window.h">
@@ -248,11 +251,15 @@
     <ClInclude Include="Framework\Bindable\BindableHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Drawable\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\VertexShader.hlsl" />
     <FxCompile Include="Framework\Shader\PixelShader.hlsl" />
     <FxCompile Include="Framework\Shader\TextureVS.hlsl" />
     <FxCompile Include="Framework\Shader\TexturePS.hlsl" />
+    <FxCompile Include="Framework\Shader\Color2PS.hlsl" />
   </ItemGroup>
 </Project>

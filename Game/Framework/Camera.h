@@ -13,4 +13,6 @@ private:
 	float x = 0.0f;
 	float y = 0.0f;
 	float z = 20.0f;
+	float look_y = 0.0f;
+	float look_x = 0.0f;
 };

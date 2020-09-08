@@ -7,6 +7,7 @@
 #include "Drawable/Sheet.h"
 #include "Drawable/Square.h"
 #include "Drawable/Triangle.h"
+#include "Drawable/Cube.h"
 
 App::App()
     :
@@ -16,6 +17,8 @@ App::App()
 	drawables.push_back( std::make_unique<Square>	( wnd.Gfx(), 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,(int)drawables.size() ) );
 	drawables.push_back( std::make_unique<Square>	( wnd.Gfx(),-4.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,(int)drawables.size() ) );
 	drawables.push_back( std::make_unique<Triangle>	( wnd.Gfx(), 0.0f,-7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Cube>		( wnd.Gfx(), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,				  (int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Cube>		( wnd.Gfx(), 5.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f,				  (int)drawables.size() ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }

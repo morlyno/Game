@@ -117,6 +117,7 @@
     <ClCompile Include="Framework\Bindable\VertexBuffer.cpp" />
     <ClCompile Include="Framework\Bindable\VertexShader.cpp" />
     <ClCompile Include="Framework\Camera.cpp" />
+    <ClCompile Include="Framework\Drawable\Cube.cpp" />
     <ClCompile Include="Framework\Drawable\Drawable.cpp" />
     <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\Square.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Framework\Bindable\VertexBuffer.h" />
     <ClInclude Include="Framework\Bindable\VertexShader.h" />
     <ClInclude Include="Framework\Camera.h" />
+    <ClInclude Include="Framework\Drawable\Cube.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
     <ClInclude Include="Framework\Drawable\DrawableBase.h" />
     <ClInclude Include="Framework\Drawable\DrawableMemberData.h" />
@@ -185,6 +187,14 @@
     <ClInclude Include="Framework\ErrorHandle\Macros\WindowThrowMacros.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Framework\Shader\Color2PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Framework\Shader\PixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
