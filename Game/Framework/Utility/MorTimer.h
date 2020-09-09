@@ -13,7 +13,11 @@ public:
 	{
 		const auto old = last;
 		last = std::chrono::steady_clock::now();
-		const std::chrono::duration<float> dur = last - old;
+		dur = last - old;
+		return dur.count();
+	}
+	float LastDuration() const noexcept
+	{
 		return dur.count();
 	}
 	float Peek() const noexcept
@@ -26,4 +30,5 @@ public:
 	}
 private:
 	std::chrono::steady_clock::time_point last;
+	std::chrono::duration<float> dur = std::chrono::duration<float>{}.zero();
 };

@@ -18,6 +18,7 @@ public:
 	int Go();
 private:
 	void DoFrame();
+	void SpawnSimulationWindow();
 	void SpawnDrawableControlWindowMangerWindow() noexcept;
 	void SpawnDrawableControlWindows() noexcept;
 private:
@@ -26,6 +27,8 @@ private:
 	Camera cam;
 	Window wnd;
 	MorTimer timer;
+	float SimulationSpeed = 1.0f;
+	bool paused = false;
 	std::vector<std::unique_ptr<Drawable>> drawables;
 	std::set<int> DrawableId;
 	std::optional<int> index;

@@ -150,48 +150,9 @@ bool Cube::SpawnControlWindow() noexcept
         }
         ImGui::Text( "Coloring" );
         ImGui::ColorEdit4( "Color",color );
-        if ( ImGui::Button( "Roll True" ) )
-        {
-            Rotate_Roll = true;
-        }
-        ImGui::SameLine();
-        if ( ImGui::Button( "Roll False" ) )
-        {
-            Rotate_Roll = false;
-        }
-        if ( ImGui::Button( "Pitch True" ) )
-        {
-            Rotate_Pitch = true;
-        }
-        ImGui::SameLine();
-        if ( ImGui::Button( "Pitch False" ) )
-        {
-            Rotate_Pitch = false;
-        }
-        if ( ImGui::Button( "Yaw True" ) )
-        {
-            Rotate_Yaw = true;
-        }
-        ImGui::SameLine();
-        if ( ImGui::Button( "Yaw False" ) )
-        {
-            Rotate_Yaw = false;
-        }
-        //ImGui::Text( Rotate_Roll ? "True" : "False" );
-        //if ( ImGui::Button( "Roll" ) )
-        //{
-        //    Rotate_Roll ? Rotate_Roll = false : Rotate_Roll = true;
-        //}
-        //ImGui::Text( Rotate_Pitch ? "True" : "False" );
-        //if ( ImGui::Button( "Pitch" ) )
-        //{
-        //    Rotate_Pitch ? Rotate_Pitch = false : Rotate_Pitch = true;
-        //}
-        //ImGui::Text( Rotate_Yaw ? "True" : "False" );
-        //if ( ImGui::Button( "Yaw" ) )
-        //{
-        //    Rotate_Yaw ? Rotate_Yaw = false : Rotate_Yaw = true;
-        //}
+        ImGui::Checkbox( "Rotate Roll",&Rotate_Roll );
+        ImGui::Checkbox( "Rotate Pitch",&Rotate_Pitch );
+        ImGui::Checkbox( "Rotate Yaw",&Rotate_Yaw );
     }
     ImGui::End();
     return open;

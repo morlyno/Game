@@ -49,17 +49,36 @@ int App::Go()
 void App::DoFrame()
 {
 	wnd.Gfx().SetCamera( cam.GetMatrix() );
-
-	const auto dt = timer.Mark();
+	const auto dt = timer.Mark() * SimulationSpeed;
 	for ( auto& d : drawables )
 	{
-		d->Update( dt );
+		d->Update( paused ? 0.0f : dt );
 		d->Draw( wnd.Gfx() );
 	}
 
 	SpawnDrawableControlWindowMangerWindow();
 	SpawnDrawableControlWindows();
+	SpawnSimulationWindow();
 	cam.ShowControlWindow();
+}
+
+void App::SpawnSimulationWindow()
+{
+	if( ImGui::Begin( "Simulation Control" ) )
+	{
+		ImGui::SliderFloat( "Speed Factor",&SimulationSpeed,0.0f,10.0f );
+		if ( ImGui::Button( "Reset" ) )
+			SimulationSpeed = 1.0f;
+		ImGui::SameLine();
+		if ( ImGui::Button( "x2" ) )
+			SimulationSpeed = 2.0f;
+		ImGui::SameLine();
+		if ( ImGui::Button( "x0.5" ) )
+			SimulationSpeed = 0.5f;
+		ImGui::Checkbox( "Pause",&paused );
+		ImGui::Text( paused ? "(Paused)" : ("FPS: " + std::to_string( 1.0f / timer.LastDuration() )).c_str() ); 
+	}
+	ImGui::End();
 }
 
 void App::SpawnDrawableControlWindowMangerWindow() noexcept
