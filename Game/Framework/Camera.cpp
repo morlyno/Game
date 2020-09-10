@@ -6,11 +6,21 @@
 void Camera::ShowControlWindow() noexcept
 {
     ImGui::Begin( "Camera" );
-    ImGui::SliderFloat( "Pos X",&x,-40.0f,40.0f );
-    ImGui::SliderFloat( "Pos Y",&y,-40.0f,40.0f );
-    ImGui::SliderFloat( "Pos Z",&z,0.0f,80.0f );
-    ImGui::SliderAngle( "Look X",&look_x,-180.0f,180.0f );
-    ImGui::SliderAngle( "Look Y",&look_y,-180.0f,180.0f );
+    ImGui::Checkbox( "CameraMode",&rotation_camera );
+    if ( rotation_camera )
+    {
+        ImGui::DragFloat3( "look_at",look_xyz );
+        ImGui::DragFloat( "Distance",&r,1.0f,1.0f,1000 );
+        //ImGui::SliderAngle( "Roll",&roll,-180.0f,180.0f );
+        ImGui::SliderAngle( "Pitch",&pitch,-89.0f,89.0f );
+        ImGui::SliderAngle( "Yaw",&yaw,-180.0f,180.0f );
+    }
+    else
+    {
+        ImGui::SliderFloat( "Pos X",&x,-40.0f,40.0f );
+        ImGui::SliderFloat( "Pos Y",&y,-40.0f,40.0f );
+        ImGui::SliderFloat( "Pos Z",&z,0.0f,80.0f );
+    }
     if ( ImGui::Button( "Reset" ) )
     {
         Reset();
@@ -21,10 +31,21 @@ void Camera::ShowControlWindow() noexcept
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 {
     namespace dx = DirectX;
-    auto pos = dx::XMVectorSet( x,y,-z,0.0f );
-    auto look = dx::XMVectorSet( look_x,look_y,1.0f,0.0f );
-    auto up = dx::XMVectorSet( 0.0f,1.0f,0.0f,0.0f );
-    return dx::XMMatrixLookToLH( pos,look,up );
+    if ( rotation_camera ) // TODO(Mor): needs more testing
+    {
+        auto distance = dx::XMMatrixTranslation( 0.0f,0.0f,-r );
+        auto rotation = dx::XMMatrixRotationRollPitchYaw( pitch,yaw,0.0f );
+        auto matrix = distance * rotation;
+
+        auto look_at = dx::XMVectorSet( look_x,look_y,look_z,1.0f );
+        auto eyePos = dx::XMVector4Transform( look_at,matrix );
+        auto up_dir = dx::XMVectorSet( 0.0f,1.0f,0.0f,0.0f );
+        return dx::XMMatrixLookAtLH( eyePos,look_at,up_dir );
+    }
+    auto eye_pos = dx::XMVectorSet( x,y,-z,0.0f );
+    auto look_dir = dx::XMVectorSet( 0.0f,0.0f,1.0f,0.0f );
+    auto up_dir = dx::XMVectorSet( 0.0f,1.0f,0.0f,0.0f );
+    return dx::XMMatrixLookToLH( eye_pos,look_dir,up_dir );
 }
 
 void Camera::Reset() noexcept
@@ -32,6 +53,11 @@ void Camera::Reset() noexcept
     x = 0.0f;
     y = 0.0f;
     z = 20.0f;
-    look_x = 0;
-    look_y = 0;
+    look_x = 0.0f;
+    look_y = 0.0f;
+    look_z = 0.0f;
+    r = 20.0f;
+    //roll = 0.0f;
+    pitch = 0.0;
+    yaw = 0.0;
 }

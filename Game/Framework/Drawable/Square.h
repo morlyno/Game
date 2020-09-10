@@ -3,7 +3,7 @@
 #include "DrawableBase.h"
 #include "DrawableMemberData.h"
 
-class test // ?(Mor): switch to tex only but probably still need some geometry drawables
+class test // ?(Mor): switch to models only but probably still need some geometry drawables
 {
 public:
 	template<typename V>
