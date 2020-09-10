@@ -21,6 +21,7 @@ private:
 	void SpawnSimulationWindow();
 	void SpawnDrawableControlWindowMangerWindow() noexcept;
 	void SpawnDrawableControlWindows() noexcept;
+	void SpawnDrawableSpawnWindow() noexcept;
 private:
 	float c[3] = { 0.5f,0.5f,0.5f };
 	ImGuiManager imgui;
@@ -32,4 +33,6 @@ private:
 	std::vector<std::unique_ptr<Drawable>> drawables;
 	std::set<int> DrawableId;
 	std::optional<int> index;
+	std::optional<int> TypeIndex;
+	float xyz[3] = { 0.0f };
 };

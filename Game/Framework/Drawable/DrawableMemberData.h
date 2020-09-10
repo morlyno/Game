@@ -8,7 +8,7 @@ template<class T>
 class DrawableMemberData : public DrawableBase<T>
 {
 public:
-	DrawableMemberData( float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index ) noexcept
+	DrawableMemberData( float x,float y,float z,float roll,float pitch,float yaw,int index ) noexcept
         :
         x( x ),
         y( y ),
@@ -16,9 +16,6 @@ public:
         roll( roll ),
         pitch( pitch ),
         yaw( yaw ),
-        scale_width( scale_width ),
-        scale_height( scale_height ),
-        scale_depth( scale_depth ),
         index( index )
     {
     }
@@ -72,9 +69,9 @@ protected:
 	float pitch;
 	float yaw;
 
-	float scale_width;
-	float scale_height;
-	float scale_depth;
+	float scale_width = 1.0f;
+	float scale_height = 1.0f;
+	float scale_depth = 1.0f;
 
 	float color[4] = { 1.0f,0.0f,1.0f,1.0f };
 

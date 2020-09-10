@@ -4,7 +4,7 @@
 
 Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
-    DrawableMemberData( x,y,z,roll,pitch,yaw,1.0f,1.0f,1.0f,index )
+    DrawableMemberData( x,y,z,roll,pitch,yaw,index )
 {
     if ( !IsInitialized() )
     {

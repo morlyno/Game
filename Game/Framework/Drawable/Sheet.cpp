@@ -3,9 +3,9 @@
 #include "../Utility/MorMath.h"
 #include "../ImGui/imgui.h"
 
-Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index )
+Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
-    DrawableMemberData( x,y,z,roll,pitch,yaw,scale_width,scale_height,scale_depth,index )
+    DrawableMemberData( x,y,z,roll,pitch,yaw,index )
 {
     if ( !IsInitialized() )
     {

@@ -91,7 +91,7 @@ public:
 class Square : public DrawableMemberData<Square>
 {
 public:
-	Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float scale_width,float scale_height,float scale_depth,int index );
+	Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index );
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	DirectX::XMFLOAT4 GetColorXM() const noexcept override;

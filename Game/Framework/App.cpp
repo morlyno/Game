@@ -9,6 +9,8 @@
 #include "Drawable/Triangle.h"
 #include "Drawable/Cube.h"
 
+#include "Utility/MorUtility.h"
+
 App::App()
     :
     wnd( 1200,800,L"SexyWindow" )
@@ -69,6 +71,7 @@ void App::DoFrame()
 
 	SpawnDrawableControlWindowMangerWindow();
 	SpawnDrawableControlWindows();
+	SpawnDrawableSpawnWindow();
 	SpawnSimulationWindow();
 	cam.ShowControlWindow();
 }
@@ -109,11 +112,19 @@ void App::SpawnDrawableControlWindowMangerWindow() noexcept
 
 			ImGui::EndCombo();
 		}
-		if ( ImGui::Button( "SpawnWindow" ) )
+		if ( ImGui::Button( "Spawn Window" ) )
 		{
 			if ( index )
 			{
 				DrawableId.insert( *index );
+				index.reset();
+			}
+		}
+		if ( ImGui::Button( "Erase Drawable" ) )
+		{
+			if ( index )
+			{
+				erase_by_index( drawables,*index );
 				index.reset();
 			}
 		}
@@ -134,4 +145,56 @@ void App::SpawnDrawableControlWindows() noexcept
 			++i;
 		}
 	}
+}
+
+void App::SpawnDrawableSpawnWindow() noexcept
+{
+	const char* Types[] = { "Square","Triangle","Sheet","Cube" };
+	if ( ImGui::Begin( "Drawable Spawner" ) )
+	{
+		if ( ImGui::BeginCombo( "Types",TypeIndex ? Types[*TypeIndex] : "Chose Type..." ) )
+		{
+			for ( int i = 0; i < 4; ++i ) // TODO(Mor): Change Magice Number
+			{
+				const bool selected = i == TypeIndex;
+				if ( ImGui::Selectable( Types[i],selected ) )
+				{
+					TypeIndex = i;
+				}
+			}
+			ImGui::EndCombo();
+		}
+		if ( TypeIndex )
+		{
+			ImGui::InputFloat3( "XYZ",xyz );
+			if ( ImGui::Button( "Spawn Drawable" ) )
+			{
+				switch ( *TypeIndex )
+				{
+				case 0:
+					drawables.push_back( std::make_unique<Square>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					DrawableId.insert( (int)drawables.size() - 1 );
+					TypeIndex.reset();
+					break;
+				case 1:
+					drawables.push_back( std::make_unique<Triangle>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					DrawableId.insert( (int)drawables.size() - 1 );
+					TypeIndex.reset();
+					break;
+				case 2:
+					drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					DrawableId.insert( (int)drawables.size() - 1 );
+					TypeIndex.reset();
+					break;
+				case 3:
+					drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					DrawableId.insert( (int)drawables.size() - 1 );
+					TypeIndex.reset();
+					break;
+				}
+			}
+		}
+
+	}
+	ImGui::End();
 }
