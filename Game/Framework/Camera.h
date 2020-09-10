@@ -25,7 +25,6 @@ private:
 		float look_xyz[3] = { 0.0f };
 	};
 	float r = 20.0f;
-	//float roll = 0.0f;
 	float pitch = 0.0f;
 	float yaw = 0.0f;
 

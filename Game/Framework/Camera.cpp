@@ -2,6 +2,7 @@
 
 #include "ImGui/imgui.h"
 
+#include <string>
 
 void Camera::ShowControlWindow() noexcept
 {
@@ -11,7 +12,6 @@ void Camera::ShowControlWindow() noexcept
     {
         ImGui::DragFloat3( "look_at",look_xyz );
         ImGui::DragFloat( "Distance",&r,1.0f,1.0f,1000 );
-        //ImGui::SliderAngle( "Roll",&roll,-180.0f,180.0f );
         ImGui::SliderAngle( "Pitch",&pitch,-89.0f,89.0f );
         ImGui::SliderAngle( "Yaw",&yaw,-180.0f,180.0f );
     }
@@ -33,14 +33,13 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
     namespace dx = DirectX;
     if ( rotation_camera ) // TODO(Mor): needs more testing
     {
-        auto distance = dx::XMMatrixTranslation( 0.0f,0.0f,-r );
         auto rotation = dx::XMMatrixRotationRollPitchYaw( pitch,yaw,0.0f );
-        auto matrix = distance * rotation;
-
+        auto distance = dx::XMVectorSet( 0.0f,0.0f,-r,1.0f );
+        auto offset = dx::XMVector4Transform( distance,rotation );
         auto look_at = dx::XMVectorSet( look_x,look_y,look_z,1.0f );
-        auto eyePos = dx::XMVector4Transform( look_at,matrix );
+        auto pos = dx::XMVectorAdd( look_at,offset );
         auto up_dir = dx::XMVectorSet( 0.0f,1.0f,0.0f,0.0f );
-        return dx::XMMatrixLookAtLH( eyePos,look_at,up_dir );
+        return dx::XMMatrixLookAtLH( pos,look_at,up_dir );
     }
     auto eye_pos = dx::XMVectorSet( x,y,-z,0.0f );
     auto look_dir = dx::XMVectorSet( 0.0f,0.0f,1.0f,0.0f );
@@ -57,7 +56,6 @@ void Camera::Reset() noexcept
     look_y = 0.0f;
     look_z = 0.0f;
     r = 20.0f;
-    //roll = 0.0f;
     pitch = 0.0;
     yaw = 0.0;
 }
