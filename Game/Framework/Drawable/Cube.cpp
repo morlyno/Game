@@ -2,9 +2,13 @@
 #include "../Bindable/BindableHeaders.h"
 #include "../Utility/MorMath.h"
 
-Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
+Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index,bool test )
     :
-    DrawableMemberData( x,y,z,roll,pitch,yaw,index )
+    DrawableMemberData( x,y,z,roll,pitch,yaw,index ),
+    test( test ),
+    Rotate_Pitch( test ),
+    Rotate_Yaw( test ),
+    Rotate_Roll( test )
 {
     if ( !IsInitialized() )
     {
@@ -25,18 +29,12 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
         };
         std::vector<unsigned short> indices =
         {
-            2,1,0, // Back
-            0,3,2, // Back
-            4,5,6, // Front
-            6,7,4, // Front
-            0,4,7, // Top
-            7,3,0, // Top
-            6,5,1, // Bottem
-            1,2,6, // Bottem
-            3,7,6, // Left
-            6,2,3, // Left
-            4,0,1, // Right
-            1,5,4, // Right
+            2,1,0, 0,3,2, // Back
+            4,5,6, 6,7,4, // Front
+            0,4,7, 7,3,0, // Top
+            6,5,1, 1,2,6, // Bottem
+            3,7,6, 6,2,3, // Left
+            4,0,1, 1,5,4, // Right
         };
         AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
 
@@ -97,10 +95,17 @@ void Cube::Update( float dt ) noexcept
 
 DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 {
+    namespace dx = DirectX;
+    if ( test )
+    {
+        return
+            dx::XMMatrixTranslation( x,0.0f,0.0f ) *
+            dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll );
+    }
     return
-        DirectX::XMMatrixScaling( scale_width,scale_height,scale_depth ) *
-        DirectX::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
-        DirectX::XMMatrixTranslation( x,y,z );
+        dx::XMMatrixScaling( scale_width,scale_height,scale_depth ) *
+        dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
+        dx::XMMatrixTranslation( x,y,z );
 }
 
 DirectX::XMFLOAT4 Cube::GetColorXM() const noexcept

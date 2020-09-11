@@ -11,6 +11,8 @@
 
 #include "Utility/MorUtility.h"
 
+#include <random>
+
 App::App()
     :
     wnd( 1200,800,L"SexyWindow" )
@@ -22,6 +24,7 @@ App::App()
 	//drawables.push_back( std::make_unique<Cube>		( wnd.Gfx(), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,				  (int)drawables.size() ) );
 	//drawables.push_back( std::make_unique<Cube>		( wnd.Gfx(), 5.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f,				  (int)drawables.size() ) );
 
+#if 1
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),-4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
@@ -32,6 +35,15 @@ App::App()
 
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f,10.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
+#else
+	std::mt19937 r( std::random_device{}() );
+	std::uniform_real_distribution<float> d( -4.0f,4.0f );
+	auto rng = [&r,&d]() { return d( r ); };
+	for ( int i = 0; i < 50; ++i )
+	{
+		drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),20.0f,0.0f,0.0f,rng(),rng(),rng(),(int)drawables.size(),true ) );
+	}
+#endif
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }

@@ -5,7 +5,7 @@
 class Cube : public DrawableMemberData<Cube>
 {
 public:
-	Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index );
+	Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index,bool test = false );
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept;
 	DirectX::XMFLOAT4 GetColorXM() const noexcept;
@@ -15,4 +15,6 @@ private:
 	bool Rotate_Roll = false;
 	bool Rotate_Pitch = false;
 	bool Rotate_Yaw = false;
+
+	bool test;
 };
