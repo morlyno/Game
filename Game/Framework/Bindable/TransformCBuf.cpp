@@ -3,19 +3,22 @@
 TransformCBuf::TransformCBuf( Graphics& gfx,const Drawable& parent )
 	:
 	parent( parent ),
-	vcbuf( gfx )
+	vcbuf( std::make_unique<VertexConstantBuffer<Transform>>( gfx ) )
 {
 }
 
 void TransformCBuf::Bind( Graphics& gfx ) noexcept
 {
-	vcbuf.Update(
-		gfx,
+	const auto model = parent.GetTransformXM();
+	const Transform tf =
+	{
+		DirectX::XMMatrixTranspose( model ),
 		DirectX::XMMatrixTranspose(
-			parent.GetTransformXM() *
+			model *
 			gfx.GetCamera() *
 			gfx.GetProjection()
 		)
-	);
-	vcbuf.Bind( gfx );
+	};
+	vcbuf->Update( gfx,tf );
+	vcbuf->Bind( gfx );
 }

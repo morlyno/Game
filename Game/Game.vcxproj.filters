@@ -264,5 +264,7 @@
     <FxCompile Include="Framework\Shader\TextureVS.hlsl" />
     <FxCompile Include="Framework\Shader\TexturePS.hlsl" />
     <FxCompile Include="Framework\Shader\6ColorPS.hlsl" />
+    <FxCompile Include="Framework\Shader\LightPS.hlsl" />
+    <FxCompile Include="Framework\Shader\LightVS.hlsl" />
   </ItemGroup>
 </Project>
