@@ -77,7 +77,7 @@ Window::Window( int width,int height,LPCWSTR pWndName,bool CloseAll )
 	}
 
 	// ImGui Setup
-	ImGui_ImplWin32_Init( hWnd );
+	ImGui_ImplWin32_Init( hWnd ); // TODO(Mor): Init / ShutDown of ImGui probably problems w/ multible windows (if created more then once)
 
 	pGfx = std::make_unique<Graphics>( width,height,hWnd );
 
@@ -106,11 +106,11 @@ std::optional<int> Window::ProcessingMessage() noexcept
 	return {};
 }
 
-void Window::SetWindowTitle( const std::wstring& title )
+void Window::SetWindowTitle( const std::wstring& title ) noexcept( !IS_DEBUG )
 {
 	if ( SetWindowText( hWnd,title.c_str() ) == FALSE )
 	{
-		throw WND_LAST_EXCEPT();
+		assert( true || "Failed to Set Window Title" );
 	}
 }
 
@@ -170,18 +170,18 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			}
 			return 0;
 		}
-	//case WM_SIZE:
-	//	{
-	//		if ( !( wParam & SIZE_MINIMIZED ) )
-	//		{
-	//			auto w = LOWORD( lParam );
-	//			auto h = HIWORD( lParam );
-	//			width = (UINT)w;
-	//			height = (UINT)h;
-	//		}
-	//		break;
-	//	}
-	/*Mouse Messages*/
+		//case WM_SIZE:
+		//	{
+		//		if ( !( wParam & SIZE_MINIMIZED ) )
+		//		{
+		//			auto w = LOWORD( lParam );
+		//			auto h = HIWORD( lParam );
+		//			width = (UINT)w;
+		//			height = (UINT)h;
+		//		}
+		//		break;
+		//	}
+		/*Mouse Messages*/
 	case WM_MOUSEMOVE:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );

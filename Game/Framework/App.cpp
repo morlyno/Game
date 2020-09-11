@@ -154,7 +154,7 @@ void App::SpawnDrawableSpawnWindow() noexcept
 	{
 		if ( ImGui::BeginCombo( "Types",TypeIndex ? Types[*TypeIndex] : "Chose Type..." ) )
 		{
-			for ( int i = 0; i < 4; ++i ) // TODO(Mor): Change Magice Number
+			for ( int i = 0; i < IM_ARRAYSIZE( Types ); ++i )
 			{
 				const bool selected = i == TypeIndex;
 				if ( ImGui::Selectable( Types[i],selected ) )

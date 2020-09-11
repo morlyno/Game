@@ -31,7 +31,7 @@ void Camera::ShowControlWindow() noexcept
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 {
     namespace dx = DirectX;
-    if ( rotation_camera ) // TODO(Mor): needs more testing
+    if ( rotation_camera )
     {
         auto rotation = dx::XMMatrixRotationRollPitchYaw( pitch,yaw,0.0f );
         auto distance = dx::XMVectorSet( 0.0f,0.0f,-r,1.0f );

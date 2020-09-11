@@ -46,7 +46,7 @@ private:
 		WindowClass( const WindowClass& ) = delete;
 		WindowClass& operator=( const WindowClass& ) = delete;
 	private:
-		static constexpr LPCWSTR pName = L"Game";
+		static constexpr LPCWSTR pName = L"Morl's DirectX Graphics Framework";
 		static WindowClass wndClass;
 		HINSTANCE hInst;
 	};
@@ -54,7 +54,7 @@ public:
 	Window( int width,int height,LPCWSTR pWndName,bool CloseAll = true );
 	~Window();
 	static std::optional<int> ProcessingMessage() noexcept;
-	void SetWindowTitle( const std::wstring& title ); // ?(Mor): noexcept if debug
+	void SetWindowTitle( const std::wstring& title ) noexcept( !IS_DEBUG );
 	int GetWidth() const noexcept;
 	int GetHeight() const noexcept;
 public:
