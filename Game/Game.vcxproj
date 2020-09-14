@@ -160,6 +160,7 @@
     <ClInclude Include="Framework\Drawable\Cube.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
     <ClInclude Include="Framework\Drawable\DrawableBase.h" />
+    <ClInclude Include="Framework\Drawable\DrawableHeader.h" />
     <ClInclude Include="Framework\Drawable\DrawableMemberData.h" />
     <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\Drawable\SolidSphere.h" />
@@ -223,6 +224,8 @@
     <FxCompile Include="Framework\Shader\SolidColor.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Framework\Shader\TexturePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

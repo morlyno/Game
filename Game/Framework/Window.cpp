@@ -124,6 +124,11 @@ int Window::GetHeight() const noexcept
 	return (int)height;
 }
 
+void Window::Kill() const noexcept
+{
+	PostQuitMessage( 0 );
+}
+
 Graphics& Window::Gfx() const
 {
 	if ( !pGfx )

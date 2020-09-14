@@ -4,11 +4,7 @@
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/imgui_impl_win32.h"
 
-#include "Drawable/Sheet.h"
-#include "Drawable/Square.h"
-#include "Drawable/Triangle.h"
-#include "Drawable/Cube.h"
-#include "Drawable/Sphere.h"
+#include "Drawable/DrawableHeader.h"
 
 #include "Utility/MorUtility.h"
 
@@ -38,7 +34,7 @@ App::App()
 	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f,10.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
 
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),10.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Sphere>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<SolidSphere>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
 #else
 	std::mt19937 r( std::random_device{}() );
 	std::uniform_real_distribution<float> d( -4.0f,4.0f );
@@ -60,6 +56,8 @@ int App::Go()
 {
 	while ( true )
 	{
+		if ( wnd.kbd.KeyIsPresst( VK_ESCAPE ) )
+			wnd.Kill();
 		if ( const auto ecode = Window::ProcessingMessage() )
 		{
 			return *ecode;
@@ -106,7 +104,8 @@ void App::SpawnSimulationWindow()
 		if ( ImGui::Button( "x0.5" ) )
 			SimulationSpeed = 0.5f;
 		ImGui::Checkbox( "Pause",&paused );
-		ImGui::Text( paused ? "(Paused)" : ("FPS: " + std::to_string( 1.0f / timer.LastDuration() )).c_str() ); 
+		const float lastdurr = timer.LastDuration();
+		ImGui::Text( paused ? "(Paused)" : ( "ms/Frame:" + std::to_string( lastdurr * 1000.0f ) + "  FPS: " + std::to_string( 1.0f / lastdurr )).c_str() );
 	}
 	ImGui::End();
 }

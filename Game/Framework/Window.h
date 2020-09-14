@@ -57,6 +57,7 @@ public:
 	void SetWindowTitle( const std::wstring& title ) noexcept( !IS_DEBUG );
 	int GetWidth() const noexcept;
 	int GetHeight() const noexcept;
+	void Kill() const noexcept;
 public:
 	Mouse mouse;
 	Keyboard kbd;
