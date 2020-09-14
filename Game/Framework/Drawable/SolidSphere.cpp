@@ -1,8 +1,9 @@
-#include "Sphere.h"
+#include "SolidSphere.h"
 #include "../Utility/MorMath.h"
 #include "../Bindable/BindableHeaders.h"
+#include "Sphere.h"
 
-Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
+SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
     DrawableMemberData( x,y,z,roll,pitch,yaw,index )
 {
@@ -12,17 +13,7 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
         {
             DirectX::XMFLOAT3 pos;
         };
-        auto[vertices,indices] = Fabric_Sphere::Make<Vertex>( 12,24 );
-
-        //auto matrix = DirectX::XMMatrixScaling( 2.0f,2.0f,2.0f );
-        //for ( auto& v : vertices )
-        //{
-        //    const DirectX::XMVECTOR pos = DirectX::XMLoadFloat3( &v.pos );
-        //    DirectX::XMStoreFloat3(
-        //        &v.pos,
-        //        DirectX::XMVector3Transform( pos,matrix )
-        //    );
-        //}
+        auto [vertices,indices] = Fabric_Sphere::Make<Vertex>( 12,24 );
 
         AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
 
@@ -32,7 +23,7 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
         auto pvsbc = pvs->GetBytecode();
         AddStaticBind( std::move( pvs ) );
 
-        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/6ColorPS.cso" ) );
+        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/SolidColor.cso" ) );
 
         struct ConstBuffer
         {
@@ -42,18 +33,11 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
                 float g;
                 float b;
                 float a;
-            } color[6];
+            } color;
         };
         ConstBuffer cbuff =
         {
-            {
-                { 1.0f,0.0f,0.0f,1.0f },
-                { 0.0f,1.0f,0.0f,1.0f },
-                { 0.0f,0.0f,1.0f,1.0f },
-                { 1.0f,1.0f,0.0f,1.0f },
-                { 1.0f,0.0f,1.0f,1.0f },
-                { 0.0f,1.0f,1.0f,1.0f },
-            }
+            { 1.0f,1.0f,1.0f,1.0f }
         };
 
         AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cbuff ) );
@@ -73,14 +57,14 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
     AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
 }
 
-void Sphere::Update( float dt ) noexcept
+void SolidSphere::Update( float dt ) noexcept
 {
     roll = wrap_angle( roll );
     pitch = wrap_angle( pitch );
     yaw = wrap_angle( yaw );
 }
 
-DirectX::XMMATRIX Sphere::GetTransformXM() const noexcept
+DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept
 {
     namespace dx = DirectX;
     return
@@ -89,17 +73,17 @@ DirectX::XMMATRIX Sphere::GetTransformXM() const noexcept
         dx::XMMatrixTranslation( x,y,z );
 }
 
-DirectX::XMFLOAT4 Sphere::GetColorXM() const noexcept
+DirectX::XMFLOAT4 SolidSphere::GetColorXM() const noexcept
 {
     return { 0.0f,0.0f,0.0f,0.0f };
 }
 
-std::string Sphere::GetType() const noexcept
+std::string SolidSphere::GetType() const noexcept
 {
-    return "[Sphere]";
+    return "[SolidSphere]";
 }
 
-bool Sphere::SpawnControlWindow() noexcept
+bool SolidSphere::SpawnControlWindow() noexcept
 {
     bool open = true;
     if ( ImGui::Begin( std::to_string( index ).c_str(),&open ) )

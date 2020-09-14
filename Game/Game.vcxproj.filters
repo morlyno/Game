@@ -120,6 +120,9 @@
     <ClCompile Include="Framework\Drawable\Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Drawable\SolidSphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Window.h">
@@ -263,6 +266,9 @@
     <ClInclude Include="Framework\Drawable\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Drawable\SolidSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\VertexShader.hlsl" />
@@ -272,5 +278,6 @@
     <FxCompile Include="Framework\Shader\6ColorPS.hlsl" />
     <FxCompile Include="Framework\Shader\LightPS.hlsl" />
     <FxCompile Include="Framework\Shader\LightVS.hlsl" />
+    <FxCompile Include="Framework\Shader\SolidColor.hlsl" />
   </ItemGroup>
 </Project>
