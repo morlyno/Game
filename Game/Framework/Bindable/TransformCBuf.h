@@ -9,7 +9,7 @@ class TransformCBuf : public Bindable
 	struct Transform
 	{
 		DirectX::XMMATRIX model;
-		DirectX::XMMATRIX modelview;
+		DirectX::XMMATRIX view;
 	};
 public:
 	TransformCBuf( Graphics& gfx,const Drawable& parent );
