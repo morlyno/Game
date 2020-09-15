@@ -6,6 +6,7 @@
 #include "Surface.h"
 #include "Managers/ImGuiManager.h"
 #include "Camera.h"
+#include "PointLight.h"
 #include <set>
 
 class App
@@ -28,9 +29,10 @@ private:
 	Camera cam;
 	Window wnd;
 	MorTimer timer;
+	PointLight pl;
+	std::vector<std::unique_ptr<Drawable>> drawables;
 	float SimulationSpeed = 1.0f;
 	bool paused = false;
-	std::vector<std::unique_ptr<Drawable>> drawables;
 	std::set<int> DrawableId;
 	std::optional<int> index;
 	std::optional<int> TypeIndex;

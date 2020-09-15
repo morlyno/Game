@@ -29,18 +29,14 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
         {
             struct
             {
-                float r;
-                float g;
-                float b;
-                float a;
+                float r = 1.0f;
+                float g = 1.0f;
+                float b = 1.0f;
+                float a = 1.0f;
             } color;
-        };
-        ConstBuffer cbuff =
-        {
-            { 1.0f,1.0f,1.0f,1.0f }
-        };
+        } ColorConst;
 
-        AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cbuff ) );
+        AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,ColorConst ) );
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
         {

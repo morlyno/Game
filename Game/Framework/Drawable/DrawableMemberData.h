@@ -19,6 +19,12 @@ public:
         index( index )
     {
     }
+    void SetPos( const DirectX::XMFLOAT3& pos ) noexcept
+    {
+        x = pos.x;
+        y = pos.y;
+        z = pos.z;
+    }
 	virtual bool SpawnControlWindow() noexcept override
     {
         bool open = true;

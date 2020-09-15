@@ -1,4 +1,7 @@
-static const float3 LightPos = { 0.0f, 0.0f, 0.0f };
+cbuffer cBuff
+{
+    float3 LightPos;
+};
 
 static const float4 matirialColor = { 0.7f, 0.1f, 0.4f, 1.0f };
 

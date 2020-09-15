@@ -137,6 +137,7 @@
     <ClCompile Include="Framework\Inputs\Keyboard.cpp" />
     <ClCompile Include="Framework\ErrorHandle\MorExeption.cpp" />
     <ClCompile Include="Framework\Inputs\Mouse.cpp" />
+    <ClCompile Include="Framework\PointLight.cpp" />
     <ClCompile Include="Framework\Surface.cpp" />
     <ClCompile Include="Framework\Window.cpp" />
     <ClCompile Include="Framework\WinMain.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Framework\ErrorHandle\Macros\GraphicsThrowMacros.h" />
     <ClInclude Include="Framework\Inputs\Keyboard.h" />
     <ClInclude Include="Framework\ErrorHandle\MorExeption.h" />
+    <ClInclude Include="Framework\PointLight.h" />
     <ClInclude Include="Framework\Surface.h" />
     <ClInclude Include="Framework\Utility\MorMath.h" />
     <ClInclude Include="Framework\Utility\MorTimer.h" />
