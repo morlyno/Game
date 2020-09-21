@@ -9,6 +9,7 @@ class PointLight
 	struct PointLightConstants
 	{
 		alignas(16) DirectX::XMFLOAT3 pos;
+		float falloffmutiplier;
 	};
 public:
 	PointLight( Graphics& gfx,float x,float y,float z );
