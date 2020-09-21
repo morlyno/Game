@@ -263,7 +263,7 @@ namespace Geometry
 		using namespace DirectX;
 		//namespace dx = DirectX;
 
-		for ( size_t i = 0; i < itl.vertices.size(); i += 3 )
+		for ( size_t i = 0; i < itl.indices.size(); i += 3 )
 		{
 			auto& v0 = itl.vertices[itl.indices[i]];
 			auto& v1 = itl.vertices[itl.indices[i + 1]];

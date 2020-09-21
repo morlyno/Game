@@ -26,11 +26,11 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
 
         AddStaticBind( std::make_unique<Sampler>( gfx ) );
 
-        auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/TextureVS.cso" );
+        auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/TextureVS.cso" );
         auto pvsbc = pvs->GetBytecode();
         AddStaticBind( std::move( pvs ) );
 
-        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/TexturePS.cso" ) );
+        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/TexturePS.cso" ) );
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
         {

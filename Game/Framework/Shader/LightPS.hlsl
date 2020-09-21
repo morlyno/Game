@@ -1,16 +1,20 @@
-cbuffer cBuff
+cbuffer LightcBuff
 {
     float3 LightPos;
     float falloffmutiplier;
 };
 
-static const float4 matirialColor = { 0.7f, 0.1f, 0.4f, 1.0f };
+cbuffer cBuff
+{
+    float4 matirialColor;
+};
 
 float4 main(float3 WorlPos : WorldPos, float3 n : Normal) : SV_TARGET
 {
-	float3 ToL = WorlPos - LightPos;
+    float3 ToL = LightPos - WorlPos;
     float att = 1.0f / (length(ToL) * falloffmutiplier);
     float3 dirToL = normalize(ToL);
-	float scal = 1.0f - dot(dirToL, n);
-    return matirialColor * saturate(scal * att);
+	float scal = dot(dirToL, n);
+    float4 c =  matirialColor * saturate(scal * att);
+    return c;
 }

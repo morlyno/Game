@@ -28,13 +28,7 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
 
         struct ConstBuffer
         {
-            struct
-            {
-                float r;
-                float g;
-                float b;
-                float a;
-            } color[6];
+            DirectX::XMFLOAT4 color[6];
         };
         ConstBuffer cbuff =
         {
@@ -47,7 +41,6 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
                 { 0.0f,1.0f,1.0f,1.0f },
             }
         };
-
         AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cbuff ) );
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =

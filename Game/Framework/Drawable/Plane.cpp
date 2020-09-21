@@ -10,7 +10,7 @@ Plane::Plane( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
 {
     scale_width = sx;
     scale_height = sy;
-    scale_depth = sz;
+    scale_depth = 1.0f;
     if ( !IsInitialized() )
     {
         struct Vertex
@@ -31,6 +31,12 @@ Plane::Plane( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
         AddStaticBind( std::move( pvs ) );
 
         AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightPS.cso" ) );
+
+        struct ColorConstBuff
+        {
+            DirectX::XMFLOAT4 c = { 1.0f,0.0f,1.0f,1.0f };
+        } color;
+        AddStaticBind( std::make_unique<PixelConstantBuffer<ColorConstBuff>>( gfx,color,1u ) );
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
         {
@@ -58,7 +64,7 @@ void Plane::Update( float dt ) noexcept
 DirectX::XMMATRIX Plane::GetTransformXM() const noexcept
 {
     return
-        DirectX::XMMatrixScaling( scale_width,scale_height,scale_depth ) *
+        DirectX::XMMatrixScaling( scale_width,scale_height,1.0f ) *
         DirectX::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
         DirectX::XMMatrixTranslation( x,y,z );
 }
