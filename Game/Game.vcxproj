@@ -122,7 +122,7 @@
     <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\SolidSphere.cpp" />
     <ClCompile Include="Framework\Drawable\Sphere.cpp" />
-    <ClCompile Include="Framework\Drawable\Square.cpp" />
+    <ClCompile Include="Framework\Drawable\Plane.cpp" />
     <ClCompile Include="Framework\Drawable\Triangle.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfo.cpp" />
     <ClCompile Include="Framework\Managers\GDIPlusManager.cpp" />
@@ -166,7 +166,7 @@
     <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\Drawable\SolidSphere.h" />
     <ClInclude Include="Framework\Drawable\Sphere.h" />
-    <ClInclude Include="Framework\Drawable\Square.h" />
+    <ClInclude Include="Framework\Drawable\Plane.h" />
     <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfo.h" />
     <ClInclude Include="Framework\ErrorHandle\Macros\ThorwMacros.h" />

@@ -63,9 +63,6 @@
     <ClCompile Include="Framework\Bindable\TransformCBuf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Drawable\Square.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Drawable\Triangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -126,6 +123,9 @@
     <ClCompile Include="Framework\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Drawable\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Window.h">
@@ -177,9 +177,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Drawable\Square.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Drawable\Triangle.h">
@@ -276,6 +273,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Drawable\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

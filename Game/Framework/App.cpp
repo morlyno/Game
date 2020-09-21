@@ -28,6 +28,7 @@ App::App()
 	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f,10.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
 
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),10.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),0.0f,-10.0f,0.0f,0.0f,PI / 2.0f,0.0f,10.0f,10.0f,0.0f,(int)drawables.size() ) );
 #else
 	std::mt19937 r( std::random_device{}() );
 	std::uniform_real_distribution<float> d( -4.0f,4.0f );
@@ -183,7 +184,7 @@ void App::SpawnDrawableSpawnWindow() noexcept
 				switch ( *TypeIndex )
 				{
 				case 0:
-					drawables.push_back( std::make_unique<Square>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
 					DrawableId.insert( (int)drawables.size() - 1 );
 					TypeIndex.reset();
 					break;

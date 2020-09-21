@@ -3,11 +3,11 @@
 #include "DrawableBase.h"
 #include "DrawableMemberData.h"
 
-class test // ?(Mor): switch to models only but probably still need some geometry drawables
+class Squeare // ?(Mor): switch to models only but probably still need some geometry drawables
 {
 public:
 	template<typename V>
-	static std::pair<std::vector<V>,std::vector<unsigned short>> Make( int divishions_x,int divishions_y ) noexcept
+	static std::pair<std::vector<V>,std::vector<unsigned short>> MakeTeselected( int divishions_x,int divishions_y ) noexcept
 	{
 		namespace dx = DirectX;
 
@@ -73,6 +73,11 @@ public:
 
 		return { std::move( vertices ),std::move( indices ) };
 	}
+	template<typename V>
+	static std::pair<std::vector<V>,std::vector<unsigned short>> Make() noexcept
+	{
+		return Squeare::MakeTeselected<V>( 0,0 );
+	}
 	template<typename T>
 	static void SacleVertices( std::vector<T>& vec,float width,float height,float depth) noexcept
 	{
@@ -88,10 +93,10 @@ public:
 	}
 };
 
-class Square : public DrawableMemberData<Square>
+class Plane : public DrawableMemberData<Plane>
 {
 public:
-	Square( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index );
+	Plane( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float sx,float sy,float sz,int index );
 	void Update( float dt ) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	DirectX::XMFLOAT4 GetColorXM() const noexcept override;
