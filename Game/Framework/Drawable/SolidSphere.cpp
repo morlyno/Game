@@ -2,7 +2,7 @@
 #include "../Utility/MorMath.h"
 #include "../Bindable/BindableHeaders.h"
 #include "Sphere.h"
-
+#include "GeometryFactory.h"
 SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
     DrawableMemberData( x,y,z,roll,pitch,yaw,index )
@@ -13,11 +13,12 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
         {
             DirectX::XMFLOAT3 pos;
         };
-        auto [vertices,indices] = Fabric_Sphere::Make<Vertex>( 12,24 );
 
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
+        const auto mesh = Geometry::Sphere::Make<Vertex>();
 
-        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indices ) );
+        AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
+
+        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,mesh.indices ) );
 
         auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
         auto pvsbc = pvs->GetBytecode();
@@ -27,13 +28,7 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
 
         struct ConstBuffer
         {
-            struct
-            {
-                float r = 1.0f;
-                float g = 1.0f;
-                float b = 1.0f;
-                float a = 1.0f;
-            } color;
+            DirectX::XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f };
         } ColorConst;
 
         AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,ColorConst ) );

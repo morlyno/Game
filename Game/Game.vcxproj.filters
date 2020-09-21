@@ -63,9 +63,6 @@
     <ClCompile Include="Framework\Bindable\TransformCBuf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Drawable\Triangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\Surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -179,9 +176,6 @@
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Drawable\Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Drawable\DrawableBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -278,10 +272,12 @@
     <ClInclude Include="Framework\Drawable\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Drawable\GeometryFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Framework\Shader\VertexShader.hlsl" />
-    <FxCompile Include="Framework\Shader\PixelShader.hlsl" />
     <FxCompile Include="Framework\Shader\TextureVS.hlsl" />
     <FxCompile Include="Framework\Shader\TexturePS.hlsl" />
     <FxCompile Include="Framework\Shader\6ColorPS.hlsl" />

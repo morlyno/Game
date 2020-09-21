@@ -1,6 +1,7 @@
 #include "Sphere.h"
 #include "../Utility/MorMath.h"
 #include "../Bindable/BindableHeaders.h"
+#include "GeometryFactory.h"
 
 Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
@@ -12,21 +13,12 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
         {
             DirectX::XMFLOAT3 pos;
         };
-        auto[vertices,indices] = Fabric_Sphere::Make<Vertex>( 12,24 );
 
-        //auto matrix = DirectX::XMMatrixScaling( 2.0f,2.0f,2.0f );
-        //for ( auto& v : vertices )
-        //{
-        //    const DirectX::XMVECTOR pos = DirectX::XMLoadFloat3( &v.pos );
-        //    DirectX::XMStoreFloat3(
-        //        &v.pos,
-        //        DirectX::XMVector3Transform( pos,matrix )
-        //    );
-        //}
+        const auto mesh = Geometry::Sphere::Make<Vertex>();
 
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
+        AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
 
-        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indices ) );
+        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,mesh.indices ) );
 
         auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
         auto pvsbc = pvs->GetBytecode();

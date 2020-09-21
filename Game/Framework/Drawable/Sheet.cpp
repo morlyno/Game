@@ -2,6 +2,7 @@
 #include "../Bindable/BindableHeaders.h"
 #include "../Utility/MorMath.h"
 #include "../ImGui/imgui.h"
+#include "GeometryFactory.h"
 
 Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
@@ -9,38 +10,17 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
 {
     if ( !IsInitialized() )
     {
-        struct Vectex
+        struct Vertex
         {
-            struct
-            {
-                float x;
-                float y;
-                float z;
-            } pos;
-            struct
-            {
-                float u;
-                float v;
-            } tex;
+            DirectX::XMFLOAT3 pos;
+            DirectX::XMFLOAT2 tc;
         };
-        std::vector<Vectex> vertices =
-        {
-            { -1.0f, 1.0f },
-            {  1.0f, 1.0f },
-            {  1.0f,-1.0f },
-            { -1.0f,-1.0f },
-        };
-        vertices[0].tex = { 0.0f,0.0f };
-        vertices[1].tex = { 1.0f,0.0f };
-        vertices[2].tex = { 1.0f,1.0f };
-        vertices[3].tex = { 0.0f,1.0f };
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
-        const std::vector<unsigned short> indices =
-        {
-            0,1,2,
-            2,3,0,
-        };
-        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indices ) );
+
+        const auto mesh = Geometry::Plane::MakeTextured<Vertex>();
+
+        AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
+
+        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,mesh.indices ) );
 
         AddStaticBind( std::make_unique<Texture>( gfx,Surface::FromFile( L"Test.png" ) ) );
 

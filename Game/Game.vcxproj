@@ -123,7 +123,6 @@
     <ClCompile Include="Framework\Drawable\SolidSphere.cpp" />
     <ClCompile Include="Framework\Drawable\Sphere.cpp" />
     <ClCompile Include="Framework\Drawable\Plane.cpp" />
-    <ClCompile Include="Framework\Drawable\Triangle.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfo.cpp" />
     <ClCompile Include="Framework\Managers\GDIPlusManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
@@ -163,11 +162,11 @@
     <ClInclude Include="Framework\Drawable\DrawableBase.h" />
     <ClInclude Include="Framework\Drawable\DrawableHeader.h" />
     <ClInclude Include="Framework\Drawable\DrawableMemberData.h" />
+    <ClInclude Include="Framework\Drawable\GeometryFactory.h" />
     <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\Drawable\SolidSphere.h" />
     <ClInclude Include="Framework\Drawable\Sphere.h" />
     <ClInclude Include="Framework\Drawable\Plane.h" />
-    <ClInclude Include="Framework\Drawable\Triangle.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfo.h" />
     <ClInclude Include="Framework\ErrorHandle\Macros\ThorwMacros.h" />
     <ClInclude Include="Framework\Managers\GDIPlusManager.h" />
@@ -214,14 +213,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Framework\Shader\PixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Framework\Shader\SolidColor.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

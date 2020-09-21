@@ -2,6 +2,7 @@
 #include "../Bindable/BindableHeaders.h"
 #include "../Utility/MorMath.h"
 #include "../ImGui/imgui.h"
+#include "GeometryFactory.h"
 
 Plane::Plane( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,float sx,float sy,float sz,int index )
     :
@@ -17,26 +18,13 @@ Plane::Plane( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
             DirectX::XMFLOAT3 pos;
             DirectX::XMFLOAT3 n;
         };
-        auto[vertices,indices] = Squeare::Make<Vertex>();
-        for ( int i = 0; i < indices.size(); i += 3 )
-        {
-            auto& v0 = vertices[indices[i]];
-            auto& v1 = vertices[indices[i + 1]];
-            auto& v2 = vertices[indices[i + 2]];
 
-            const auto p0 = DirectX::XMLoadFloat3( &v0.pos );
-            const auto p1 = DirectX::XMLoadFloat3( &v1.pos );
-            const auto p2 = DirectX::XMLoadFloat3( &v2.pos );
+        auto mesh = Geometry::Plane::Make<Vertex>();
+        Geometry::MakeNormals( mesh );
 
-            const auto n = DirectX::XMVector3Normalize( DirectX::XMVector3Cross( DirectX::XMVectorSubtract( p1,p0 ),DirectX::XMVectorSubtract( p2,p0 ) ) );
+        AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
 
-            DirectX::XMStoreFloat3( &v0.n,n );
-            DirectX::XMStoreFloat3( &v1.n,n );
-            DirectX::XMStoreFloat3( &v2.n,n );
-        }
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,vertices ) );
-
-        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,indices ) );
+        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,mesh.indices ) );
 
         auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightVS.cso" );
         auto pvsbc = pvs->GetBytecode();

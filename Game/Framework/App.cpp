@@ -7,6 +7,7 @@
 #include "Drawable/DrawableHeader.h"
 
 #include "Utility/MorUtility.h"
+#include "Utility/MorMath.h"
 
 #include <random>
 
@@ -161,7 +162,7 @@ void App::SpawnDrawableControlWindows() noexcept
 
 void App::SpawnDrawableSpawnWindow() noexcept
 {
-	const char* Types[] = { "Square","Triangle","Sheet","Cube" };
+	const char* Types[] = { "Square","Sheet","Cube" };
 	if ( ImGui::Begin( "Drawable Spawner" ) )
 	{
 		if ( ImGui::BeginCombo( "Types",TypeIndex ? Types[*TypeIndex] : "Chose Type..." ) )
@@ -189,16 +190,11 @@ void App::SpawnDrawableSpawnWindow() noexcept
 					TypeIndex.reset();
 					break;
 				case 1:
-					drawables.push_back( std::make_unique<Triangle>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
-					DrawableId.insert( (int)drawables.size() - 1 );
-					TypeIndex.reset();
-					break;
-				case 2:
 					drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
 					DrawableId.insert( (int)drawables.size() - 1 );
 					TypeIndex.reset();
 					break;
-				case 3:
+				case 2:
 					drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
 					DrawableId.insert( (int)drawables.size() - 1 );
 					TypeIndex.reset();
