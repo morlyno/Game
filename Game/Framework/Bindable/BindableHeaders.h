@@ -10,4 +10,3 @@
 #include "VertexShader.h"
 #include "Texture.h"
 #include "Sampler.h"
-#include "ColorCBuf.h"

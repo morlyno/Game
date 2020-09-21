@@ -29,7 +29,7 @@ App::App()
 	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f,10.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
 
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),10.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),0.0f,-10.0f,0.0f,0.0f,PI / 2.0f,0.0f,10.0f,10.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),0.0f,-10.0f,0.0f,0.0f,PI / 2.0f,0.0f,100.0f,100.0f,0.0f,(int)drawables.size() ) );
 #else
 	std::mt19937 r( std::random_device{}() );
 	std::uniform_real_distribution<float> d( -4.0f,4.0f );

@@ -46,8 +46,6 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
         SetIndexBufferFromStatic();
     }
     AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
-
-    AddBind( std::make_unique<ColorCBuf>( gfx,*this ) );
 }
 
 void Sheet::Update( float dt ) noexcept

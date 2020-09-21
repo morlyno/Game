@@ -106,7 +106,6 @@
   <ItemGroup>
     <ClCompile Include="Framework\App.cpp" />
     <ClCompile Include="Framework\Bindable\Bindable.cpp" />
-    <ClCompile Include="Framework\Bindable\ColorCBuf.cpp" />
     <ClCompile Include="Framework\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="Framework\Bindable\InputLayout.cpp" />
     <ClCompile Include="Framework\Bindable\PixelShader.cpp" />
@@ -145,7 +144,6 @@
     <ClInclude Include="Framework\App.h" />
     <ClInclude Include="Framework\Bindable\Bindable.h" />
     <ClInclude Include="Framework\Bindable\BindableHeaders.h" />
-    <ClInclude Include="Framework\Bindable\ColorCBuf.h" />
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h" />
     <ClInclude Include="Framework\Bindable\Sampler.h" />
     <ClInclude Include="Framework\Bindable\Texture.h" />
