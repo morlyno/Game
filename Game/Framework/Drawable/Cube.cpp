@@ -33,11 +33,11 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
 
         AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightPS.cso" ) );
 
-        struct Color
+        /*struct Color
         {
             DirectX::XMFLOAT4 c = { 0.7f, 1.0f, 0.4f, 1.0f };
         } color;
-        AddStaticBind( std::make_unique<PixelConstantBuffer<Color>>( gfx,color,1u ) );
+        AddStaticBind( std::make_unique<PixelConstantBuffer<Color>>( gfx,color,1u ) );*/
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
         {
@@ -52,7 +52,7 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
     {
         SetIndexBufferFromStatic();
     }
-    AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
+    AddBind( std::make_unique<ConstBuffDoubleBoy>( gfx,*this ) );
 }
 
 void Cube::Update( float dt ) noexcept
@@ -80,7 +80,7 @@ DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 
 DirectX::XMFLOAT4 Cube::GetColorXM() const noexcept
 {
-    return { 0.0f,0.0f,0.0f,0.0f };
+    return { color[0],color[1],color[2],color[3] };
 }
 
 std::string Cube::GetType() const noexcept

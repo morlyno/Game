@@ -16,5 +16,10 @@ private:
 	bool Rotate_Pitch = false;
 	bool Rotate_Yaw = false;
 
+	/*float r;
+	float g;
+	float b;
+	float a;*/
+
 	bool test;
 };

@@ -22,3 +22,20 @@ void TransformCBuf::Bind( Graphics& gfx ) noexcept
 	vcbuf->Update( gfx,tf );
 	vcbuf->Bind( gfx );
 }
+
+ConstBuffDoubleBoy::ConstBuffDoubleBoy( Graphics& gfx,const Drawable& parent )
+	:
+	TransformCBuf( gfx,parent ),
+	pcbuf( std::make_unique<PixelConstantBuffer<PixelCBuff>>( gfx,1u ) )
+{}
+
+void ConstBuffDoubleBoy::Bind( Graphics& gfx ) noexcept
+{
+	TransformCBuf::Bind( gfx );
+	const PixelCBuff pt =
+	{
+		parent.GetColorXM()
+	};
+	pcbuf->Update( gfx,pt );
+	pcbuf->Bind( gfx );
+}
