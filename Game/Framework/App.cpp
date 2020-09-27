@@ -10,6 +10,7 @@
 #include "Utility/MorMath.h"
 
 #include <random>
+#include "VertexLayout.h"
 
 App::App()
     :
