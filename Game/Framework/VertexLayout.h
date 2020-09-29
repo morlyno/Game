@@ -4,227 +4,158 @@
 #include <utility>
 #include <DirectXMath.h>
 
-//class Element
-//{
-//public:
-//	Element( unsigned int size )
-//		:
-//		byteSize( size ),
-//		bytes( size )
-//	{}
-//	template<typename T>
-//	void Set( const T& data )
-//	{
-//		*bytes.data() = *reinterpret_cast<char*>(&data);
-//	}
-//private:
-//	unsigned int byteSize;
-//	std::vector<char> bytes;
-//};
-//
-//class VertexLayout
-//{
-//public:
-//	enum ElementType
-//	{
-//		Position2D,
-//		Position3D,
-//		Normal,
-//		Texture2D
-//	};
-//	template<ElementType ET>
-//	VertexLayout& Add()
-//	{
-//		assert( false && "Wronge Template Argument")
-//		return *this;
-//	}
-//	template<typename T>
-//	void Set( const T& _data )
-//	{
-//		data[index].Set( data );
-//	}
-//private:
-//	unsigned int nElements = 0;
-//	unsigned int index = 0;
-//	std::vector<Element> data;
-//};
-//
-//class VertexData
-//{
-//public:
-//	VertexData( VertexLayout&& vl )
-//		:
-//		vl( std::move( vl ) )
-//	{
-//		elements.emplace_back( this->vl );
-//	}
-//private:
-//	template<typename T>
-//	void Emplace( const T& data )
-//	{
-//		if ( index == 0 )
-//		{
-//			elements.emplace_back( vl );
-//		}
-//		elements[index].Set( data );
-//		++index;
-//	}
-//public:
-//	template<typename T>
-//	void Emplace_Back( const T& data )
-//	{
-//		Emplace( data );
-//		index = 0;
-//	}
-//	template<typename T,typename... Args>
-//	void Emplace_Back( const T& data,const Args&&... args )
-//	{
-//		Emplace( data );
-//		Emplace_Back( std::forward( args... ) );
-//	}
-//private:
-//	VertexLayout vl;
-//	unsigned int index = 0;
-//	std::vector<VertexLayout> elements;
-//};
-//
-//template<>
-//VertexLayout& VertexLayout::Add<VertexLayout::Position2D>()
-//{
-//	data.emplace_back( sizeof( float ) * 2 );
-//	++nElements;
-//	return *this;
-//}
-//template<>
-//VertexLayout& VertexLayout::Add<VertexLayout::Position3D>()
-//{
-//	data.emplace_back( sizeof( float ) * 3 );
-//	++nElements;
-//	return *this;
-//}
-//template<>
-//VertexLayout& VertexLayout::Add<VertexLayout::Normal>()
-//{
-//	data.emplace_back( sizeof( float ) * 3 );
-//	++nElements;
-//	return *this;
-//}
-//template<>
-//VertexLayout& VertexLayout::Add<VertexLayout::Texture2D>()
-//{
-//	data.emplace_back( sizeof( float ) * 2 );
-//	++nElements;
-//	return *this;
-//}
-
-#define POSITION2D	DirectX::XMFLOAT2
-#define POSITION3D	DirectX::XMFLOAT3
-#define NORMAL		DirectX::XMFLOAT3
-#define TEXTURE2D	DirectX::XMFLOAT2
-
-//#define P2D_SIZE sizeof((POSITION2D_TYPE))
-//#define P3D_SIZE sizeof((POSITION3D_TYPE))
-//#define NOR_SIZE sizeof((NORMAL_TYPE))
-//#define T2D_SIZE sizeof((TEXTURE2D_TYPE))
-
-enum class ElementType
-{
-	Position2D,
-	Position3D,
-	Normal,
-	Texture2D
-};
-
-class Element
-{
-public:
-	Element( const ElementType& ET,unsigned int offset,unsigned int size )
-		:
-		offset( offset ),
-		size( size ),
-		ET( ET )
-	{}
-	unsigned int GetSize() const
-	{
-		return size;
-	}
-	unsigned int GetOffSet() const
-	{
-		return offset;
-	}
-	const ElementType& GetType() const
-	{
-		return ET;
-	}
-private:
-	const ElementType ET;
-	unsigned int offset;
-	unsigned int size;
-};
-
 class VertexLayout
 {
 public:
-	VertexLayout& Add( const ElementType& ET )
+	enum ElementType
 	{
-		auto bSize = GetSize( ET );
-		LayoutByteSize += bSize;
-		elements.emplace_back( ET,elements.empty() ? 0u : GetOffSet(),bSize );
+		Position2D,
+		Position3D,
+		Normal,
+		Texture2D,
+		Count
+	};
+	template<ElementType> struct Map;
+	template<> struct Map<ElementType::Position2D>
+	{
+		using sysType = DirectX::XMFLOAT2;
+		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32_FLOAT;
+		static constexpr const char* lable = "Position";
+	};
+	template<> struct Map<ElementType::Position3D>
+	{
+		using sysType = DirectX::XMFLOAT3;
+		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32B32_FLOAT;
+		static constexpr const char* lable = "Position";
+	};
+	template<> struct Map<ElementType::Normal>
+	{
+		using sysType = DirectX::XMFLOAT3;
+		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32B32_FLOAT;
+		static constexpr const char* lable = "Normal";
+	};
+	template<> struct Map<ElementType::Texture2D>
+	{
+		using sysType = DirectX::XMFLOAT2;
+		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32_FLOAT;
+		static constexpr const char* lable = "TexCoord";
+	};
+	class Element
+	{
+	public:
+		Element( const ElementType& ET,size_t offset ) noexcept
+			:
+			offset( offset ),
+			ET( ET )
+		{}
+		size_t GetOffsetNext() const noexcept(!IS_DEBUG)
+		{
+			return Size() + offset;
+		}
+		size_t Size() const noexcept(!IS_DEBUG)
+		{
+			return SizeOf( ET );
+		}
+		size_t GetOffset() const noexcept
+		{
+			return offset;
+		}
+		static constexpr size_t SizeOf( ElementType et ) noexcept(!IS_DEBUG)
+		{
+			switch ( et )
+			{
+			case Position2D:
+				return sizeof( Map<Position2D>::sysType );
+			case Position3D:
+				return sizeof( Map<Position3D>::sysType );
+			case Normal:
+				return sizeof( Map<Normal>::sysType );
+			case Texture2D:
+				return sizeof( Map<Texture2D>::sysType );
+			default:
+				assert( false && "Invalid Template Type" );
+				return -1;
+			}
+		}
+		const ElementType& GetType() const noexcept
+		{
+			return ET;
+		}
+	private:
+		ElementType ET;
+		size_t offset;
+	};
+public:
+	VertexLayout& Add( const ElementType& ET ) noexcept(!IS_DEBUG)
+	{
+		elements.emplace_back( ET,GetOffset() );
+		size += Element::SizeOf( ET );
 		return *this;
 	}
-	unsigned int GetOffSet() const
+	size_t LayoutSize() const noexcept
 	{
-		auto& i = elements.back();
-		return i.GetOffSet() + i.GetSize();
+		return size;
 	}
-	unsigned int GetSize( const ElementType& et ) const
+	const Element& QuerraElements( ElementType et ) const noexcept(!IS_DEBUG)
 	{
-		switch ( et )
+		for ( const auto& e : elements )
 		{
-		case ElementType::Position2D:
-			return sizeof( POSITION2D );
-			break;
-		case ElementType::Position3D:
-			return sizeof( POSITION3D );
-			break;
-		case ElementType::Normal:
-			return sizeof( NORMAL );
-			break;
-		case ElementType::Texture2D:
-			return sizeof( TEXTURE2D );
-			break;
-		default:
-			assert( false && "Invalid Element Type" );
-			return -1;
-			break;
+			if ( e.GetType() == et )
+			{
+				return e;
+			}
 		}
+		assert( false && "Invalid Template Argument" );
+		return elements[0];
 	}
-	auto& GetElements() const
+	const Element& ByIndex( size_t index ) const noexcept
 	{
-		return elements;
-	}
-	auto GetLayoutByteSize() const
-	{
-		return LayoutByteSize;
+		return elements[index];
 	}
 private:
-	unsigned int LayoutByteSize = 0u;
+	size_t GetOffset() noexcept(!IS_DEBUG)
+	{
+		return elements.empty() ? 0u : elements.back().GetOffsetNext();
+	}
+private:
+	size_t size = 0;
 	std::vector<Element> elements;
 };
 
 class VertexData
 {
 public:
-	VertexData( VertexLayout&& vl )
+	class Vertex
+	{
+	public:
+		Vertex( const VertexLayout& vl,char* pData ) noexcept
+			:
+			vl( vl ),
+			pData( pData )
+		{}
+		template<VertexLayout::ElementType ET>
+		auto& Get() const noexcept(!IS_DEBUG)
+		{
+			auto e = vl.QuerraElements( ET );
+			auto data = pData + e.GetOffset();
+			return *reinterpret_cast<typename VertexLayout::Map<ET>::sysType*>(data);
+		}
+	private:
+		const VertexLayout& vl;
+		char* pData = nullptr;
+	};
+public:
+	VertexData( VertexLayout&& vl ) noexcept
 		:
 		vl( std::move( vl ) )
 	{}
 	template<typename T>
 	void Emplace_Back( T&& val )
 	{
+		buffer.reserve( buffer.size() + sizeof( T ) );
 		for ( size_t i = 0; i < sizeof( T ); ++i )
 		{
-			data.emplace_back( *(reinterpret_cast<char*>(&val) + i) );
+			buffer.emplace_back( *(reinterpret_cast<char*>(&val) + i) );
 		}
 	}
 	template<typename T,typename... Args>
@@ -233,45 +164,25 @@ public:
 		Emplace_Back( std::forward<T>( first ) );
 		Emplace_Back( std::forward<Args>( args )... );
 	}
-	auto GetDesc() const
+	size_t Size() const noexcept
 	{
-		std::vector<D3D11_INPUT_ELEMENT_DESC> ied( vl.GetElements().size() );
-		for ( const auto& e : vl.GetElements() )
-		{
-			switch ( e.GetType() )
-			{
-			case ElementType::Position2D:
-				ied.push_back( D3D11_INPUT_ELEMENT_DESC{ "Position2D",0,DXGI_FORMAT_R32G32_FLOAT,0,e.GetOffSet(),D3D11_INPUT_PER_VERTEX_DATA,0 } );
-				break;
-			case ElementType::Position3D:
-				ied.push_back( D3D11_INPUT_ELEMENT_DESC{ "Position",0,DXGI_FORMAT_R32G32_FLOAT,0,e.GetOffSet(),D3D11_INPUT_PER_VERTEX_DATA,0 } );
-				break;
-			case ElementType::Normal:
-				ied.push_back( D3D11_INPUT_ELEMENT_DESC{ "Normal",0,DXGI_FORMAT_R32G32_FLOAT,0,e.GetOffSet(),D3D11_INPUT_PER_VERTEX_DATA,0 } );
-				break;
-			case ElementType::Texture2D:
-				ied.push_back( D3D11_INPUT_ELEMENT_DESC{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,e.GetOffSet(),D3D11_INPUT_PER_VERTEX_DATA,0 } );
-				break;
-			default:
-				assert( false && "Invalid Element Type" );
-				break;
-			}
-		}
-		return std::move( ied );
+		return buffer.size();
 	}
-	auto& GetData() const
+	size_t LayoutSize() const noexcept
 	{
-		return data;
+		return vl.LayoutSize();
 	}
-	auto Data() const
+	const char* data() const noexcept
 	{
-		return data.data();
+		return buffer.data();
 	}
-	auto GetLayout() const
+	Vertex operator[]( size_t index ) noexcept(!IS_DEBUG)
 	{
-		return vl;
+		assert( (LayoutSize() * index) < buffer.size() );
+		assert( (LayoutSize() * (index + 1u)) <= buffer.size() );
+		return Vertex( vl,buffer.data() + (LayoutSize() * index) );
 	}
 private:
 	VertexLayout vl;
-	std::vector<char> data;
+	std::vector<char> buffer;
 };

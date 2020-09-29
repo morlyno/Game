@@ -76,7 +76,7 @@ public:
 	Surface( Surface&& other ) noexcept;
 	Surface& operator=( Surface& ) = delete;
 	Surface& operator=( Surface&& donor ) noexcept;
-	static Surface FromFile( std::wstring filename ) noexcept( !IS_DEBUG );
+	static Surface FromFile( std::wstring filename );
 	unsigned int GetWidht() const noexcept;
 	unsigned int GetHeight() const noexcept;
 	Color* GetBufferPointer() noexcept;

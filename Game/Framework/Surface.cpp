@@ -44,7 +44,7 @@ Surface& Surface::operator=( Surface&& donor ) noexcept
     return *this;
 }
 
-Surface Surface::FromFile( std::wstring filename ) noexcept( !IS_DEBUG )
+Surface Surface::FromFile( std::wstring filename )
 {
     gdi::Bitmap bitmap( filename.c_str() );
     

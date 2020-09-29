@@ -48,6 +48,32 @@ App::~App()
 {
 }
 
+void f()
+{
+	using namespace DirectX;
+
+	VertexData vd( std::move(
+		VertexLayout{}
+		.Add( VertexLayout::Position3D )
+		.Add( VertexLayout::Normal )
+		.Add( VertexLayout::Texture2D )
+	) );
+
+	for ( int i = 0; i < 3; ++i )
+	{
+		vd.Emplace_Back( XMFLOAT3( (float)i,1.0f,1.0f ),XMFLOAT3( 1.0f,1.0f,1.0f ),XMFLOAT2( 1.0f,1.0f ) );
+	}
+
+	auto p1 = vd[1].Get<VertexLayout::Position3D>();
+	
+	vd[1].Get<VertexLayout::Position3D>() = { 69.0f,420.0f,69.0f };
+
+
+	auto p2 = vd[2].Get<VertexLayout::Position3D>();
+
+	
+}
+
 int App::Go()
 {
 	while ( true )
@@ -71,6 +97,8 @@ int App::Go()
 
 void App::DoFrame()
 {
+	f();
+
 	wnd.Gfx().SetCamera( cam.GetMatrix() );
 	const auto dt = timer.Mark() * SimulationSpeed;
 	pl.Bind( wnd.Gfx() );

@@ -3,7 +3,6 @@
 #include "../Utility/MorMath.h"
 #include <DirectXMath.h>
 #include "GeometryFactory.h"
-#include "../VertexLayout.h"
 
 Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index,bool test )
     :
@@ -24,21 +23,8 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
         auto mesh = Geometry::Cube::MakeIndipendent<Vertex>();
         Geometry::MakeNormals( mesh );
 
-        VertexData vd( std::move(
-            VertexLayout{}
-            .Add( ElementType::Position3D )
-            .Add( ElementType::Normal )
-        ) );
 
-        for ( auto& m : mesh.vertices )
-        {
-            vd.Emplace_Back(
-                m.pos,
-                m.n
-            );
-        }
-
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,vd ) );
+        AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
 
         AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,mesh.indices ) );
 
