@@ -64,6 +64,8 @@ void f()
 		vd.Emplace_Back( XMFLOAT3( (float)i,1.0f,1.0f ),XMFLOAT3( 1.0f,1.0f,1.0f ),XMFLOAT2( 1.0f,1.0f ) );
 	}
 
+
+
 	auto p1 = vd[1].Get<VertexLayout::Position3D>();
 	
 	vd[1].Get<VertexLayout::Position3D>() = { 69.0f,420.0f,69.0f };
@@ -97,8 +99,6 @@ int App::Go()
 
 void App::DoFrame()
 {
-	f();
-
 	wnd.Gfx().SetCamera( cam.GetMatrix() );
 	const auto dt = timer.Mark() * SimulationSpeed;
 	pl.Bind( wnd.Gfx() );

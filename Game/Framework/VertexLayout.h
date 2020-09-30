@@ -112,6 +112,34 @@ public:
 	{
 		return elements[index];
 	}
+	std::vector<D3D11_INPUT_ELEMENT_DESC> GetDesc() const noexcept(!IS_DEBUG)
+	{
+		std::vector<D3D11_INPUT_ELEMENT_DESC> ied;
+		ied.reserve( elements.size() );
+		for ( const auto& e : elements )
+		{
+			ied.push_back( D3D11_INPUT_ELEMENT_DESC{} );
+			switch ( e.GetType() )
+			{
+			case Position2D:
+				ied.back() = { Map<Position2D>::lable,0,Map<Position2D>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				break;
+			case Position3D:
+				ied.back() = { Map<Position3D>::lable,0,Map<Position3D>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				break;
+			case Normal:
+				ied.back() = { Map<Normal>::lable,0,Map<Normal>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				break;
+			case Texture2D:
+				ied.back() = { Map<Texture2D>::lable,0,Map<Texture2D>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				break;
+			default:
+				assert( false && "Invalid Tempalte Argument" );
+				break;
+			}
+		}
+		return std::move( ied );
+	}
 private:
 	size_t GetOffset() noexcept(!IS_DEBUG)
 	{
@@ -158,10 +186,10 @@ public:
 			buffer.emplace_back( *(reinterpret_cast<char*>(&val) + i) );
 		}
 	}
-	template<typename T,typename... Args>
-	void Emplace_Back( T&& first,Args&&... args )
+	template<typename First,typename... Args>
+	void Emplace_Back( First&& first,Args&&... args )
 	{
-		Emplace_Back( std::forward<T>( first ) );
+		Emplace_Back( std::forward<First>( first ) );
 		Emplace_Back( std::forward<Args>( args )... );
 	}
 	size_t Size() const noexcept
@@ -176,11 +204,19 @@ public:
 	{
 		return buffer.data();
 	}
+	const VertexLayout& GetLayout() const noexcept
+	{
+		return vl;
+	}
 	Vertex operator[]( size_t index ) noexcept(!IS_DEBUG)
 	{
 		assert( (LayoutSize() * index) < buffer.size() );
 		assert( (LayoutSize() * (index + 1u)) <= buffer.size() );
 		return Vertex( vl,buffer.data() + (LayoutSize() * index) );
+	}
+	void Resize( size_t new_size ) noexcept
+	{
+		buffer.resize( new_size * vl.LayoutSize() );
 	}
 private:
 	VertexLayout vl;
