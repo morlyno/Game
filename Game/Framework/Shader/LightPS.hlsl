@@ -2,6 +2,7 @@ cbuffer LightcBuff
 {
     float3 LightPos;
     float falloffmutiplier;
+    float ambiant = 0.1f;
 };
 
 cbuffer cBuff
@@ -15,6 +16,6 @@ float4 main(float3 WorlPos : WorldPos, float3 n : Normal) : SV_TARGET
     float att = 1.0f / (length(ToL) * falloffmutiplier);
     float3 dirToL = normalize(ToL);
 	float scal = dot(dirToL, n);
-    float4 c =  matirialColor * saturate(scal * att);
+    float4 c = matirialColor * max(saturate(scal * att), ambiant);
     return c;
 }

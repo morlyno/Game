@@ -48,34 +48,6 @@ App::~App()
 {
 }
 
-void f()
-{
-	using namespace DirectX;
-
-	VertexData vd( std::move(
-		VertexLayout{}
-		.Add( VertexLayout::Position3D )
-		.Add( VertexLayout::Normal )
-		.Add( VertexLayout::Texture2D )
-	) );
-
-	for ( int i = 0; i < 3; ++i )
-	{
-		vd.Emplace_Back( XMFLOAT3( (float)i,1.0f,1.0f ),XMFLOAT3( 1.0f,1.0f,1.0f ),XMFLOAT2( 1.0f,1.0f ) );
-	}
-
-
-
-	auto p1 = vd[1].Get<VertexLayout::Position3D>();
-	
-	vd[1].Get<VertexLayout::Position3D>() = { 69.0f,420.0f,69.0f };
-
-
-	auto p2 = vd[2].Get<VertexLayout::Position3D>();
-
-	
-}
-
 int App::Go()
 {
 	while ( true )
@@ -121,6 +93,7 @@ void App::SpawnSimulationWindow()
 {
 	if( ImGui::Begin( "Simulation Control" ) )
 	{
+		ImGui::ColorEdit3( "Background",c );
 		ImGui::SliderFloat( "Speed Factor",&SimulationSpeed,0.0f,10.0f );
 		if ( ImGui::Button( "Reset" ) )
 			SimulationSpeed = 1.0f;

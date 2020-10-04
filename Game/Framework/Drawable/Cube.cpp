@@ -177,7 +177,7 @@ bool Cube::SpawnControlWindow() noexcept
             scale_depth = 1.0f;
         }
         ImGui::Text( "Coloring" );
-        ImGui::ColorEdit4( "Color",color );
+        ImGui::ColorPicker3( "Color",color );
         ImGui::Checkbox( "Rotate Roll",&Rotate_Roll );
         ImGui::Checkbox( "Rotate Pitch",&Rotate_Pitch );
         ImGui::Checkbox( "Rotate Yaw",&Rotate_Yaw );

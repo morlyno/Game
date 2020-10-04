@@ -10,6 +10,7 @@ class PointLight
 	{
 		alignas(16) DirectX::XMFLOAT3 pos;
 		float falloffmutiplier;
+		float ambinat;
 	};
 public:
 	PointLight( Graphics& gfx,float x,float y,float z );

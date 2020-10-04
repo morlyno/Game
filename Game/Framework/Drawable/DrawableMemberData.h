@@ -61,7 +61,7 @@ public:
                 scale_depth = 1.0f;
             }
             ImGui::Text( "Coloring" );
-            ImGui::ColorEdit4( "Color",color );
+            ImGui::ColorPicker3( "Color",color );
         }
         ImGui::End();
         return open;
@@ -79,7 +79,7 @@ protected:
 	float scale_height = 1.0f;
 	float scale_depth = 1.0f;
 
-	float color[4] = { 1.0f,0.0f,1.0f,1.0f };
+	float color[3] = { 1.0f,0.0f,1.0f };
 
     int index;
 };

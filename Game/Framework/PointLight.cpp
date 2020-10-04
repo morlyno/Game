@@ -29,6 +29,7 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::SliderFloat( "Y",&PLConst.pos.y,-40.0f,40.0f );
 		ImGui::SliderFloat( "Z",&PLConst.pos.z,-40.0f,40.0f );
 		ImGui::SliderFloat( "Falloff",&PLConst.falloffmutiplier,0.0f,1.0f );
+		ImGui::SliderFloat( "Ambinat",&PLConst.ambinat,0.0f,1.0f );
 	}
 	ImGui::End();
 }
@@ -37,4 +38,5 @@ void PointLight::Reset() noexcept
 {
 	PLConst.pos = { 20.0f,0.0f,0.0f };
 	PLConst.falloffmutiplier = 0.15f;
+	PLConst.ambinat = 0.1f;
 }
