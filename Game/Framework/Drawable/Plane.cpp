@@ -32,11 +32,11 @@ Plane::Plane( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
 
         AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightPS.cso" ) );
 
-        struct ColorConstBuff
-        {
-            DirectX::XMFLOAT4 c = { 1.0f,0.0f,1.0f,1.0f };
-        } color;
-        AddStaticBind( std::make_unique<PixelConstantBuffer<ColorConstBuff>>( gfx,color,1u ) );
+        //struct ColorConstBuff
+        //{
+        //    DirectX::XMFLOAT4 c = { 1.0f,0.0f,1.0f,1.0f };
+        //} color;
+        //AddStaticBind( std::make_unique<PixelConstantBuffer<ColorConstBuff>>( gfx,color,1u ) );
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
         {
@@ -51,7 +51,7 @@ Plane::Plane( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
     {
         SetIndexBufferFromStatic();
     }
-    AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
+    AddBind( std::make_unique<ConstBuffDoubleBoy>( gfx,*this ) );
 }
 
 void Plane::Update( float dt ) noexcept
@@ -71,7 +71,7 @@ DirectX::XMMATRIX Plane::GetTransformXM() const noexcept
 
 DirectX::XMFLOAT4 Plane::GetColorXM() const noexcept
 {
-    return { color[0],color[1],color[2],color[3] };
+    return { color[0],color[1],color[2],1.0f };
 }
 
 std::string Plane::GetType() const noexcept

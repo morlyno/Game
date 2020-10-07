@@ -2,7 +2,7 @@ cbuffer LightcBuff
 {
     float3 LightPos;
     float falloffmutiplier;
-    float ambiant = 0.1f;
+    float ambiant;
 };
 
 cbuffer cBuff

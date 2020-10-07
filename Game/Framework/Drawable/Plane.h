@@ -3,7 +3,7 @@
 #include "DrawableBase.h"
 #include "DrawableMemberData.h"
 
-class Squeare // ?(Mor): switch to models only but probably still need some geometry drawables
+class Squeare
 {
 public:
 	template<typename V>

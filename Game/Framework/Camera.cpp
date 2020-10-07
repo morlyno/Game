@@ -10,7 +10,7 @@ void Camera::ShowControlWindow() noexcept
     ImGui::Checkbox( "CameraMode",&rotation_camera );
     if ( rotation_camera )
     {
-        ImGui::DragFloat3( "look_at",look_xyz );
+        ImGui::DragFloat3( "Look At",&look_x ); // !(Mor): !!! TEMPORARY !!! only works if xyz in line !!! TEMPORARY !!!
         ImGui::DragFloat( "Distance",&r,1.0f,1.0f,1000 );
         ImGui::SliderAngle( "Pitch",&pitch,-89.0f,89.0f );
         ImGui::SliderAngle( "Yaw",&yaw,-180.0f,180.0f );
