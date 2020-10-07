@@ -97,7 +97,7 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
         } color;
         AddStaticBind( std::make_unique<PixelConstantBuffer<Color>>( gfx,color,1u ) );*/
 
-        AddStaticBind( std::make_unique<InputLayout>( gfx,vd.GetLayout().GetDesc(),pvsbc ) );
+        AddStaticBind( std::make_unique<InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
 
         AddStaticBind( std::make_unique<Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
     }

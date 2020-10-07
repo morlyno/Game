@@ -96,7 +96,7 @@ public:
 	{
 		return size;
 	}
-	const Element& QuerraElements( ElementType et ) const noexcept(!IS_DEBUG)
+	const Element& QuerraElements( const ElementType& et ) const noexcept(!IS_DEBUG)
 	{
 		for ( const auto& e : elements )
 		{
@@ -112,7 +112,7 @@ public:
 	{
 		return elements[index];
 	}
-	std::vector<D3D11_INPUT_ELEMENT_DESC> GetDesc() const noexcept(!IS_DEBUG)
+	auto GetDesc() const noexcept(!IS_DEBUG)
 	{
 		std::vector<D3D11_INPUT_ELEMENT_DESC> ied;
 		ied.reserve( elements.size() );
@@ -122,16 +122,16 @@ public:
 			switch ( e.GetType() )
 			{
 			case Position2D:
-				ied.back() = { Map<Position2D>::lable,0,Map<Position2D>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				ied.back() = { Map<Position2D>::lable,0u,Map<Position2D>::format,0u,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0u };
 				break;
 			case Position3D:
-				ied.back() = { Map<Position3D>::lable,0,Map<Position3D>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				ied.back() = { Map<Position3D>::lable,0u,Map<Position3D>::format,0u,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0u };
 				break;
 			case Normal:
-				ied.back() = { Map<Normal>::lable,0,Map<Normal>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				ied.back() = { Map<Normal>::lable,0u,Map<Normal>::format,0u,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0u };
 				break;
 			case Texture2D:
-				ied.back() = { Map<Texture2D>::lable,0,Map<Texture2D>::format,0,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0 };
+				ied.back() = { Map<Texture2D>::lable,0u,Map<Texture2D>::format,0u,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0u };
 				break;
 			default:
 				assert( false && "Invalid Tempalte Argument" );
@@ -203,6 +203,10 @@ public:
 	const char* data() const noexcept
 	{
 		return buffer.data();
+	}
+	const auto GetDesc() const noexcept
+	{
+		return std::move( vl.GetDesc() );
 	}
 	const VertexLayout& GetLayout() const noexcept
 	{
