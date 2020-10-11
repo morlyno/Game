@@ -13,10 +13,12 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
         struct Vertex
         {
             DirectX::XMFLOAT3 pos;
+            DirectX::XMFLOAT3 n;
             DirectX::XMFLOAT2 tc;
         };
 
-        const auto mesh = Geometry::Plane::MakeTextured<Vertex>();
+        auto mesh = Geometry::Plane::MakeTextured<Vertex>();
+        Geometry::MakeNormals( mesh );
 
         AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
 
@@ -26,16 +28,17 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
 
         AddStaticBind( std::make_unique<Sampler>( gfx ) );
 
-        auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/TextureVS.cso" );
+        auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/TextureLightVS.cso" );
         auto pvsbc = pvs->GetBytecode();
         AddStaticBind( std::move( pvs ) );
 
-        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/TexturePS.cso" ) );
+        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/TextureLightPS.cso" ) );
 
         std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
         {
             { "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-            { "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
+            { "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
+            { "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
         };
         AddStaticBind( std::make_unique<InputLayout>( gfx,ied,pvsbc ) );
 
@@ -45,7 +48,7 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float z,float roll,float pitch,float
     {
         SetIndexBufferFromStatic();
     }
-    AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
+    AddBind( std::make_unique<ConstBuffDoubleBoy>( gfx,*this ) );
 }
 
 void Sheet::Update( float dt ) noexcept
@@ -65,7 +68,7 @@ DirectX::XMMATRIX Sheet::GetTransformXM() const noexcept
 
 DirectX::XMFLOAT4 Sheet::GetColorXM() const noexcept
 {
-    return { color[0],color[1],color[2],color[3] };
+    return { 0.0f,0.0f,0.0f,0.0f };
 }
 
 std::string Sheet::GetType() const noexcept
