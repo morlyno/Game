@@ -47,6 +47,19 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
     return dx::XMMatrixLookToLH( eye_pos,look_dir,up_dir );
 }
 
+DirectX::XMFLOAT3 Camera::GetPos() const noexcept
+{
+    namespace dx = DirectX;
+    auto rotation = dx::XMMatrixRotationRollPitchYaw( pitch,yaw,0.0f );
+    auto distance = dx::XMVectorSet( 0.0f,0.0f,-r,1.0f );
+    auto offset = dx::XMVector4Transform( distance,rotation );
+    auto look_at = dx::XMVectorSet( look_x,look_y,look_z,1.0f );
+    auto pos_v = dx::XMVectorAdd( look_at,offset );
+    dx::XMFLOAT3 pos;
+    dx::XMStoreFloat3( &pos,pos_v );
+    return pos;
+}
+
 void Camera::Reset() noexcept
 {
     x = 0.0f;

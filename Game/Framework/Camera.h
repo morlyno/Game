@@ -7,6 +7,7 @@ class Camera
 public:
 	void ShowControlWindow() noexcept;
 	DirectX::XMMATRIX GetMatrix() const noexcept;
+	DirectX::XMFLOAT3 GetPos() const noexcept;
 private:
 	void Reset() noexcept;
 private:

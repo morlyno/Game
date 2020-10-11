@@ -56,8 +56,9 @@ public:
 	void DrawIndexed( UINT indexcount ) noexcept( !IS_DEBUG );
 	void SetProjection( const DirectX::XMMATRIX& proj ) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
-	void SetCamera( DirectX::CXMMATRIX cam ) noexcept;
+	void SetCamera( const class Camera& cam ) noexcept;
 	DirectX::XMMATRIX GetCamera() const noexcept;
+	DirectX::XMFLOAT3 GetCameraPos() const noexcept;
 private:
 #ifdef DEBUG
 	DxgiInfo infoManager;
@@ -72,4 +73,5 @@ private:
 	HWND											hWnd;
 	DirectX::XMMATRIX								projection;
 	DirectX::XMMATRIX								camera;
+	DirectX::XMFLOAT3								campos;
 };

@@ -10,6 +10,7 @@ class TransformCBuf : public Bindable
 	{
 		DirectX::XMMATRIX model;
 		DirectX::XMMATRIX view;
+		alignas(16) DirectX::XMFLOAT3 pos;
 	};
 public:
 	TransformCBuf( Graphics& gfx,const Drawable& parent );
@@ -24,6 +25,10 @@ class ConstBuffDoubleBoy : public TransformCBuf
 	struct PixelCBuff
 	{
 		DirectX::XMFLOAT4 matirial;
+		float specularIntesity;
+		float specularPower;
+		float buffer0;
+		float buffer1;
 	};
 public:
 	ConstBuffDoubleBoy( Graphics& gfx,const Drawable& parent );

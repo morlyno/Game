@@ -17,7 +17,8 @@ void TransformCBuf::Bind( Graphics& gfx ) noexcept
 			model *
 			gfx.GetCamera() *
 			gfx.GetProjection()
-		)
+		),
+		gfx.GetCameraPos()
 	};
 	vcbuf->Update( gfx,tf );
 	vcbuf->Bind( gfx );
@@ -34,7 +35,9 @@ void ConstBuffDoubleBoy::Bind( Graphics& gfx ) noexcept
 	TransformCBuf::Bind( gfx );
 	const PixelCBuff pt =
 	{
-		parent.GetColorXM()
+		parent.GetColorXM(),
+		parent.GetSpecularIntesity(),
+		parent.GetSpecularPower()
 	};
 	pcbuf->Update( gfx,pt );
 	pcbuf->Bind( gfx );

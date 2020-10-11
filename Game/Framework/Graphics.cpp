@@ -2,6 +2,7 @@
 #include <sstream>
 #include "ErrorHandle/Macros/GraphicsThrowMacros.h"
 #include "ImGui/imgui_impl_dx11.h"
+#include "Camera.h"
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
@@ -155,14 +156,20 @@ DirectX::XMMATRIX Graphics::GetProjection() const noexcept
 	return projection;
 }
 
-void Graphics::SetCamera( DirectX::CXMMATRIX cam ) noexcept
+void Graphics::SetCamera( const Camera& cam ) noexcept
 {
-	camera = cam;
+	camera = cam.GetMatrix();
+	campos = cam.GetPos();
 }
 
 DirectX::XMMATRIX Graphics::GetCamera() const noexcept
 {
 	return camera;
+}
+
+DirectX::XMFLOAT3 Graphics::GetCameraPos() const noexcept
+{
+	return campos;
 }
 
 Graphics::HrException::HrException( int line,const char* file,HRESULT hr,std::vector<std::string> infoMsg ) noexcept

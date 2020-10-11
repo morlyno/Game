@@ -20,6 +20,8 @@ public:
 	void AddIndexBuffer( std::unique_ptr<class IndexBuffer> indexBuffer ) noexcept( !IS_DEBUG );
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	virtual DirectX::XMFLOAT4 GetColorXM() const noexcept = 0;
+	virtual float GetSpecularPower() const noexcept = 0;
+	virtual float GetSpecularIntesity() const noexcept = 0;
 	virtual bool SpawnControlWindow() noexcept = 0;
 	virtual std::string GetType() const noexcept = 0;
 private:

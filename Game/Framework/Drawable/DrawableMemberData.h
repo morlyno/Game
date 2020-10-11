@@ -25,6 +25,14 @@ public:
         y = pos.y;
         z = pos.z;
     }
+    float GetSpecularPower() const noexcept override
+    {
+        return specularPower;
+    }
+    float GetSpecularIntesity() const noexcept override
+    {
+        return specularIntesity;
+    }
 	virtual bool SpawnControlWindow() noexcept override
     {
         bool open = true;
@@ -62,6 +70,9 @@ public:
             }
             ImGui::Text( "Coloring" );
             ImGui::ColorPicker3( "Color",color );
+            ImGui::Text( "Specular" );
+            ImGui::SliderFloat( "Intesity",&specularIntesity,0.0f,1.0f );
+            ImGui::SliderFloat( "Power",&specularPower,0.0f,1.0f );
         }
         ImGui::End();
         return open;
@@ -80,6 +91,8 @@ protected:
 	float scale_depth = 1.0f;
 
 	float color[3] = { 1.0f,0.0f,1.0f };
+    float specularIntesity = 1.0f;
+    float specularPower = 0.01f;
 
     int index;
 };
