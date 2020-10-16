@@ -40,8 +40,6 @@ void App::DoFrame()
 {
 	wnd.Gfx().SetCamera( cam );
 	const auto dt = timer.Mark() * SimulationSpeed;
-	OutputDebugString( std::to_wstring( s_dt ).c_str() );
-	OutputDebugString( L"\n" );
 	pl.Bind( wnd.Gfx() );
 	for ( auto& d : drawables )
 	{
