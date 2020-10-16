@@ -19,7 +19,7 @@ public:
 	int Go();
 private:
 	void DoFrame();
-	void SpawnSimulationWindow();
+	void SpawnSimulationWindow() noexcept;
 	void SpawnDrawableControlWindowMangerWindow() noexcept;
 	void SpawnDrawableControlWindows() noexcept;
 	void SpawnDrawableSpawnWindow() noexcept;
@@ -36,5 +36,4 @@ private:
 	std::set<int> DrawableId;
 	std::optional<int> index;
 	std::optional<int> TypeIndex;
-	float xyz[3] = { 0.0f };
 };

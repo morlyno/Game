@@ -1,46 +1,15 @@
 #include "App.h"
-
 #include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_dx11.h"
-#include "ImGui/imgui_impl_win32.h"
-
 #include "Drawable/DrawableHeader.h"
-
 #include "Utility/MorUtility.h"
 #include "Utility/MorMath.h"
-
-#include <random>
-#include "VertexLayout.h"
 
 App::App()
     :
     wnd( 1200,800,L"SexyWindow" ),
 	pl( wnd.Gfx(),0.0f,0.0f,0.0f )
 {
-#if 1
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),-4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f, 4.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f,-4.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f, 0.0f, 4.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f, 0.0f,-4.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),10.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(), 0.0f,10.0f, 0.0f, 0.0f, 0.0f, 0.0f, (int)drawables.size() ) );
-
-	//drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),10.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-	//drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),0.0f,0.0f,10.0f,0.0f,0.0f,0.0f,50.0f,50.0f,0.0f,(int)drawables.size() ) );
 	drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-#else
-	std::mt19937 r( std::random_device{}() );
-	std::uniform_real_distribution<float> d( -4.0f,4.0f );
-	auto rng = [&r,&d]() { return d( r ); };
-	for ( int i = 0; i < 50; ++i )
-	{
-		drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),20.0f,0.0f,0.0f,rng(),rng(),rng(),(int)drawables.size(),true ) );
-	}
-#endif
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }
@@ -60,12 +29,9 @@ int App::Go()
 			return *ecode;
 		}
 		wnd.Gfx().ClearBuffer( c[0],c[1],c[2] );
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
+		imgui.StartFrame();
 		DoFrame();
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+		imgui.Render();
 		wnd.Gfx().EndFrame();
 	}
 }
@@ -74,6 +40,8 @@ void App::DoFrame()
 {
 	wnd.Gfx().SetCamera( cam );
 	const auto dt = timer.Mark() * SimulationSpeed;
+	OutputDebugString( std::to_wstring( s_dt ).c_str() );
+	OutputDebugString( L"\n" );
 	pl.Bind( wnd.Gfx() );
 	for ( auto& d : drawables )
 	{
@@ -90,7 +58,7 @@ void App::DoFrame()
 	pl.SpawnControlWindow();
 }
 
-void App::SpawnSimulationWindow()
+void App::SpawnSimulationWindow() noexcept
 {
 	if( ImGui::Begin( "Simulation Control" ) )
 	{
@@ -182,6 +150,7 @@ void App::SpawnDrawableSpawnWindow() noexcept
 		}
 		if ( TypeIndex )
 		{
+			float xyz[3] = { 0.0f };
 			ImGui::InputFloat3( "XYZ",xyz );
 			if ( ImGui::Button( "Spawn Drawable" ) )
 			{

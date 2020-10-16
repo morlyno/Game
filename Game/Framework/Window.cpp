@@ -106,22 +106,19 @@ std::optional<int> Window::ProcessingMessage() noexcept
 	return {};
 }
 
-void Window::SetWindowTitle( const std::wstring& title ) noexcept( !IS_DEBUG )
+bool Window::SetWindowTitle( const std::wstring& title ) noexcept
 {
-	if ( SetWindowText( hWnd,title.c_str() ) == FALSE )
-	{
-		assert( true || "Failed to Set Window Title" );
-	}
+	return (bool)SetWindowText( hWnd,title.c_str() );
 }
 
-int Window::GetWidth() const noexcept
+unsigned int Window::GetWidth() const noexcept
 {
-	return (int)width;
+	return width;
 }
 
-int Window::GetHeight() const noexcept
+unsigned int Window::GetHeight() const noexcept
 {
-	return (int)height;
+	return height;
 }
 
 void Window::Kill() const noexcept
@@ -175,28 +172,17 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			}
 			return 0;
 		}
-		//case WM_SIZE:
-		//	{
-		//		if ( !( wParam & SIZE_MINIMIZED ) )
-		//		{
-		//			auto w = LOWORD( lParam );
-		//			auto h = HIWORD( lParam );
-		//			width = (UINT)w;
-		//			height = (UINT)h;
-		//		}
-		//		break;
-		//	}
 		/*Mouse Messages*/
 	case WM_MOUSEMOVE:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );
 			if ( pt.x >= 0 && pt.x < (short)width && pt.y >= 0 && pt.y < (short)height )
 			{
-				mouse.MouseMove( pt.x,pt.y );
+				mouse.OnMouseMove( pt.x,pt.y );
 				if ( !mouse.inwindow )
 				{
 					SetCapture( hWnd );
-					mouse.EnterWindow( pt.x,pt.y );
+					mouse.OnEnterWindow( pt.x,pt.y );
 				}
 			}
 			else
@@ -204,11 +190,11 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 				const POINTS pt = MAKEPOINTS( lParam );
 				if ( wParam & ( MK_LBUTTON | MK_RBUTTON ) )
 				{
-					mouse.MouseMove( pt.x,pt.y );
+					mouse.OnMouseMove( pt.x,pt.y );
 				}
 				else
 				{
-					mouse.LeaveWindow( pt.x,pt.y );
+					mouse.OnLeaveWindow( pt.x,pt.y );
 					if ( ReleaseCapture() == 0 )
 					{
 						throw WND_LAST_EXCEPT();
@@ -220,37 +206,37 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	case WM_LBUTTONDOWN:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );
-			mouse.LeftPresst( pt.x,pt.y );
+			mouse.OnLeftPresst( pt.x,pt.y );
 			break;
 		}
 	case WM_RBUTTONDOWN:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );
-			mouse.RightPresst( pt.x,pt.y );
+			mouse.OnRightPresst( pt.x,pt.y );
 			break;
 		}
 	case WM_MBUTTONDOWN:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );
-			mouse.MittelPresst( pt.x,pt.y );
+			mouse.OnMittelPresst( pt.x,pt.y );
 			break;
 		}
 	case WM_LBUTTONUP:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );
-			mouse.LeftReleast( pt.x,pt.y );
+			mouse.OnLeftReleast( pt.x,pt.y );
 			break;
 		}
 	case WM_RBUTTONUP:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );
-			mouse.RightReleast( pt.x,pt.y );
+			mouse.OnRightReleast( pt.x,pt.y );
 			break;
 		}
 	case WM_MBUTTONUP:
 		{
 			const POINTS pt = MAKEPOINTS( lParam );
-			mouse.MittelReleast( pt.x,pt.y );
+			mouse.OnMittelReleast( pt.x,pt.y );
 			break;
 		}
 	case WM_MOUSEWHEEL:
@@ -258,11 +244,11 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			const POINTS pt = MAKEPOINTS( lParam );
 			if ( GET_WHEEL_DELTA_WPARAM( wParam ) > 0 )
 			{
-				mouse.WheelUp( pt.x,pt.y );
+				mouse.OnWheelUp( pt.x,pt.y );
 			}
 			if ( GET_WHEEL_DELTA_WPARAM( wParam ) < 0 )
 			{
-				mouse.WheelDown( pt.x,pt.y );
+				mouse.OnWheelDown( pt.x,pt.y );
 			}
 			break;
 		}
@@ -271,7 +257,10 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	/*Keyboard Messegas*/
 	case WM_KEYDOWN:
 		{
-			kbd.OnKeyPresst( (unsigned char)wParam );
+			if ( !(!kbd.DoAutoRepeat() && (lParam >> 30u & 0x1) == 1u) )
+			{
+				kbd.OnKeyPresst( (unsigned char)wParam );
+			}
 			break;
 		}
 	case WM_KEYUP:
@@ -281,8 +270,11 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		}
 	case WM_CHAR:
 		{
-			kbd.OnChar( (unsigned char)wParam );
-			break;
+			if ( !(!kbd.DoAutoRepeat() && (lParam >> 30u & 0x1) == 1u) )
+			{
+				kbd.OnChar( (unsigned char)wParam );
+				break;
+			}
 		}
 	}
 	/*Keyboard Messegas Ends*/

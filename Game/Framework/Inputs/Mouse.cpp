@@ -41,7 +41,7 @@ bool Mouse::isEmpty() noexcept
 	return buffer.empty();
 }
 
-void Mouse::MouseMove( int newx,int newy ) noexcept
+void Mouse::OnMouseMove( int newx,int newy ) noexcept
 {
 	x = newx;
 	y = newy;
@@ -50,7 +50,7 @@ void Mouse::MouseMove( int newx,int newy ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::RightPresst( int newx,int newy ) noexcept
+void Mouse::OnRightPresst( int newx,int newy ) noexcept
 {
 	rightispresst = true;
 
@@ -58,7 +58,7 @@ void Mouse::RightPresst( int newx,int newy ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::LeftPresst( int newx,int newy ) noexcept
+void Mouse::OnLeftPresst( int newx,int newy ) noexcept
 {
 	leftispresst = true;
 
@@ -66,7 +66,7 @@ void Mouse::LeftPresst( int newx,int newy ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::RightReleast( int newx,int newy ) noexcept
+void Mouse::OnRightReleast( int newx,int newy ) noexcept
 {
 	rightispresst = false;
 
@@ -74,7 +74,7 @@ void Mouse::RightReleast( int newx,int newy ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::LeftReleast( int newx,int newy ) noexcept
+void Mouse::OnLeftReleast( int newx,int newy ) noexcept
 {
 	leftispresst = false;
 
@@ -82,7 +82,7 @@ void Mouse::LeftReleast( int newx,int newy ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::MittelPresst( int newx,int newy ) noexcept
+void Mouse::OnMittelPresst( int newx,int newy ) noexcept
 {
 	mittelispresst = true;
 
@@ -90,7 +90,7 @@ void Mouse::MittelPresst( int newx,int newy ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::MittelReleast( int newx,int newy ) noexcept
+void Mouse::OnMittelReleast( int newx,int newy ) noexcept
 {
 	mittelispresst = false;
 
@@ -98,19 +98,19 @@ void Mouse::MittelReleast( int newx,int newy ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::WheelUp( int x,int y ) noexcept
+void Mouse::OnWheelUp( int x,int y ) noexcept
 {
 	buffer.emplace( Event::Type::WheelUp,*this );
 	TrimBuffer();
 }
 
-void Mouse::WheelDown( int x,int y ) noexcept
+void Mouse::OnWheelDown( int x,int y ) noexcept
 {
 	buffer.emplace( Event::Type::WheelDown,*this );
 	TrimBuffer();
 }
 
-void Mouse::EnterWindow( int x,int y ) noexcept
+void Mouse::OnEnterWindow( int x,int y ) noexcept
 {
 	inwindow = true;
 
@@ -118,7 +118,7 @@ void Mouse::EnterWindow( int x,int y ) noexcept
 	TrimBuffer();
 }
 
-void Mouse::LeaveWindow( int x,int y ) noexcept
+void Mouse::OnLeaveWindow( int x,int y ) noexcept
 {
 	inwindow = false;
 

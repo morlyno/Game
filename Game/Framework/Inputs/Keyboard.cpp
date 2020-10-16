@@ -53,6 +53,21 @@ bool Keyboard::CharIsEmpty() const noexcept
 	return CharBuffer.empty();
 }
 
+void Keyboard::TurnAutoRepeatOn() noexcept
+{
+	autorepeat = true;
+}
+
+void Keyboard::TurnAutoRepeatOff() noexcept
+{
+	autorepeat = false;
+}
+
+bool Keyboard::DoAutoRepeat() const noexcept
+{
+	return autorepeat;
+}
+
 void Keyboard::OnKeyPresst( unsigned char keycode ) noexcept
 {
 	KeyState[keycode] = true;

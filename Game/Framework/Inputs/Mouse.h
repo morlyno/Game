@@ -86,17 +86,17 @@ public:
 	void Flush() noexcept;
 	bool isEmpty() noexcept;
 private:
-	void MouseMove( int x,int y ) noexcept;
-	void RightPresst( int x,int y ) noexcept;
-	void LeftPresst( int x,int y ) noexcept;
-	void RightReleast( int x,int y ) noexcept;
-	void LeftReleast( int x,int y ) noexcept;
-	void MittelPresst( int x,int y ) noexcept;
-	void MittelReleast( int x,int y ) noexcept;
-	void WheelUp( int x,int y ) noexcept;
-	void WheelDown( int x,int y ) noexcept;
-	void EnterWindow( int x,int y ) noexcept;
-	void LeaveWindow( int x,int y ) noexcept;
+	void OnMouseMove( int x,int y ) noexcept;
+	void OnRightPresst( int x,int y ) noexcept;
+	void OnLeftPresst( int x,int y ) noexcept;
+	void OnRightReleast( int x,int y ) noexcept;
+	void OnLeftReleast( int x,int y ) noexcept;
+	void OnMittelPresst( int x,int y ) noexcept;
+	void OnMittelReleast( int x,int y ) noexcept;
+	void OnWheelUp( int x,int y ) noexcept;
+	void OnWheelDown( int x,int y ) noexcept;
+	void OnEnterWindow( int x,int y ) noexcept;
+	void OnLeaveWindow( int x,int y ) noexcept;
 	void TrimBuffer() noexcept;
 private:
 	bool leftispresst = false;

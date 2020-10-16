@@ -48,6 +48,9 @@ public:
 	char ReadChar() noexcept;
 	void CharFlush() noexcept;
 	bool CharIsEmpty() const noexcept;
+	void TurnAutoRepeatOn() noexcept;
+	void TurnAutoRepeatOff() noexcept;
+	bool DoAutoRepeat() const noexcept;
 private:
 	void OnKeyPresst( unsigned char keycode ) noexcept;
 	void OnKeyReleas( unsigned char keycode ) noexcept;
@@ -67,4 +70,5 @@ private:
 	std::queue<Event> KeyStateBuffer;
 	std::queue<char> CharBuffer;
 	bool keyispresst = false;
+	bool autorepeat = true;
 };

@@ -28,7 +28,17 @@ public:
 	{
 		return std::chrono::duration<float>( std::chrono::steady_clock::now().time_since_epoch() ).count();
 	}
-private:
+protected:
 	std::chrono::steady_clock::time_point last;
 	std::chrono::duration<float> dur = std::chrono::duration<float>{}.zero();
+};
+
+class StaticTimer
+{
+public:
+	static MorTimer& Get() noexcept
+	{
+		static MorTimer instance;
+		return instance;
+	}
 };

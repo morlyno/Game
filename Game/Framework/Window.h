@@ -54,9 +54,9 @@ public:
 	Window( int width,int height,LPCWSTR pWndName,bool CloseAll = true );
 	~Window();
 	static std::optional<int> ProcessingMessage() noexcept;
-	void SetWindowTitle( const std::wstring& title ) noexcept( !IS_DEBUG );
-	int GetWidth() const noexcept;
-	int GetHeight() const noexcept;
+	bool SetWindowTitle( const std::wstring& title ) noexcept;
+	unsigned int GetWidth() const noexcept;
+	unsigned int GetHeight() const noexcept;
 	void Kill() const noexcept;
 public:
 	Mouse mouse;

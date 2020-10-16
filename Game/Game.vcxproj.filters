@@ -290,7 +290,4 @@
     <FxCompile Include="Framework\Shader\TextureLightVS.hlsl" />
     <FxCompile Include="Framework\Shader\TextureLightPS.hlsl" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
 </Project>

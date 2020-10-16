@@ -11,7 +11,7 @@ class PointLight
 		alignas(16) DirectX::XMFLOAT3 pos;
 		float falloffmutiplier;
 		float ambinat;
-	};
+	} PLConst;
 public:
 	PointLight( Graphics& gfx,float x,float y,float z );
 	void Draw( Graphics& gfx ) noexcept( !IS_DEBUG );
@@ -19,7 +19,6 @@ public:
 	void SpawnControlWindow() noexcept;
 	void Reset() noexcept;
 private:
-	PointLightConstants PLConst;
 	SolidSphere mesh;
 	PixelConstantBuffer<PointLightConstants> pcb;
 };
