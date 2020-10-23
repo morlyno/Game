@@ -1,5 +1,7 @@
 #include "IndexBuffer.h"
 
+using namespace Bind;
+
 IndexBuffer::IndexBuffer( Graphics& gfx,std::vector<unsigned short> indices )
 	:
 	count( (UINT)indices.size() )

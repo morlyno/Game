@@ -72,9 +72,6 @@
     <ClCompile Include="Framework\Bindable\Sampler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Framework\Drawable\Sheet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\ImGui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,12 +112,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Framework\PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Drawable\Plane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Drawable\CubeTextured.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,9 +167,6 @@
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Drawable\DrawableBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Surface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -186,9 +174,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Bindable\Sampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Drawable\Sheet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\ImGui\imconfig.h">
@@ -264,9 +249,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\PointLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Drawable\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Drawable\GeometryFactory.h">

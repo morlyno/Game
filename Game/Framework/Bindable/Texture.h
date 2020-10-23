@@ -3,11 +3,16 @@
 #include "Bindable.h"
 #include "../Surface.h"
 
-class Texture : public Bindable
+namespace Bind
 {
-public:
-	Texture( Graphics& gfx,const Surface& s );
-	void Bind( Graphics& gfx ) noexcept override;
-private:
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureView;
-};
+
+	class Texture : public Bindable
+	{
+	public:
+		Texture( Graphics& gfx,const Surface& s );
+		void Bind( Graphics& gfx ) noexcept override;
+	private:
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureView;
+	};
+
+}

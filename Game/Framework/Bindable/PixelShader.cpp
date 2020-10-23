@@ -1,5 +1,7 @@
 #include "PixelShader.h"
 
+using namespace Bind;
+
 PixelShader::PixelShader( Graphics& gfx,const std::wstring& path )
 {
 	INFOMAN( gfx );

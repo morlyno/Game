@@ -2,60 +2,51 @@
 #include "../Utility/MorMath.h"
 #include "../Bindable/BindableHeaders.h"
 #include "GeometryFactory.h"
+#include "../VertexLayout.h"
 
 Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
     DrawableMemberData( x,y,z,roll,pitch,yaw,index )
 {
-    if ( !IsInitialized() )
+    VertexData vd( std::move(
+        VertexLayout{}
+        .Add( VertexLayout::Position3D )
+    ) );
+
+    std::vector<unsigned short> indices;
+    Geometry::Sphere::Make( vd,indices );
+
+    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd ) );
+
+    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices ) );
+
+    auto pvs = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
+    auto pvsbc = pvs->GetBytecode();
+    AddBind( std::move( pvs ) );
+
+    AddBind( std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/6ColorPS.cso" ) );
+
+    struct ConstBuffer
     {
-        struct Vertex
-        {
-            DirectX::XMFLOAT3 pos;
-        };
-
-        const auto mesh = Geometry::Sphere::Make<Vertex>();
-
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
-
-        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,mesh.indices ) );
-
-        auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
-        auto pvsbc = pvs->GetBytecode();
-        AddStaticBind( std::move( pvs ) );
-
-        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/6ColorPS.cso" ) );
-
-        struct ConstBuffer
-        {
-            DirectX::XMFLOAT4 color[6];
-        };
-        ConstBuffer cbuff =
-        {
-            {
-                { 1.0f,0.0f,0.0f,1.0f },
-                { 0.0f,1.0f,0.0f,1.0f },
-                { 0.0f,0.0f,1.0f,1.0f },
-                { 1.0f,1.0f,0.0f,1.0f },
-                { 1.0f,0.0f,1.0f,1.0f },
-                { 0.0f,1.0f,1.0f,1.0f },
-            }
-        };
-        AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,cbuff ) );
-
-        std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-        {
-            { "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-        };
-        AddStaticBind( std::make_unique<InputLayout>( gfx,ied,pvsbc ) );
-
-        AddStaticBind( std::make_unique<Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-    }
-    else
+        DirectX::XMFLOAT4 color[6];
+    };
+    ConstBuffer cbuff =
     {
-        SetIndexBufferFromStatic();
-    }
-    AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
+        {
+            { 1.0f,0.0f,0.0f,1.0f },
+            { 0.0f,1.0f,0.0f,1.0f },
+            { 0.0f,0.0f,1.0f,1.0f },
+            { 1.0f,1.0f,0.0f,1.0f },
+            { 1.0f,0.0f,1.0f,1.0f },
+            { 0.0f,1.0f,1.0f,1.0f },
+        }
+    };
+    AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,cbuff ) );
+
+    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
+
+    AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+    AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }
 
 void Sphere::Update( float dt ) noexcept

@@ -192,9 +192,13 @@ public:
 		Emplace_Back( std::forward<First>( first ) );
 		Emplace_Back( std::forward<Args>( args )... );
 	}
-	size_t Size() const noexcept
+	size_t ByteSize() const noexcept
 	{
 		return buffer.size();
+	}
+	size_t Size() const noexcept
+	{
+		return buffer.size() / vl.LayoutSize();
 	}
 	size_t LayoutSize() const noexcept
 	{
@@ -217,6 +221,14 @@ public:
 		assert( (LayoutSize() * index) < buffer.size() );
 		assert( (LayoutSize() * (index + 1u)) <= buffer.size() );
 		return Vertex( vl,buffer.data() + (LayoutSize() * index) );
+	}
+	Vertex back() noexcept
+	{
+		return Vertex( vl,(buffer.end() - LayoutSize())._Ptr );
+	}
+	Vertex front() noexcept
+	{
+		return Vertex( vl,buffer.data() );
 	}
 	void Resize( size_t new_size ) noexcept
 	{

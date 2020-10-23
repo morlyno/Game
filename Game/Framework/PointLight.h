@@ -20,5 +20,5 @@ public:
 	void Reset() noexcept;
 private:
 	SolidSphere mesh;
-	PixelConstantBuffer<PointLightConstants> pcb;
+	Bind::PixelConstantBuffer<PointLightConstants> pcb;
 };

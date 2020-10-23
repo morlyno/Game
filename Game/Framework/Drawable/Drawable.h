@@ -4,20 +4,21 @@
 #include <memory>
 #include <DirectXMath.h>
 
-class Bindable;
+namespace Bind
+{
+	class Bindable;
+	class IndexBuffer;
+}
 
 class Drawable
 {
-	template<class T>
-	friend class DrawableBase;
 public:
 	Drawable() = default;
 	Drawable( const Drawable& ) = delete;
 	virtual ~Drawable() = default;
 	void Draw( Graphics& gfx ) const noexcept( !IS_DEBUG );
 	virtual void Update( float dt ) noexcept = 0;
-	void AddBind( std::unique_ptr<Bindable> addbind ) noexcept( !IS_DEBUG );
-	void AddIndexBuffer( std::unique_ptr<class IndexBuffer> indexBuffer ) noexcept( !IS_DEBUG );
+	void AddBind( std::shared_ptr<Bind::Bindable> bind ) noexcept( !IS_DEBUG );
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	virtual DirectX::XMFLOAT4 GetColorXM() const noexcept = 0;
 	virtual float GetSpecularPower() const noexcept = 0;
@@ -25,8 +26,6 @@ public:
 	virtual bool SpawnControlWindow() noexcept = 0;
 	virtual std::string GetType() const noexcept = 0;
 private:
-	virtual	const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
-private:
-	const IndexBuffer* pIndexBuffer = nullptr;
-	std::vector<std::unique_ptr<Bindable>> binds;
+	const Bind::IndexBuffer* pIndexBuffer = nullptr;
+	std::vector<std::shared_ptr<Bind::Bindable>> binds;
 };

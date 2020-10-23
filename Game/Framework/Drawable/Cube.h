@@ -2,7 +2,7 @@
 
 #include "DrawableMemberData.h"
 
-class Cube : public DrawableMemberData<Cube>
+class Cube : public DrawableMemberData
 {
 public:
 	Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index,bool test = false );
@@ -15,11 +15,6 @@ private:
 	bool Rotate_Roll = false;
 	bool Rotate_Pitch = false;
 	bool Rotate_Yaw = false;
-
-	/*float r;
-	float g;
-	float b;
-	float a;*/
 
 	bool test;
 };

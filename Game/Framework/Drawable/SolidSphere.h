@@ -2,7 +2,7 @@
 
 #include "DrawableMemberData.h"
 
-class SolidSphere : public DrawableMemberData<SolidSphere>
+class SolidSphere : public DrawableMemberData
 {
 public:
 	SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index );

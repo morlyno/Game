@@ -1,11 +1,10 @@
 #pragma once
 
-#include "DrawableBase.h"
+#include "Drawable.h"
 #include "../ImGui/imgui.h"
 #include <sstream>
 
-template<class T>
-class DrawableMemberData : public DrawableBase<T>
+class DrawableMemberData : public Drawable
 {
 public:
 	DrawableMemberData( float x,float y,float z,float roll,float pitch,float yaw,int index ) noexcept

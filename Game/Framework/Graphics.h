@@ -8,9 +8,14 @@
 #include "ErrorHandle/DxgiInfo.h"
 #include <vector>
 
+namespace Bind
+{
+	class Bindable;
+}
+
 class Graphics
 {
-	friend class Bindable;
+	friend class Bind::Bindable;
 public:
 	class Exception : public MorException
 	{

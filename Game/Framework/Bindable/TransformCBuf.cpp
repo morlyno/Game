@@ -1,5 +1,7 @@
 #include "TransformCBuf.h"
 
+using namespace Bind;
+
 TransformCBuf::TransformCBuf( Graphics& gfx,const Drawable& parent )
 	:
 	parent( parent ),

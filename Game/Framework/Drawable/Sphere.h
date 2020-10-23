@@ -2,7 +2,7 @@
 
 #include "DrawableMemberData.h"
 
-class Sphere : public DrawableMemberData<Sphere>
+class Sphere : public DrawableMemberData
 {
 public:
 	Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index );

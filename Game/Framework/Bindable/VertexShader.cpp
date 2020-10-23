@@ -1,5 +1,7 @@
 #include "VertexShader.h"
 
+using namespace Bind;
+
 VertexShader::VertexShader( Graphics& gfx,const std::wstring& path )
 {
 	INFOMAN( gfx );

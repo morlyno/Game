@@ -1,6 +1,8 @@
 #include "Texture.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
 
+using namespace Bind;
+
 Texture::Texture( Graphics& gfx,const Surface& s )
 {
 	INFOMAN( gfx );

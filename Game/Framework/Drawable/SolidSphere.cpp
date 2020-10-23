@@ -3,49 +3,40 @@
 #include "../Bindable/BindableHeaders.h"
 #include "Sphere.h"
 #include "GeometryFactory.h"
+
 SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
     DrawableMemberData( x,y,z,roll,pitch,yaw,index )
 {
-    if ( !IsInitialized() )
+    VertexData vd( std::move(
+        VertexLayout{}
+        .Add( VertexLayout::Position3D )
+    ) );
+
+    std::vector<unsigned short> indices;
+    Geometry::Sphere::Make( vd,indices );
+
+    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd ) );
+
+    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices ) );
+
+    auto pvs = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
+    auto pvsbc = pvs->GetBytecode();
+    AddBind( std::move( pvs ) );
+
+    AddBind( std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/SolidColor.cso" ) );
+
+    struct ConstBuffer
     {
-        struct Vertex
-        {
-            DirectX::XMFLOAT3 pos;
-        };
+        DirectX::XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f };
+    } ColorConst;
 
-        const auto mesh = Geometry::Sphere::Make<Vertex>();
+    AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,ColorConst ) );
 
-        AddStaticBind( std::make_unique<VertexBuffer>( gfx,mesh.vertices ) );
+    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
 
-        AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx,mesh.indices ) );
-
-        auto pvs = std::make_unique<VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
-        auto pvsbc = pvs->GetBytecode();
-        AddStaticBind( std::move( pvs ) );
-
-        AddStaticBind( std::make_unique<PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/SolidColor.cso" ) );
-
-        struct ConstBuffer
-        {
-            DirectX::XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f };
-        } ColorConst;
-
-        AddStaticBind( std::make_unique<PixelConstantBuffer<ConstBuffer>>( gfx,ColorConst ) );
-
-        std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-        {
-            { "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-        };
-        AddStaticBind( std::make_unique<InputLayout>( gfx,ied,pvsbc ) );
-
-        AddStaticBind( std::make_unique<Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-    }
-    else
-    {
-        SetIndexBufferFromStatic();
-    }
-    AddBind( std::make_unique<TransformCBuf>( gfx,*this ) );
+    AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+    AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }
 
 void SolidSphere::Update( float dt ) noexcept

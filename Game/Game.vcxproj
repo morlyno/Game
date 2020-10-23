@@ -118,10 +118,8 @@
     <ClCompile Include="Framework\Camera.cpp" />
     <ClCompile Include="Framework\Drawable\Cube.cpp" />
     <ClCompile Include="Framework\Drawable\Drawable.cpp" />
-    <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\SolidSphere.cpp" />
     <ClCompile Include="Framework\Drawable\Sphere.cpp" />
-    <ClCompile Include="Framework\Drawable\Plane.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfo.cpp" />
     <ClCompile Include="Framework\Managers\GDIPlusManager.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
@@ -159,14 +157,11 @@
     <ClInclude Include="Framework\Camera.h" />
     <ClInclude Include="Framework\Drawable\Cube.h" />
     <ClInclude Include="Framework\Drawable\Drawable.h" />
-    <ClInclude Include="Framework\Drawable\DrawableBase.h" />
     <ClInclude Include="Framework\Drawable\DrawableHeader.h" />
     <ClInclude Include="Framework\Drawable\DrawableMemberData.h" />
     <ClInclude Include="Framework\Drawable\GeometryFactory.h" />
-    <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\Drawable\SolidSphere.h" />
     <ClInclude Include="Framework\Drawable\Sphere.h" />
-    <ClInclude Include="Framework\Drawable\Plane.h" />
     <ClInclude Include="Framework\ErrorHandle\DxgiInfo.h" />
     <ClInclude Include="Framework\ErrorHandle\Macros\ThorwMacros.h" />
     <ClInclude Include="Framework\Managers\GDIPlusManager.h" />

@@ -9,7 +9,7 @@ App::App()
     wnd( 1200,800,L"SexyWindow" ),
 	pl( wnd.Gfx(),0.0f,0.0f,0.0f )
 {
-	drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }
@@ -155,14 +155,14 @@ void App::SpawnDrawableSpawnWindow() noexcept
 				switch ( *TypeIndex )
 				{
 				case 0:
-					drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
-					DrawableId.insert( (int)drawables.size() - 1 );
-					TypeIndex.reset();
+					//drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
+					//DrawableId.insert( (int)drawables.size() - 1 );
+					//TypeIndex.reset();
 					break;
 				case 1:
-					drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
-					DrawableId.insert( (int)drawables.size() - 1 );
-					TypeIndex.reset();
+					//drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					//DrawableId.insert( (int)drawables.size() - 1 );
+					//TypeIndex.reset();
 					break;
 				case 2:
 					drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
