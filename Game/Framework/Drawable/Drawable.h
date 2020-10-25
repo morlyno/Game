@@ -18,7 +18,7 @@ public:
 	virtual ~Drawable() = default;
 	void Draw( Graphics& gfx ) const noexcept( !IS_DEBUG );
 	virtual void Update( float dt ) noexcept = 0;
-	void AddBind( std::shared_ptr<Bind::Bindable> bind ) noexcept( !IS_DEBUG );
+	bool AddBind( std::shared_ptr<Bind::Bindable> bind ) noexcept( !IS_DEBUG );
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	virtual DirectX::XMFLOAT4 GetColorXM() const noexcept = 0;
 	virtual float GetSpecularPower() const noexcept = 0;

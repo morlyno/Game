@@ -14,12 +14,17 @@ void Drawable::Draw( Graphics& gfx ) const noexcept( !IS_DEBUG )
 	gfx.DrawIndexed( pIndexBuffer->GetCount() );
 }
 
-void Drawable::AddBind( std::shared_ptr<Bind::Bindable> bind ) noexcept( !IS_DEBUG )
+bool Drawable::AddBind( std::shared_ptr<Bind::Bindable> bind ) noexcept( !IS_DEBUG )
 {
-	if ( const auto i = dynamic_cast<Bind::IndexBuffer*>( bind.get() ) )
+	if ( bind )
 	{
-		assert( "pIndexBuffer already set" && pIndexBuffer == nullptr );
-		pIndexBuffer = i;
+		if ( const auto i = dynamic_cast<Bind::IndexBuffer*>(bind.get()) )
+		{
+			assert( "pIndexBuffer already set" && pIndexBuffer == nullptr );
+			pIndexBuffer = i;
+		}
+		binds.push_back( std::move( bind ) );
+		return true;
 	}
-	binds.push_back( std::move( bind ) );
+	return false;
 }

@@ -2,6 +2,16 @@
 
 using namespace Bind;
 
+std::string Bind::Bindable::GetKEY() const noexcept
+{
+	return key;
+}
+
+void Bind::Bindable::SetKEY( const std::string& _key ) noexcept
+{
+	key = _key;
+}
+
 ID3D11DeviceContext* Bindable::GetContext( Graphics& gfx ) noexcept
 {
 	return gfx.pContext.Get();

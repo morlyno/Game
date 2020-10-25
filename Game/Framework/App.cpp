@@ -4,12 +4,21 @@
 #include "Utility/MorUtility.h"
 #include "Utility/MorMath.h"
 
+#include "BindableCodex.h"
+
 App::App()
     :
     wnd( 1200,800,L"SexyWindow" ),
 	pl( wnd.Gfx(),0.0f,0.0f,0.0f )
 {
-	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	for ( int i = 0; i < 10; ++i )
+	{
+		MorTimer t;
+		drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+		OutputDebugString( std::to_wstring( t.Mark() ).c_str() );
+		OutputDebugString( L"\n" );
+	}
+
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }

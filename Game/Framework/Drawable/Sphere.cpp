@@ -3,6 +3,9 @@
 #include "../Bindable/BindableHeaders.h"
 #include "GeometryFactory.h"
 #include "../VertexLayout.h"
+#include "../BindableCodex.h"
+
+#define NAME(x) std::string( typeid(x).name() )
 
 Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
@@ -12,40 +15,76 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
         VertexLayout{}
         .Add( VertexLayout::Position3D )
     ) );
-
+    
     std::vector<unsigned short> indices;
-    Geometry::Sphere::Make( vd,indices );
 
-    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd ) );
+    const auto this_name = std::string{ typeid(*this).name() };
 
-    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices ) );
-
-    auto pvs = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
-    auto pvsbc = pvs->GetBytecode();
-    AddBind( std::move( pvs ) );
-
-    AddBind( std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/6ColorPS.cso" ) );
-
-    struct ConstBuffer
+    if ( const auto key = NAME( Bind::VertexBuffer ) + this_name; !AddBind( Bind::Codex::Resolve( key ) ) )
     {
-        DirectX::XMFLOAT4 color[6];
-    };
-    ConstBuffer cbuff =
+        Geometry::Sphere::Make( vd,indices );
+        auto ptr = std::make_shared<Bind::VertexBuffer>( gfx,vd );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::IndexBuffer ) + this_name; !AddBind( Bind::Codex::Resolve( key ) ) )
     {
+        auto ptr = std::make_shared<Bind::IndexBuffer>( gfx,indices );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::VertexShader ) + "VertexShader"; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::PixelShader ) + "6ColorPS"; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodex/6ColorPS.cso" );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = "PCB" + this_name; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        struct ConstBuffer
         {
-            { 1.0f,0.0f,0.0f,1.0f },
-            { 0.0f,1.0f,0.0f,1.0f },
-            { 0.0f,0.0f,1.0f,1.0f },
-            { 1.0f,1.0f,0.0f,1.0f },
-            { 1.0f,0.0f,1.0f,1.0f },
-            { 0.0f,1.0f,1.0f,1.0f },
-        }
-    };
-    AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,cbuff ) );
-
-    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
-
-    AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+            DirectX::XMFLOAT4 color[6] =
+            {
+                { 1.0f,0.0f,0.0f,1.0f },
+                { 0.0f,1.0f,0.0f,1.0f },
+                { 0.0f,0.0f,1.0f,1.0f },
+                { 1.0f,1.0f,0.0f,1.0f },
+                { 1.0f,0.0f,1.0f,1.0f },
+                { 0.0f,1.0f,1.0f,1.0f },
+            };
+        } cbuff;
+        auto ptr = std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,cbuff );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::InputLayout ) + this_name; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::InputLayout>(
+            gfx,vd.GetDesc(),
+            dynamic_cast<Bind::VertexShader*>(Bind::Codex::Resolve( NAME( Bind::VertexShader ) + "VertexShader" ).get())->GetBytecode()
+            );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::Topology ) + std::to_string( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ); !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
     AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }
 

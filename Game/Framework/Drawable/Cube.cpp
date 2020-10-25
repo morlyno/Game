@@ -4,6 +4,10 @@
 #include <DirectXMath.h>
 #include "GeometryFactory.h"
 #include "../VertexLayout.h"
+#include <string>
+#include "../BindableCodex.h"
+
+#define NAME(x) std::string( typeid(x).name() )
 
 Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index,bool test )
     :
@@ -19,25 +23,60 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
         .Add( VertexLayout::Normal )
     ) );
 
-    Geometry::Cube::MakeIndipendent( vd );
-    
-    auto indices = Geometry::Cube::MakeIndicesIndipendent();
-    Geometry::MakeNormals( vd,indices );
+    std::vector<unsigned short> indices;
 
-    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd ) );
+    using namespace std::string_literals;
 
-    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices ) );
+    const auto this_name = std::string{ typeid(*this).name() };
 
-    auto pvs = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightVS.cso" );
-    auto pvsbc = pvs->GetBytecode();
-    AddBind( std::move( pvs ) );
-
-    AddBind( std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightPS.cso" ) );
-
-    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
-
-    AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-
+    if ( const auto key = NAME( Bind::IndexBuffer ) + this_name; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        indices = Geometry::Cube::MakeIndicesIndipendent();
+        auto ptr = std::make_shared<Bind::IndexBuffer>( gfx,indices );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::VertexBuffer ) + this_name; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        Geometry::Cube::MakeIndipendent( vd );
+        Geometry::MakeNormals( vd,indices );
+        auto ptr = std::make_shared<Bind::VertexBuffer>( gfx,vd );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::VertexShader ) + "LightVS"; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightVS.cso" );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::PixelShader ) + "LightPS"; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightPS.cso" );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::InputLayout ) + this_name; !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::InputLayout>(
+            gfx,vd.GetDesc(),
+            dynamic_cast<Bind::VertexShader*>(Bind::Codex::Resolve( NAME( Bind::VertexShader ) + "LightVS" ).get())->GetBytecode()
+            );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
+    if ( const auto key = NAME( Bind::Topology ) + std::to_string( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ); !AddBind( Bind::Codex::Resolve( key ) ) )
+    {
+        auto ptr = std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+        ptr->SetKEY( key );
+        Bind::Codex::Store( ptr );
+        AddBind( ptr );
+    }
     AddBind( std::make_shared<Bind::ConstBuffDoubleBoy>( gfx,*this ) );
 }
 
