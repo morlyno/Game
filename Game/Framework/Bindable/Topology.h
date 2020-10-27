@@ -10,6 +10,8 @@ namespace Bind
 	public:
 		Topology( D3D_PRIMITIVE_TOPOLOGY pt );
 		void Bind( Graphics& gfx ) noexcept override;
+		static std::string GenerateKey( const std::string& topo ) noexcept;
+		std::string GetKey() const noexcept override;
 	private:
 		D3D_PRIMITIVE_TOPOLOGY pt;
 	};

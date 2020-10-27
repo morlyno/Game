@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\App.h" />
+    <ClInclude Include="Framework\BindableCodex.h" />
     <ClInclude Include="Framework\Bindable\Bindable.h" />
     <ClInclude Include="Framework\Bindable\BindableHeaders.h" />
     <ClInclude Include="Framework\Bindable\ConstantBuffers.h" />

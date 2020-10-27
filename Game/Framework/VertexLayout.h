@@ -20,7 +20,7 @@ public:
 	{
 		using sysType = DirectX::XMFLOAT2;
 		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32_FLOAT;
-		static constexpr const char* lable = "Position";
+		static constexpr const char* lable = "Position2D";
 	};
 	template<> struct Map<ElementType::Position3D>
 	{
@@ -139,6 +139,32 @@ public:
 			}
 		}
 		return std::move( ied );
+	}
+	auto GetLayoutString() const noexcept(!IS_DEBUG)
+	{
+		std::string str;
+		for ( const auto& e : elements )
+		{
+			switch ( e.GetType() )
+			{
+			case Position2D:
+				str += Map<Position2D>::lable;
+				break;
+			case Position3D:
+				str += Map<Position3D>::lable;
+				break;
+			case Normal:
+				str += Map<Normal>::lable;
+				break;
+			case Texture2D:
+				str += Map<Texture2D>::lable;
+				break;
+			default:
+				assert( false && "Invalid Tempalte Argument" );
+				break;
+			}
+		}
+		return std::move( str );
 	}
 private:
 	size_t GetOffset() noexcept(!IS_DEBUG)

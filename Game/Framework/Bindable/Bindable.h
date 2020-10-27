@@ -2,6 +2,7 @@
 
 #include "../Graphics.h"
 #include <stdexcept>
+#include <cassert>
 
 namespace Bind
 {
@@ -11,6 +12,7 @@ namespace Bind
 	public:
 		virtual void Bind( Graphics& gfx ) noexcept = 0;
 		virtual ~Bindable() = default;
+		virtual std::string GetKey() const noexcept { assert( false && "!!!BIB!!! ERROR !!!BIB!!!" ); return {}; }
 	protected:
 		static ID3D11DeviceContext* GetContext( Graphics& gfx ) noexcept;
 		static ID3D11Device* GetDevice( Graphics& gfx ) noexcept;

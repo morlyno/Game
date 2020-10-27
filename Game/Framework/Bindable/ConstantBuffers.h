@@ -2,6 +2,7 @@
 
 #include "Bindable.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
+#include <typeinfo>
 
 namespace Bind
 {
@@ -77,6 +78,15 @@ namespace Bind
 		{
 			GetContext( gfx )->VSSetConstantBuffers( slot,1u,pConstantBuffer.GetAddressOf() );
 		}
+		static std::string GenerateKey( UINT slot ) noexcept
+		{
+			using namespace std::string_literals;
+			return typeid(VertexConstantBuffer).name() + "#"s + std::to_string( slot );
+		}
+		std::string GetKey() const noexcept
+		{
+			return GenerateKey( slot );
+		}
 	};
 
 	template<typename C>
@@ -90,6 +100,15 @@ namespace Bind
 		void Bind( Graphics& gfx ) noexcept override
 		{
 			GetContext( gfx )->PSSetConstantBuffers( slot,1u,pConstantBuffer.GetAddressOf() );
+		}
+		static std::string GenerateKey( UINT slot ) noexcept
+		{
+			using namespace std::string_literals;
+			return typeid(PixelConstantBuffer).name() + "#"s + std::to_string( slot );
+		}
+		std::string GetKey() const noexcept
+		{
+			return GenerateKey( slot );
 		}
 	};
 

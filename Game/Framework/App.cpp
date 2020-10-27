@@ -10,6 +10,7 @@ App::App()
 	pl( wnd.Gfx(),0.0f,0.0f,0.0f )
 {
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Sphere>( wnd.Gfx(),5.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }

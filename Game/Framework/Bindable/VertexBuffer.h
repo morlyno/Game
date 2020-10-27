@@ -12,9 +12,10 @@ namespace Bind
 	{
 	public:
 		template<typename T>
-		VertexBuffer( Graphics& gfx,const std::vector<T>& vertecies )
+		VertexBuffer( Graphics& gfx,const std::vector<T>& vertecies,const std::string& tag )
 			:
-			stride( sizeof( T ) )
+			stride( sizeof( T ) ),
+			tag( tag )
 		{
 			INFOMAN( gfx );
 
@@ -33,9 +34,10 @@ namespace Bind
 				&pVertexBuffer
 			) );
 		}
-		VertexBuffer( Graphics& gfx,const VertexData& vd )
+		VertexBuffer( Graphics& gfx,const VertexData& vd,const std::string& tag )
 			:
-			stride( (UINT)vd.LayoutSize() )
+			stride( (UINT)vd.LayoutSize() ),
+			tag( tag )
 		{
 			INFOMAN( gfx );
 
@@ -55,9 +57,12 @@ namespace Bind
 			) );
 		}
 		void Bind( Graphics& gfx ) noexcept override;
+		static std::string GenerateKey( const std::string& tag ) noexcept;
+		std::string GetKey() const noexcept override;
 	private:
 		const UINT stride;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
+		std::string tag;
 	};
 
 }

@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include "GeometryFactory.h"
 #include "../VertexLayout.h"
+#include "../BindableCodex.h"
 
 Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index,bool test )
     :
@@ -24,17 +25,17 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
     auto indices = Geometry::Cube::MakeIndicesIndipendent();
     Geometry::MakeNormals( vd,indices );
 
-    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd ) );
+    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd,typeid(*this).name() ) );
 
-    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices ) );
+    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices,typeid(*this).name() ) );
 
-    auto pvs = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightVS.cso" );
+    auto pvs = std::make_shared<Bind::VertexShader>( gfx,"LightVS.cso" );
     auto pvsbc = pvs->GetBytecode();
     AddBind( std::move( pvs ) );
 
-    AddBind( std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/LightPS.cso" ) );
+    AddBind( std::make_shared<Bind::PixelShader>( gfx,"LightPS.cso" ) );
 
-    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
+    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetLayout(),pvsbc ) );
 
     AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
@@ -66,7 +67,7 @@ DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 
 DirectX::XMFLOAT4 Cube::GetColorXM() const noexcept
 {
-    return { color[0],color[1],color[2],color[3] };
+    return { color[0],color[1],color[2],1.0f };
 }
 
 std::string Cube::GetType() const noexcept

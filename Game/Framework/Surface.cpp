@@ -19,11 +19,12 @@ namespace gdi = Gdiplus;
 #include <sstream>
 #include <cassert>
 
-Surface::Surface( unsigned int width,unsigned int height ) noexcept
+Surface::Surface( unsigned int width,unsigned int height,const std::string& name ) noexcept
     :
     width( width ),
     height( height ),
-    pBuffer( std::make_unique<Color[]>( (size_t)( width * height ) ) )
+    pBuffer( std::make_unique<Color[]>( (size_t)( width * height ) ) ),
+    name( name )
 {
 }
 
@@ -66,7 +67,7 @@ Surface Surface::FromFile( std::wstring filename )
             pBuffer[y * width + x] = c.GetValue();
         }
     }
-    return Surface( width,height,std::move( pBuffer ) );
+    return Surface( width,height,std::move( pBuffer ),std::string{ filename.begin(),filename.end() } );
 }
 
 unsigned int Surface::GetWidht() const noexcept
@@ -94,6 +95,11 @@ const Surface::Color* Surface::GetBufferPointerConst() const noexcept
     return pBuffer.get();
 }
 
+std::string Surface::GetName() const noexcept
+{
+    return name;
+}
+
 void Surface::Copy( const Surface& s ) noexcept( !IS_DEBUG )
 {
     assert( width == s.width );
@@ -101,11 +107,12 @@ void Surface::Copy( const Surface& s ) noexcept( !IS_DEBUG )
     memcpy( pBuffer.get(),s.pBuffer.get(),width * height * sizeof( Color ) );
 }
 
-Surface::Surface( unsigned int width,unsigned int height,std::unique_ptr<Color[]> pBufferParent ) noexcept
+Surface::Surface( unsigned int width,unsigned int height,std::unique_ptr<Color[]> pBufferParent,const std::string& name ) noexcept
     :
     width( width ),
     height( height ),
-    pBuffer( std::move( pBufferParent ) )
+    pBuffer( std::move( pBufferParent ) ),
+    name( name )
 {
 }
 

@@ -3,6 +3,7 @@
 #include "../Bindable/BindableHeaders.h"
 #include "GeometryFactory.h"
 #include "../VertexLayout.h"
+#include "../BindableCodex.h"
 
 Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
@@ -16,15 +17,15 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
     std::vector<unsigned short> indices;
     Geometry::Sphere::Make( vd,indices );
 
-    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd ) );
+    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd,typeid(*this).name() ) );
 
-    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices ) );
+    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices,typeid(*this).name() ) );
 
-    auto pvs = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
+    auto pvs = std::make_shared<Bind::VertexShader>( gfx,"VertexShader.cso" );
     auto pvsbc = pvs->GetBytecode();
     AddBind( std::move( pvs ) );
 
-    AddBind( std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/6ColorPS.cso" ) );
+    AddBind( std::make_shared<Bind::PixelShader>( gfx,"6ColorPS.cso" ) );
 
     struct ConstBuffer
     {
@@ -43,9 +44,10 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
     };
     AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,cbuff ) );
 
-    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
+    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetLayout(),pvsbc ) );
 
     AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+
     AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }
 
@@ -67,7 +69,7 @@ DirectX::XMMATRIX Sphere::GetTransformXM() const noexcept
 
 DirectX::XMFLOAT4 Sphere::GetColorXM() const noexcept
 {
-    return { 0.0f,0.0f,0.0f,0.0f };
+    return { color[0],color[1],color[2],1.0f };
 }
 
 std::string Sphere::GetType() const noexcept
@@ -110,6 +112,8 @@ bool Sphere::SpawnControlWindow() noexcept
             scale_height = 1.0f;
             scale_depth = 1.0f;
         }
+        ImGui::Text( "Coloring" );
+        ImGui::ColorPicker3( "Color",color );
     }
     ImGui::End();
     return open;

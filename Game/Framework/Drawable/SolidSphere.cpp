@@ -16,15 +16,15 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
     std::vector<unsigned short> indices;
     Geometry::Sphere::Make( vd,indices );
 
-    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd ) );
+    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd,typeid(*this).name() ) );
 
-    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices ) );
+    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices,typeid(*this).name() ) );
 
-    auto pvs = std::make_shared<Bind::VertexShader>( gfx,L"Framework/Shader/ShaderByteCodes/VertexShader.cso" );
+    auto pvs = std::make_shared<Bind::VertexShader>( gfx,"VertexShader.cso" );
     auto pvsbc = pvs->GetBytecode();
     AddBind( std::move( pvs ) );
 
-    AddBind( std::make_shared<Bind::PixelShader>( gfx,L"Framework/Shader/ShaderByteCodes/SolidColor.cso" ) );
+    AddBind( std::make_shared<Bind::PixelShader>( gfx,"SolidColor.cso" ) );
 
     struct ConstBuffer
     {
@@ -33,7 +33,7 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
 
     AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,ColorConst ) );
 
-    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetDesc(),pvsbc ) );
+    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetLayout(),pvsbc ) );
 
     AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
     AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
@@ -57,7 +57,7 @@ DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept
 
 DirectX::XMFLOAT4 SolidSphere::GetColorXM() const noexcept
 {
-    return { 0.0f,0.0f,0.0f,0.0f };
+    return { color[0],color[1],color[2],1.0f };
 }
 
 std::string SolidSphere::GetType() const noexcept
