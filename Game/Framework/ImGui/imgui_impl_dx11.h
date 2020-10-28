@@ -10,9 +10,10 @@
 // https://github.com/ocornut/imgui
 
 #pragma once
-#include "../Utility/MorWin.h"
-#include "../Graphics.h"
 #include "imgui.h"      // IMGUI_IMPL_API
+
+struct ID3D11Device;
+struct ID3D11DeviceContext;
 
 IMGUI_IMPL_API bool     ImGui_ImplDX11_Init(ID3D11Device* device, ID3D11DeviceContext* device_context);
 IMGUI_IMPL_API void     ImGui_ImplDX11_Shutdown();
