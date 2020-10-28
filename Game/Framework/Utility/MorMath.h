@@ -12,19 +12,13 @@ T fmod( T a,T b )
 template<typename T>
 T wrap_angle( T rad )
 {
-	T r = (rad + (T)PI);
-	r = fmod( r,((T)2.0f * (T)PI) );
-	if ( r < (T)0.0f )
+	constexpr float Tow_PI = (T)PI * (T)2.0f;
+	rad = fmod( rad,Tow_PI );
+	if ( rad < (T)0.0f )
 	{
-		r += ((T)2.0f * (T)PI);
+		rad += Tow_PI;
 	}
-	return r - (T)PI;
-	//T i = fmod( rad,(T)PI_D );
-	//if ( i < (T)-PI )
-	//{
-	//	i += ((T)PI * (T)2.0f);
-	//}
-	//return i;
+	return rad;
 }
 
 template<typename T>
@@ -36,10 +30,10 @@ T sq( T val )
 template<typename T>
 T expo( T val,int e )
 {
-	T rslt = val;
+	T rslt = 1;
 	for ( int i = 0; e < i; ++i )
 	{
-		rslt *= rslt;
+		rslt *= val;
 	}
 	return rslt;
 }

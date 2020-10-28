@@ -32,15 +32,16 @@ public:
     {
         return specularIntesity;
     }
+    virtual std::string GetType() const noexcept = 0;
 	virtual bool SpawnControlWindow() noexcept override
     {
         bool open = true;
-        if ( ImGui::Begin( std::to_string( index ).c_str(),&open ) )
+        if ( ImGui::Begin( (GetType() + " " + std::to_string( index )).c_str(),&open ) )
         {
             ImGui::Text( "Position" );
-            ImGui::SliderFloat( "X",&x,-10.0f,10.0f );
-            ImGui::SliderFloat( "Y",&y,-10.0f,10.0f );
-            ImGui::SliderFloat( "Z",&z,-10.0f,10.0f );
+            ImGui::DragFloat( "##X",&x,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Y",&y,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Z",&z,0.1f,0.0f,0.0f,"%.2f" );
             if ( ImGui::Button( "ResetPosition" ) )
             {
                 x = 0.0f;
@@ -48,9 +49,9 @@ public:
                 z = 0.0f;
             }
             ImGui::Text( "Rotation" );
-            ImGui::SliderAngle( "Roll",&roll,-180.0f,180.0f );
-            ImGui::SliderAngle( "Pitch",&pitch,-180.0f,180.0f );
-            ImGui::SliderAngle( "Yaw",&yaw,-180.0f,180.0f );
+            ImGui::SliderAngle( "Roll",&roll,0.0f,360.0f );
+            ImGui::SliderAngle( "Pitch",&pitch,0.0f,360.0f );
+            ImGui::SliderAngle( "Yaw",&yaw,0.0f,360.0f );
             if ( ImGui::Button( "ResetRotaion" ) )
             {
                 roll = 0.0f;

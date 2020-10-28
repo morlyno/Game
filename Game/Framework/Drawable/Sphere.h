@@ -10,5 +10,5 @@ public:
 	DirectX::XMMATRIX GetTransformXM() const noexcept;
 	DirectX::XMFLOAT4 GetColorXM() const noexcept;
 	std::string GetType() const noexcept;
-	bool SpawnControlWindow() noexcept override;
+	//bool SpawnControlWindow() noexcept override;
 };
