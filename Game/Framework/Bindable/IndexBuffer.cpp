@@ -1,10 +1,12 @@
 #include "IndexBuffer.h"
+#include <typeinfo>
 
 using namespace Bind;
 
-IndexBuffer::IndexBuffer( Graphics& gfx,std::vector<unsigned short> indices )
+IndexBuffer::IndexBuffer( Graphics& gfx,std::vector<unsigned short> indices,const std::string& tag )
 	:
-	count( (UINT)indices.size() )
+	count( (UINT)indices.size() ),
+	tag( tag )
 {
 	INFOMAN( gfx );
 
@@ -30,4 +32,15 @@ void IndexBuffer::Bind( Graphics& gfx ) noexcept
 UINT IndexBuffer::GetCount() const
 {
 	return count;
+}
+
+std::string Bind::IndexBuffer::GenerateKey( const std::string& tag ) noexcept
+{
+	using namespace std::string_literals;
+	return typeid(IndexBuffer).name() + "#"s + tag;
+}
+
+std::string Bind::IndexBuffer::GetKey() const noexcept
+{
+	return GenerateKey( tag );
 }

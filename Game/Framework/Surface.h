@@ -71,7 +71,7 @@ public:
 		}
 	};
 public:
-	Surface( unsigned int width,unsigned int height ) noexcept;
+	Surface( unsigned int width,unsigned int height,const std::string& name = {} ) noexcept;
 	Surface( Surface& ) = delete;
 	Surface( Surface&& other ) noexcept;
 	Surface& operator=( Surface& ) = delete;
@@ -82,11 +82,13 @@ public:
 	Color* GetBufferPointer() noexcept;
 	const Color* GetBufferPointer() const noexcept;
 	const Color* GetBufferPointerConst() const noexcept;
+	std::string GetName() const noexcept;
 	void Copy( const Surface& s ) noexcept( !IS_DEBUG );
 private:
-	Surface( unsigned int width,unsigned int height,std::unique_ptr<Color[]> pBufferParent ) noexcept;
+	Surface( unsigned int width,unsigned int height,std::unique_ptr<Color[]> pBufferParent,const std::string& name ) noexcept;
 private:
 	unsigned int width;
 	unsigned int height;
 	std::unique_ptr<Color[]> pBuffer;
+	std::string name;
 };

@@ -24,7 +24,7 @@ private:
 	void SpawnDrawableControlWindows() noexcept;
 	void SpawnDrawableSpawnWindow() noexcept;
 private:
-	float c[3] = { 0.5f,0.5f,0.5f };
+	float c[3] = { 0.0f,0.0f,0.0f };
 	ImGuiManager imgui;
 	Camera cam;
 	Window wnd;

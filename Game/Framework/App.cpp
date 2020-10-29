@@ -2,25 +2,19 @@
 #include "ImGui/imgui.h"
 #include "Drawable/DrawableHeader.h"
 #include "Utility/MorUtility.h"
-#include "Utility/MorMath.h"
-
-#include "BindableCodex.h"
 
 App::App()
     :
     wnd( 1200,800,L"SexyWindow" ),
 	pl( wnd.Gfx(),0.0f,0.0f,0.0f )
 {
-	for ( int i = 0; i < 10; ++i )
-	{
-		MorTimer t;
-		drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-		OutputDebugString( std::to_wstring( t.Mark() ).c_str() );
-		OutputDebugString( L"\n" );
-	}
-
+	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),-5.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Sphere>( wnd.Gfx(),5.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
+
+	DrawableId.insert( 0 );
 }
 
 App::~App()
@@ -48,11 +42,12 @@ int App::Go()
 void App::DoFrame()
 {
 	wnd.Gfx().SetCamera( cam );
-	const auto dt = timer.Mark() * SimulationSpeed;
+	timer.Mark();
+	const auto dt = paused ? 0.0f : timer.LastDuration() * SimulationSpeed;
 	pl.Bind( wnd.Gfx() );
 	for ( auto& d : drawables )
 	{
-		d->Update( paused ? 0.0f : dt );
+		d->Update( dt );
 		d->Draw( wnd.Gfx() );
 	}
 	pl.Draw( wnd.Gfx() );
@@ -100,24 +95,17 @@ void App::SpawnDrawableControlWindowMangerWindow() noexcept
 					index = i;
 				}
 			}
-
 			ImGui::EndCombo();
 		}
-		if ( ImGui::Button( "Spawn Window" ) )
+		if ( ImGui::Button( "Spawn Window" ) && index )
 		{
-			if ( index )
-			{
-				DrawableId.insert( *index );
-				index.reset();
-			}
+			DrawableId.insert( *index );
+			index.reset();
 		}
-		if ( ImGui::Button( "Erase Drawable" ) )
+		if ( ImGui::Button( "Erase Drawable" ) && index )
 		{
-			if ( index )
-			{
-				erase_by_index( drawables,*index );
-				index.reset();
-			}
+			erase_by_index( drawables,*index );
+			index.reset();
 		}
 	}
 	ImGui::End();
@@ -130,17 +118,15 @@ void App::SpawnDrawableControlWindows() noexcept
 		if ( !drawables[*i]->SpawnControlWindow() )
 		{
 			i = DrawableId.erase( i );
+			continue;
 		}
-		else
-		{
-			++i;
-		}
+		++i;
 	}
 }
 
 void App::SpawnDrawableSpawnWindow() noexcept
 {
-	const char* Types[] = { "Square","Sheet","Cube" };
+	const char* Types[] = { "Cube","Sphere" };
 	if ( ImGui::Begin( "Drawable Spawner" ) )
 	{
 		if ( ImGui::BeginCombo( "Types",TypeIndex ? Types[*TypeIndex] : "Chose Type..." ) )
@@ -157,31 +143,23 @@ void App::SpawnDrawableSpawnWindow() noexcept
 		}
 		if ( TypeIndex )
 		{
-			float xyz[3] = { 0.0f };
-			ImGui::InputFloat3( "XYZ",xyz );
 			if ( ImGui::Button( "Spawn Drawable" ) )
 			{
 				switch ( *TypeIndex )
 				{
 				case 0:
-					//drawables.push_back( std::make_unique<Plane>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,1.0f,1.0f,1.0f,(int)drawables.size() ) );
-					//DrawableId.insert( (int)drawables.size() - 1 );
-					//TypeIndex.reset();
+					drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					DrawableId.insert( (int)drawables.size() - 1 );
+					TypeIndex.reset();
 					break;
 				case 1:
-					//drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
-					//DrawableId.insert( (int)drawables.size() - 1 );
-					//TypeIndex.reset();
-					break;
-				case 2:
-					drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),xyz[0],xyz[1],xyz[2],0.0f,0.0f,0.0f,(int)drawables.size() ) );
+					drawables.push_back( std::make_unique<Sphere>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
 					DrawableId.insert( (int)drawables.size() - 1 );
 					TypeIndex.reset();
 					break;
 				}
 			}
 		}
-
 	}
 	ImGui::End();
 }

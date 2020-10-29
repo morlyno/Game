@@ -1,9 +1,12 @@
 #include "Texture.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
+#include <typeinfo>
 
 using namespace Bind;
 
 Texture::Texture( Graphics& gfx,const Surface& s )
+	:
+	filename( s.GetName() )
 {
 	INFOMAN( gfx );
 
@@ -41,4 +44,15 @@ Texture::Texture( Graphics& gfx,const Surface& s )
 void Texture::Bind( Graphics& gfx ) noexcept
 {
 	GetContext( gfx )->PSSetShaderResources( 0u,1u,pTextureView.GetAddressOf() );
+}
+
+std::string Bind::Texture::GenerateKey( const std::string& filename ) noexcept
+{
+	using namespace std::string_literals;
+	return typeid(Texture).name() + "#"s + filename;
+}
+
+std::string Bind::Texture::GetKey() const noexcept
+{
+	return GenerateKey( filename );
 }

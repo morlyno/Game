@@ -16,47 +16,27 @@ namespace Bind
 		}
 		static void Store( std::shared_ptr<Bindable> bind ) noexcept
 		{
-			Get()._Store( std::move( bind ) );
-		}
-		static void PurchByRef() noexcept
-		{
-			Get()._PurchByRef();
+			return Get()._Store( bind );
 		}
 	private:
 		std::shared_ptr<Bindable> _Resolve( const std::string& key ) noexcept
 		{
-			const auto i = Bindables.find( key );
-			if ( i != Bindables.end() )
+			const auto bind = Bindables.find( key );
+			if ( bind != Bindables.end() )
 			{
-				return i->second;
+				return bind->second;
 			}
 			return {};
 		}
-		void _Store( std::shared_ptr<Bindable> bind ) noexcept
+		void _Store( std::shared_ptr<Bindable> bind )
 		{
-			Bindables[bind->GetKEY()] = bind;
+			Bindables[bind->GetKey()] = bind;
 		}
-		void _PurchByRef() noexcept
-		{
-			for ( auto i = Bindables.begin(); i != Bindables.end(); )
-			{
-				if ( i->second.use_count() == 1 )
-				{
-					i = Bindables.erase( i );
-				}
-				else
-				{
-					++i;
-				}
-			}
-		}
-	public:
 		static Codex& Get() noexcept
 		{
 			static Codex codex;
 			return codex;
 		}
-	private:
 		std::unordered_map<std::string,std::shared_ptr<Bindable>> Bindables;
 	};
 

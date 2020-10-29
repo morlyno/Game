@@ -13,7 +13,7 @@ class PointLight
 		float ambinat;
 	} PLConst;
 public:
-	PointLight( Graphics& gfx,float x,float y,float z );
+	PointLight( Graphics& gfx,float x,float y,float z,int index = -1 );
 	void Draw( Graphics& gfx ) noexcept( !IS_DEBUG );
 	void Bind( Graphics& gfx ) noexcept;
 	void SpawnControlWindow() noexcept;

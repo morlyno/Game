@@ -1,5 +1,6 @@
 #include "Sampler.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
+#include <typeinfo>
 
 using namespace Bind;
 
@@ -18,4 +19,14 @@ Sampler::Sampler( Graphics& gfx )
 void Sampler::Bind( Graphics& gfx ) noexcept
 {
 	GetContext( gfx )->PSSetSamplers( 0u,1u,pSampler.GetAddressOf() );
+}
+
+std::string Bind::Sampler::GenerateKey() noexcept
+{
+	return typeid(Sampler).name();
+}
+
+std::string Bind::Sampler::GetKey() const noexcept
+{
+	return GenerateKey();
 }

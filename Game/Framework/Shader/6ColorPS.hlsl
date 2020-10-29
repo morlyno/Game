@@ -1,4 +1,4 @@
-cbuffer cBuf
+cbuffer cBuf : register(b1)
 {
 	float4 face_color[6];
 };

@@ -1,8 +1,8 @@
 #include "PointLight.h"
 
-PointLight::PointLight( Graphics& gfx,float x,float y,float z )
+PointLight::PointLight( Graphics& gfx,float x,float y,float z,int index )
 	:
-	mesh( gfx,x,y,z,0.0f,0.0f,0.0f,-1 ),
+	mesh( gfx,x,y,z,0.0f,0.0f,0.0f,index ),
 	pcb( gfx )
 {
 	Reset();
@@ -25,11 +25,11 @@ void PointLight::SpawnControlWindow() noexcept
 	if ( ImGui::Begin( "Point Light" ) )
 	{
 		ImGui::Text( "Position" );
-		ImGui::SliderFloat( "X",&PLConst.pos.x,-40.0f,40.0f );
-		ImGui::SliderFloat( "Y",&PLConst.pos.y,-40.0f,40.0f );
-		ImGui::SliderFloat( "Z",&PLConst.pos.z,-40.0f,40.0f );
-		ImGui::SliderFloat( "Falloff",&PLConst.falloffmutiplier,0.0f,1.0f );
-		ImGui::SliderFloat( "Ambinat",&PLConst.ambinat,0.0f,1.0f );
+		ImGui::DragFloat( "X",&PLConst.pos.x,1.0f,0.0f,0.0f );
+		ImGui::DragFloat( "Y",&PLConst.pos.y,1.0f,0.0f,0.0f );
+		ImGui::DragFloat( "Z",&PLConst.pos.z,1.0f,0.0f,0.0f );
+		ImGui::DragFloat( "Falloff",&PLConst.falloffmutiplier,1.0f,0.0f,1.0f );
+		ImGui::DragFloat( "Ambinat",&PLConst.ambinat,1.0f,0.0f,1.0f );
 	}
 	ImGui::End();
 }
@@ -37,6 +37,6 @@ void PointLight::SpawnControlWindow() noexcept
 void PointLight::Reset() noexcept
 {
 	PLConst.pos = { 20.0f,0.0f,0.0f };
-	PLConst.falloffmutiplier = 0.15f;
-	PLConst.ambinat = 0.1f;
+	PLConst.falloffmutiplier = 0.177f;
+	PLConst.ambinat = 0.067f;
 }
