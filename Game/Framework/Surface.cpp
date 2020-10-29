@@ -67,7 +67,10 @@ Surface Surface::FromFile( std::wstring filename )
             pBuffer[y * width + x] = c.GetValue();
         }
     }
-    return Surface( width,height,std::move( pBuffer ),std::string{ filename.begin(),filename.end() } );
+    std::string narrow;
+    for ( auto ws : filename )
+        narrow += (std::string::value_type)ws;
+    return Surface( width,height,std::move( pBuffer ),narrow );
 }
 
 unsigned int Surface::GetWidht() const noexcept
