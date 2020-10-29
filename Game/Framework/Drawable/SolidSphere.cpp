@@ -30,7 +30,7 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
         DirectX::XMFLOAT4 color = { 1.0f,1.0f,1.0f,1.0f };
     } ColorConst;
 
-    AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,ColorConst ) );
+    AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,ColorConst,1u ) );
 
     AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetLayout(),pvsbc ) );
 
