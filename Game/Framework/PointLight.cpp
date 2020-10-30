@@ -28,8 +28,8 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::DragFloat( "X",&PLConst.pos.x,1.0f,0.0f,0.0f );
 		ImGui::DragFloat( "Y",&PLConst.pos.y,1.0f,0.0f,0.0f );
 		ImGui::DragFloat( "Z",&PLConst.pos.z,1.0f,0.0f,0.0f );
-		ImGui::DragFloat( "Falloff",&PLConst.falloffmutiplier,1.0f,0.0f,1.0f );
-		ImGui::DragFloat( "Ambinat",&PLConst.ambinat,1.0f,0.0f,1.0f );
+		ImGui::DragFloat( "Falloff",&PLConst.falloffmutiplier,0.01f,0.0f,1.0f );
+		ImGui::DragFloat( "Ambinat",&PLConst.ambinat,0.01f,0.0f,1.0f );
 	}
 	ImGui::End();
 }

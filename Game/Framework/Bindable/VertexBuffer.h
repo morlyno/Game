@@ -2,8 +2,9 @@
 
 #include "Bindable.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
-#include <vector>
 #include "../VertexLayout.h"
+#include <memory>
+#include "../BindableCodex.h"
 
 namespace Bind
 {
@@ -11,52 +12,19 @@ namespace Bind
 	class VertexBuffer : public Bindable
 	{
 	public:
-		template<typename T>
-		VertexBuffer( Graphics& gfx,const std::vector<T>& vertecies,const std::string& tag )
-			:
-			stride( sizeof( T ) ),
-			tag( tag )
-		{
-			INFOMAN( gfx );
-
-			D3D11_BUFFER_DESC bd = {};
-			bd.ByteWidth = UINT( vertecies.size() * sizeof( T ) );
-			bd.StructureByteStride = sizeof( T );
-			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			bd.CPUAccessFlags = 0u;
-			bd.MiscFlags = 0u;
-			D3D11_SUBRESOURCE_DATA sd = {};
-			sd.pSysMem = vertecies.data();
-			GFX_THROW_INFO( GetDevice( gfx )->CreateBuffer(
-				&bd,
-				&sd,
-				&pVertexBuffer
-			) );
-		}
-		VertexBuffer( Graphics& gfx,const VertexData& vd,const std::string& tag )
-			:
-			stride( (UINT)vd.LayoutSize() ),
-			tag( tag )
-		{
-			INFOMAN( gfx );
-
-			D3D11_BUFFER_DESC bd = {};
-			bd.ByteWidth = (UINT)vd.ByteSize();
-			bd.StructureByteStride = (UINT)vd.LayoutSize();
-			bd.Usage = D3D11_USAGE_DEFAULT;
-			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			bd.CPUAccessFlags = 0u;
-			bd.MiscFlags = 0u;
-			D3D11_SUBRESOURCE_DATA sd = {};
-			sd.pSysMem = vd.data();
-			GFX_THROW_INFO( GetDevice( gfx )->CreateBuffer(
-				&bd,
-				&sd,
-				&pVertexBuffer
-			) );
-		}
+		VertexBuffer( Graphics& gfx,const VertexData& vd,const std::string& tag );
 		void Bind( Graphics& gfx ) noexcept override;
+		template<typename Func>
+		static std::shared_ptr<VertexBuffer> Resolve( Graphics& gfx,const VertexData& vd,Func& func,const std::string& tag ) noexcept
+		{
+			if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( tag ) ) )
+			{
+				return std::dynamic_pointer_cast<VertexBuffer>(bind);
+			}
+			func();
+			const auto& bind = Bind::Codex::Store( std::make_shared<VertexBuffer>( gfx,vd,tag ) );
+			return std::dynamic_pointer_cast<VertexBuffer>(bind);
+		}
 		static std::string GenerateKey( const std::string& tag ) noexcept;
 		std::string GetKey() const noexcept override;
 	private:

@@ -1,5 +1,6 @@
 #include "PixelShader.h"
 #include <typeinfo>
+#include "../BindableCodex.h"
 
 using namespace Bind;
 
@@ -17,6 +18,16 @@ PixelShader::PixelShader( Graphics& gfx,const std::string& path )
 void PixelShader::Bind( Graphics& gfx ) noexcept
 {
 	GetContext( gfx )->PSSetShader( pPixelShader.Get(),nullptr,0u );
+}
+
+std::shared_ptr<PixelShader> Bind::PixelShader::Resolve( Graphics& gfx,const std::string& path ) noexcept
+{
+	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( path ) ) )
+	{
+		return std::dynamic_pointer_cast<PixelShader>(bind);
+	}
+	const auto& bind = Bind::Codex::Store( std::make_shared<PixelShader>( gfx,path ) );
+	return std::dynamic_pointer_cast<PixelShader>(bind);
 }
 
 std::string Bind::PixelShader::GenerateKey( const std::string& path ) noexcept

@@ -14,9 +14,13 @@ namespace Bind
 		{
 			return Get()._Resolve( key );
 		}
-		static void Store( std::shared_ptr<Bindable> bind ) noexcept
+		static std::shared_ptr<Bindable> Store( std::shared_ptr<Bindable> bind ) noexcept
 		{
 			return Get()._Store( bind );
+		}
+		static void PurchUniques() noexcept
+		{
+			Get()._PurchUniques();
 		}
 	private:
 		std::shared_ptr<Bindable> _Resolve( const std::string& key ) noexcept
@@ -28,9 +32,23 @@ namespace Bind
 			}
 			return {};
 		}
-		void _Store( std::shared_ptr<Bindable> bind )
+		std::shared_ptr<Bindable> _Store( std::shared_ptr<Bindable> bind ) noexcept
 		{
-			Bindables[bind->GetKey()] = bind;
+			return Bindables[bind->GetKey()] = bind;
+		}
+		void _PurchUniques() noexcept
+		{
+			for ( auto it = Bindables.begin(); it != Bindables.end(); )
+			{
+				if ( it->second.use_count() == 1 )
+				{
+					it = Bindables.erase( it );
+				}
+				else
+				{
+					++it;
+				}
+			}
 		}
 		static Codex& Get() noexcept
 		{

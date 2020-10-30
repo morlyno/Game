@@ -3,6 +3,8 @@
 #include "Bindable.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
 #include <typeinfo>
+#include <memory>
+#include "../BindableCodex.h"
 
 namespace Bind
 {
@@ -78,6 +80,24 @@ namespace Bind
 		{
 			GetContext( gfx )->VSSetConstantBuffers( slot,1u,pConstantBuffer.GetAddressOf() );
 		}
+		static std::shared_ptr<VertexConstantBuffer> Resolve( Graphics& gfx,const C& consts,UINT slot ) noexcept
+		{
+			if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( slot ) ) )
+			{
+				return std::dynamic_pointer_cast<VertexConstantBuffer>(bind);
+			}
+			const auto& bind = Bind::Codex::Store( std::make_shared<VertexConstantBuffer>( gfx,consts,slot ) );
+			return std::dynamic_pointer_cast<VertexConstantBuffer>(bind);
+		}
+		static std::shared_ptr<VertexConstantBuffer> Resolve( Graphics& gfx,UINT slot ) noexcept
+		{
+			if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( slot ) ) )
+			{
+				return std::dynamic_pointer_cast<VertexConstantBuffer>(bind);
+			}
+			const auto& bind = Bind::Codex::Store( std::make_shared<VertexConstantBuffer>( gfx,slot ) );
+			return std::dynamic_pointer_cast<VertexConstantBuffer>(bind);
+		}
 		static std::string GenerateKey( UINT slot ) noexcept
 		{
 			using namespace std::string_literals;
@@ -100,6 +120,24 @@ namespace Bind
 		void Bind( Graphics& gfx ) noexcept override
 		{
 			GetContext( gfx )->PSSetConstantBuffers( slot,1u,pConstantBuffer.GetAddressOf() );
+		}
+		static std::shared_ptr<PixelConstantBuffer> Resolve( Graphics& gfx,const C& consts,UINT slot ) noexcept
+		{
+			if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( slot ) ) )
+			{
+				return std::dynamic_pointer_cast<PixelConstantBuffer>(bind);
+			}
+			const auto& bind = Bind::Codex::Store( std::make_shared<PixelConstantBuffer>( gfx,consts,slot ) );
+			return std::dynamic_pointer_cast<PixelConstantBuffer>(bind);
+		}
+		static std::shared_ptr<PixelConstantBuffer> Resolve( Graphics& gfx,UINT slot ) noexcept
+		{
+			if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( slot ) ) )
+			{
+				return std::dynamic_pointer_cast<PixelConstantBuffer>(bind);
+			}
+			const auto& bind = Bind::Codex::Store( std::make_shared<PixelConstantBuffer>( gfx,slot ) );
+			return std::dynamic_pointer_cast<PixelConstantBuffer>(bind);
 		}
 		static std::string GenerateKey( UINT slot ) noexcept
 		{

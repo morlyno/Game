@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
 #include <typeinfo>
+#include "../BindableCodex.h"
 
 using namespace Bind;
 
@@ -44,6 +45,16 @@ Texture::Texture( Graphics& gfx,const Surface& s )
 void Texture::Bind( Graphics& gfx ) noexcept
 {
 	GetContext( gfx )->PSSetShaderResources( 0u,1u,pTextureView.GetAddressOf() );
+}
+
+std::shared_ptr<Texture> Bind::Texture::Resolve( Graphics& gfx,const Surface& s ) noexcept
+{
+	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( s.GetName() ) ) )
+	{
+		return std::dynamic_pointer_cast<Texture>(bind);
+	}
+	const auto& bind = Bind::Codex::Store( std::make_shared<Texture>( gfx,s ) );
+	return std::dynamic_pointer_cast<Texture>(bind);
 }
 
 std::string Bind::Texture::GenerateKey( const std::string& filename ) noexcept

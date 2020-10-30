@@ -1,6 +1,7 @@
 #include "Sampler.h"
 #include "../ErrorHandle/Macros/GraphicsThrowMacros.h"
 #include <typeinfo>
+#include "../BindableCodex.h"
 
 using namespace Bind;
 
@@ -19,6 +20,16 @@ Sampler::Sampler( Graphics& gfx )
 void Sampler::Bind( Graphics& gfx ) noexcept
 {
 	GetContext( gfx )->PSSetSamplers( 0u,1u,pSampler.GetAddressOf() );
+}
+
+std::shared_ptr<Sampler> Bind::Sampler::Resolve( Graphics& gfx ) noexcept
+{
+	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey() ) )
+	{
+		return std::dynamic_pointer_cast<Sampler>(bind);
+	}
+	const auto& bind = Bind::Codex::Store( std::make_shared<Sampler>( gfx ) );
+	return std::dynamic_pointer_cast<Sampler>(bind);
 }
 
 std::string Bind::Sampler::GenerateKey() noexcept

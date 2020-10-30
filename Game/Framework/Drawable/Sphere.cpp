@@ -14,17 +14,20 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
     ) );
 
     std::vector<unsigned short> indices;
-    Geometry::Sphere::Make( vd,indices );
+    auto func = [&indices,&vd]()
+    {
+        Geometry::Sphere::Make( vd,indices );
+    };
 
-    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd,typeid(*this).name() ) );
+    AddBind( Bind::VertexBuffer::Resolve( gfx,vd,func,typeid(*this).name() ) );
 
-    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices,typeid(*this).name() ) );
+    AddBind( Bind::IndexBuffer::Resolve( gfx,indices,typeid(*this).name() ) );
 
-    auto pvs = std::make_shared<Bind::VertexShader>( gfx,"VertexShader.cso" );
+    auto pvs = Bind::VertexShader::Resolve( gfx,"VertexShader.cso" );
     auto pvsbc = pvs->GetBytecode();
     AddBind( std::move( pvs ) );
 
-    AddBind( std::make_shared<Bind::PixelShader>( gfx,"6ColorPS.cso" ) );
+    AddBind( Bind::PixelShader::Resolve( gfx,"6ColorPS.cso" ) );
 
     struct ConstBuffer
     {
@@ -41,11 +44,11 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
             { 0.0f,1.0f,1.0f,1.0f },
         }
     };
-    AddBind( std::make_shared<Bind::PixelConstantBuffer<ConstBuffer>>( gfx,cbuff,1u ) );
+    AddBind( Bind::PixelConstantBuffer<ConstBuffer>::Resolve( gfx,cbuff,1u ) );
 
-    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetLayout(),pvsbc ) );
+    AddBind( Bind::InputLayout::Resolve( gfx,vd.GetLayout(),pvsbc ) );
 
-    AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+    AddBind( Bind::Topology::Resolve( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
     AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }

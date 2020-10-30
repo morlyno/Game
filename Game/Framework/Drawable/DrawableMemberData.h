@@ -133,8 +133,8 @@ protected:
 	float scale_width = 1.0f;
 	float scale_height = 1.0f;
 	float scale_depth = 1.0f;
-
-	float color[3] = { 1.0f,0.0f,1.0f };
+    
+    float color[3] = { 1.0f,1.0f,0.0f };
     float specularIntesity = 0.22f;
     float specularPower = 0.003f;
 

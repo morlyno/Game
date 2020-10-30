@@ -5,13 +5,9 @@
 #include "../VertexLayout.h"
 #include "../BindableCodex.h"
 
-Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index,bool test )
+Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float yaw,int index )
     :
-    DrawableMemberData( x,y,z,roll,pitch,yaw,index ),
-    test( test ),
-    Rotate_Pitch( test ),
-    Rotate_Yaw( test ),
-    Rotate_Roll( test )
+    DrawableMemberData( x,y,z,roll,pitch,yaw,index )
 {
     VertexData vd( std::move(
         VertexLayout{}
@@ -19,45 +15,42 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
         .Add( VertexLayout::Normal )
     ) );
 
-    Geometry::Cube::MakeIndipendent( vd );
-    
-    auto indices = Geometry::Cube::MakeIndicesIndipendent();
-    Geometry::MakeNormals( vd,indices );
+    std::vector<unsigned short> indices;
+    auto func = [&indices,&vd]()
+    {
+        Geometry::MakeNormals( vd,indices );
+        Geometry::Cube::MakeIndipendent( vd );
+        indices = Geometry::Cube::MakeIndicesIndipendent();
+        Geometry::MakeNormals( vd,indices );
+    };
 
-    AddBind( std::make_shared<Bind::VertexBuffer>( gfx,vd,typeid(*this).name() ) );
+    AddBind( Bind::VertexBuffer::Resolve( gfx,vd,func,typeid(*this).name() ) );
 
-    AddBind( std::make_shared<Bind::IndexBuffer>( gfx,indices,typeid(*this).name() ) );
+    AddBind( Bind::IndexBuffer::Resolve( gfx,indices,typeid(*this).name() ) );
 
-    auto pvs = std::make_shared<Bind::VertexShader>( gfx,"LightVS.cso" );
-    auto pvsbc = pvs->GetBytecode();
-    AddBind( std::move( pvs ) );
+    auto spvs = Bind::VertexShader::Resolve( gfx,"LightVS.cso" );
+    auto pvsbc = spvs->GetBytecode();
+    AddBind( std::move( spvs ) );
 
-    AddBind( std::make_shared<Bind::PixelShader>( gfx,"LightPS.cso" ) );
+    AddBind( Bind::PixelShader::Resolve( gfx,"LightPS.cso" ) );
 
-    AddBind( std::make_shared<Bind::InputLayout>( gfx,vd.GetLayout(),pvsbc ) );
+    AddBind( Bind::InputLayout::Resolve( gfx,vd.GetLayout(),pvsbc ) );
 
-    AddBind( std::make_shared<Bind::Topology>( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+    AddBind( Bind::Topology::Resolve( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
     AddBind( std::make_shared<Bind::ConstBuffDoubleBoy>( gfx,*this ) );
 }
 
 void Cube::Update( float dt ) noexcept
 {
-    roll = MorMath::wrap_angle( Rotate_Roll ? roll + dt : roll );
-    pitch = MorMath::wrap_angle( Rotate_Pitch ? pitch + dt : pitch );
-    yaw = MorMath::wrap_angle( Rotate_Yaw ? yaw + dt : yaw );
+    roll = MorMath::wrap_angle( roll );
+    pitch = MorMath::wrap_angle( pitch );
+    yaw = MorMath::wrap_angle( yaw );
 }
 
 DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 {
     namespace dx = DirectX;
-    if ( test )
-    {
-        return
-            dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
-            dx::XMMatrixTranslation( x,0.0f,0.0f ) *
-            dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll );
-    }
     return
         dx::XMMatrixScaling( scale_width,scale_height,scale_depth ) *
         dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *

@@ -1,5 +1,6 @@
 #include "VertexShader.h"
 #include <typeinfo>
+#include "../BindableCodex.h"
 
 using namespace Bind;
 
@@ -21,6 +22,16 @@ void VertexShader::Bind( Graphics& gfx ) noexcept
 ID3DBlob* VertexShader::GetBytecode() const noexcept
 {
 	return pBytecodeBlob.Get();
+}
+
+std::shared_ptr<VertexShader> Bind::VertexShader::Resolve( Graphics& gfx,const std::string& path ) noexcept
+{
+	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( path ) ) )
+	{
+		return std::dynamic_pointer_cast<VertexShader>( bind );
+	}
+	const auto& bind = Bind::Codex::Store( std::make_shared<VertexShader>( gfx,path ) );
+	return std::dynamic_pointer_cast<VertexShader>(bind);
 }
 
 std::string Bind::VertexShader::GenerateKey( const std::string& path ) noexcept

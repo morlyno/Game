@@ -1,5 +1,6 @@
 #include "IndexBuffer.h"
 #include <typeinfo>
+#include "../BindableCodex.h"
 
 using namespace Bind;
 
@@ -32,6 +33,16 @@ void IndexBuffer::Bind( Graphics& gfx ) noexcept
 UINT IndexBuffer::GetCount() const
 {
 	return count;
+}
+
+std::shared_ptr<IndexBuffer> Bind::IndexBuffer::Resolve( Graphics& gfx,std::vector<unsigned short> indices,const std::string& tag ) noexcept
+{
+	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( tag ) ) )
+	{
+		return std::dynamic_pointer_cast<IndexBuffer>( bind );
+	}
+	const auto& bind = Bind::Codex::Store( std::make_shared<IndexBuffer>( gfx,indices,tag ) );
+	return std::dynamic_pointer_cast<IndexBuffer>(bind);
 }
 
 std::string Bind::IndexBuffer::GenerateKey( const std::string& tag ) noexcept

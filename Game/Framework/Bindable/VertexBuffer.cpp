@@ -3,6 +3,29 @@
 
 using namespace Bind;
 
+Bind::VertexBuffer::VertexBuffer( Graphics& gfx,const VertexData& vd,const std::string& tag )
+	:
+	stride( (UINT)vd.LayoutSize() ),
+	tag( tag )
+{
+	INFOMAN( gfx );
+
+	D3D11_BUFFER_DESC bd = {};
+	bd.ByteWidth = (UINT)vd.ByteSize();
+	bd.StructureByteStride = (UINT)vd.LayoutSize();
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0u;
+	bd.MiscFlags = 0u;
+	D3D11_SUBRESOURCE_DATA sd = {};
+	sd.pSysMem = vd.data();
+	GFX_THROW_INFO( GetDevice( gfx )->CreateBuffer(
+		&bd,
+		&sd,
+		&pVertexBuffer
+	) );
+}
+
 void VertexBuffer::Bind( Graphics& gfx ) noexcept
 {
 	const UINT offset = 0u;
