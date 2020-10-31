@@ -190,13 +190,32 @@ public:
 		template<VertexLayout::ElementType ET>
 		auto& Get() const noexcept(!IS_DEBUG)
 		{
-			auto e = vl.QuerraElements( ET );
+			const auto e = vl.QuerraElements( ET );
 			auto data = pData + e.GetOffset();
 			return *reinterpret_cast<typename VertexLayout::Map<ET>::sysType*>(data);
 		}
 	private:
 		const VertexLayout& vl;
 		char* pData = nullptr;
+	};
+	class ConstVertex
+	{
+	public:
+		ConstVertex( const VertexLayout& vl,const char* pData ) noexcept
+			:
+			vl( vl ),
+			pData( pData )
+		{}
+		template<VertexLayout::ElementType ET>
+		const auto& Get() const noexcept(!IS_DEBUG)
+		{
+			const auto e = vl.QuerraElements( ET );
+			auto data = pData + e.GetOffset();
+			return *reinterpret_cast<const typename VertexLayout::Map<ET>::sysType*>(data);
+		}
+	private:
+		const VertexLayout& vl;
+		const char* pData = nullptr;
 	};
 public:
 	VertexData( VertexLayout&& vl ) noexcept
@@ -248,6 +267,12 @@ public:
 		assert( (LayoutSize() * (index + 1u)) <= buffer.size() );
 		return Vertex( vl,buffer.data() + (LayoutSize() * index) );
 	}
+	ConstVertex operator[]( size_t index ) const noexcept(!IS_DEBUG)
+	{
+		assert( (LayoutSize() * index) < buffer.size() );
+		assert( (LayoutSize() * (index + 1u)) <= buffer.size() );
+		return ConstVertex( vl,buffer.data() + (LayoutSize() * index) );
+	}
 	Vertex back() noexcept
 	{
 		return Vertex( vl,(buffer.end() - LayoutSize())._Ptr );
@@ -255,6 +280,22 @@ public:
 	Vertex front() noexcept
 	{
 		return Vertex( vl,buffer.data() );
+	}
+	ConstVertex back() const noexcept
+	{
+		return ConstVertex( vl,(buffer.end() - LayoutSize())._Ptr );
+	}
+	ConstVertex front() const noexcept
+	{
+		return ConstVertex( vl,buffer.data() );
+	}
+	ConstVertex const_back() const noexcept
+	{
+		return back();
+	}
+	ConstVertex const_front() const noexcept
+	{
+		return front();
 	}
 	void Resize( size_t new_size ) noexcept
 	{
