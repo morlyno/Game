@@ -5,6 +5,7 @@
 #include "../VertexLayout.h"
 #include <memory>
 #include "../BindableCodex.h"
+#include <functional>
 
 namespace Bind
 {
@@ -14,17 +15,7 @@ namespace Bind
 	public:
 		VertexBuffer( Graphics& gfx,const VertexData& vd,const std::string& tag );
 		void Bind( Graphics& gfx ) noexcept override;
-		template<typename Func>
-		static std::shared_ptr<VertexBuffer> Resolve( Graphics& gfx,const VertexData& vd,Func& func,const std::string& tag ) noexcept
-		{
-			if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( tag ) ) )
-			{
-				return std::dynamic_pointer_cast<VertexBuffer>(bind);
-			}
-			func();
-			const auto& bind = Bind::Codex::Store( std::make_shared<VertexBuffer>( gfx,vd,tag ) );
-			return std::dynamic_pointer_cast<VertexBuffer>(bind);
-		}
+		static std::shared_ptr<VertexBuffer> Resolve( Graphics& gfx,const VertexData& vd,std::function<void()> func,const std::string& tag ) noexcept;
 		static std::string GenerateKey( const std::string& tag ) noexcept;
 		std::string GetKey() const noexcept override;
 	private:

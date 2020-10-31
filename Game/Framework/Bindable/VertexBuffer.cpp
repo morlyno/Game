@@ -32,6 +32,17 @@ void VertexBuffer::Bind( Graphics& gfx ) noexcept
 	GetContext( gfx )->IASetVertexBuffers( 0u,1u,pVertexBuffer.GetAddressOf(),&stride,&offset );
 }
 
+std::shared_ptr<VertexBuffer> Bind::VertexBuffer::Resolve( Graphics& gfx,const VertexData& vd,std::function<void()> func,const std::string& tag ) noexcept
+{
+	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( tag ) ) )
+	{
+		return std::dynamic_pointer_cast<VertexBuffer>(bind);
+	}
+	func();
+	const auto& bind = Bind::Codex::Store( std::make_shared<VertexBuffer>( gfx,vd,tag ) );
+	return std::dynamic_pointer_cast<VertexBuffer>(bind);
+}
+
 std::string Bind::VertexBuffer::GenerateKey( const std::string& tag ) noexcept
 {
 	using namespace std::string_literals;
