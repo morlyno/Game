@@ -55,9 +55,7 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
 
 void Sphere::Update( float dt ) noexcept
 {
-    roll = MorMath::wrap_angle( roll );
-    pitch = MorMath::wrap_angle( pitch );
-    yaw = MorMath::wrap_angle( yaw );
+    WrapAngles();
 }
 
 DirectX::XMMATRIX Sphere::GetTransformXM() const noexcept

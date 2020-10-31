@@ -44,9 +44,7 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
 
 void SolidSphere::Update( float dt ) noexcept
 {
-    roll = MorMath::wrap_angle( roll );
-    pitch = MorMath::wrap_angle( pitch );
-    yaw = MorMath::wrap_angle( yaw );
+    WrapAngles();
 }
 
 DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept

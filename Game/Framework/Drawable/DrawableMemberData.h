@@ -32,13 +32,21 @@ public:
     {
         return specularIntesity;
     }
-    virtual std::string GetType() const noexcept = 0;
+    void WrapAngles() noexcept
+    {
+        roll = MorMath::wrap_angle( roll );
+        pitch = MorMath::wrap_angle( pitch );
+        yaw = MorMath::wrap_angle( yaw );
+    }
 	virtual bool SpawnControlWindow() noexcept override
     {
         bool open = true;
         if ( ImGui::Begin( (GetType() + " " + std::to_string( index )).c_str(),&open ) )
         {
             constexpr float offset = 100.0f;
+            constexpr float DragSpeed_Position = 0.1f;
+            constexpr float DragSpeed_Rotation = 1.0f;
+            constexpr float DragSpeed_Scaling = 0.1f;
             const float item_width = (ImGui::GetWindowSize().x - offset) / 3.0f - 20.0f - 8.0f;
 
             // -----Position----- //
@@ -48,17 +56,17 @@ public:
             ImGui::SameLine( offset );
             if ( ImGui::Button( "X",ImVec2( 20,0 ) ) ) { x = 0.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##X",&x,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##X",&x,DragSpeed_Position,0.0f,0.0f,"%.2f" );
 
             ImGui::SameLine();
             if ( ImGui::Button( "Y",ImVec2( 20,0 ) ) ) { y = 0.0f; }
             ImGui::SameLine( 0.0f,0.0f);
-            ImGui::DragFloat( "##Y",&y,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Y",&y,DragSpeed_Position,0.0f,0.0f,"%.2f" );
 
             ImGui::SameLine();
             if ( ImGui::Button( "Z",ImVec2( 20,0 ) ) ) { z = 0.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##Z",&z,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Z",&z,DragSpeed_Position,0.0f,0.0f,"%.2f" );
 
             // -----Rotation----- //
             ImGui::Text( "Rotation" );
@@ -70,17 +78,17 @@ public:
 
             if ( ImGui::Button( "R##Roll",ImVec2( 20,0 ) ) ) { roll = 0.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##Roll",&roll,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Roll",&roll,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
 
             ImGui::SameLine();
             if ( ImGui::Button( "P##Pitch",ImVec2( 20,0 ) ) ) { pitch = 0.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##Pitch",&pitch,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Pitch",&pitch,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
 
             ImGui::SameLine();
             if ( ImGui::Button( "Y##Yaw",ImVec2( 20,0 ) ) ) { yaw = 0.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##Yaw",&yaw,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Yaw",&yaw,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
             
             roll = MorMath::ToRadians( roll );
             pitch = MorMath::ToRadians( pitch );
@@ -92,17 +100,17 @@ public:
 
             if ( ImGui::Button( "W##Width",ImVec2( 20,0 ) ) ) { scale_width = 1.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##Width",&scale_width,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Width",&scale_width,DragSpeed_Scaling,0.0f,0.0f,"%.2f" );
 
             ImGui::SameLine();
             if ( ImGui::Button( "H##Height",ImVec2( 20,0 ) ) ) { scale_height = 1.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##Height",&scale_height,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Height",&scale_height,DragSpeed_Scaling,0.0f,0.0f,"%.2f" );
 
             ImGui::SameLine();
             if ( ImGui::Button( "D##Depth",ImVec2( 20,0 ) ) ) { scale_depth = 1.0f; }
             ImGui::SameLine( 0.0f,0.0f );
-            ImGui::DragFloat( "##Depth",&scale_depth,0.1f,0.0f,0.0f,"%.2f" );
+            ImGui::DragFloat( "##Depth",&scale_depth,DragSpeed_Scaling,0.0f,0.0f,"%.2f" );
             
             ImGui::PopItemWidth();
 
