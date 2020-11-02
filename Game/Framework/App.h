@@ -36,4 +36,5 @@ private:
 	std::set<int> DrawableId;
 	std::optional<int> index;
 	std::optional<int> TypeIndex;
+	int x = 0,y = 0;
 };

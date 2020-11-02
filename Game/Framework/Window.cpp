@@ -76,6 +76,13 @@ Window::Window( int width,int height,LPCWSTR pWndName,bool CloseAll )
 		throw WND_LAST_EXCEPT();
 	}
 
+	RAWINPUTDEVICE rid;
+	rid.usUsagePage = (unsigned short)1u;
+	rid.usUsage = (unsigned short)2u;
+	rid.dwFlags = RIDEV_INPUTSINK;
+	rid.hwndTarget = hWnd;
+	RegisterRawInputDevices( &rid,1,sizeof( rid ) );
+
 	// ImGui Setup
 	ImGui_ImplWin32_Init( hWnd ); // TODO(Mor): Init / ShutDown of ImGui probably problems w/ multible windows (if created more then once)
 
@@ -124,6 +131,48 @@ unsigned int Window::GetHeight() const noexcept
 void Window::Kill() const noexcept
 {
 	PostQuitMessage( 0 );
+}
+
+void Window::ShowMouse() noexcept
+{
+	if ( !MouseDisplayed )
+	{
+		ShowCursor( TRUE );
+		MouseDisplayed = true;
+	}
+}
+
+void Window::HideMouse() noexcept
+{
+	if ( MouseDisplayed )
+	{
+		ShowCursor( FALSE );
+		MouseDisplayed = false;
+	}
+}
+
+void Window::ClipMouse() noexcept
+{
+	RECT screen;
+	GetWindowRect( hWnd,&screen );
+	ClipCursor( &screen );
+	MouseCliped = true;
+}
+
+void Window::ReleasMouse() noexcept
+{
+	ClipCursor( NULL );
+	MouseCliped = false;
+}
+
+void Window::ReadRawInputs() noexcept
+{
+	RawMouse = true;
+}
+
+void Window::ReadNormalInputs() noexcept
+{
+	RawMouse = false;
 }
 
 Graphics& Window::Gfx() const
@@ -175,30 +224,46 @@ LRESULT WINAPI Window::HandleMsg( HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		/*Mouse Messages*/
 	case WM_MOUSEMOVE:
 		{
-			const POINTS pt = MAKEPOINTS( lParam );
-			if ( pt.x >= 0 && pt.x < (short)width && pt.y >= 0 && pt.y < (short)height )
-			{
-				mouse.OnMouseMove( pt.x,pt.y );
-				if ( !mouse.inwindow )
-				{
-					SetCapture( hWnd );
-					mouse.OnEnterWindow( pt.x,pt.y );
-				}
-			}
-			else
+			if ( !RawMouse )
 			{
 				const POINTS pt = MAKEPOINTS( lParam );
-				if ( wParam & ( MK_LBUTTON | MK_RBUTTON ) )
+				if ( pt.x >= 0 && pt.x < (short)width && pt.y >= 0 && pt.y < (short)height )
 				{
 					mouse.OnMouseMove( pt.x,pt.y );
+					if ( !mouse.inwindow )
+					{
+						SetCapture( hWnd );
+						mouse.OnEnterWindow( pt.x,pt.y );
+					}
 				}
 				else
 				{
-					mouse.OnLeaveWindow( pt.x,pt.y );
-					if ( ReleaseCapture() == 0 )
+					const POINTS pt = MAKEPOINTS( lParam );
+					if ( wParam & (MK_LBUTTON | MK_RBUTTON) )
 					{
-						throw WND_LAST_EXCEPT();
+						mouse.OnMouseMove( pt.x,pt.y );
 					}
+					else
+					{
+						mouse.OnLeaveWindow( pt.x,pt.y );
+						if ( ReleaseCapture() == 0 )
+						{
+							throw WND_LAST_EXCEPT();
+						}
+					}
+				}
+			}
+			break;
+		}
+	case WM_INPUT:
+		{
+			if ( RawMouse )
+			{
+				GetRawInputData( (HRAWINPUT)lParam,RID_INPUT,&raw,&size,sizeof( RAWINPUTHEADER ) );
+				if ( (raw.data.mouse.usFlags & MOUSE_MOVE_RELATIVE) == MOUSE_MOVE_RELATIVE )
+				{
+					const auto& m = raw.data.mouse;
+					mouse.OnRawMouse( m.lLastX,m.lLastY );
 				}
 			}
 			break;

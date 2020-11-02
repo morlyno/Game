@@ -50,6 +50,34 @@ void App::DoFrame()
 	}
 	pl.Draw( wnd.Gfx() );
 
+	const auto c = wnd.kbd.ReadChar();
+	if ( c == 'e' )
+	{
+		wnd.HideMouse();
+		wnd.ClipMouse();
+		wnd.ReadRawInputs();
+	}
+	else if ( c == 'r' )
+	{
+		wnd.ShowMouse();
+		wnd.ReleasMouse();
+		wnd.ReadNormalInputs();
+	}
+
+	const auto e = wnd.mouse.Read();
+	if ( e.GetType() == Mouse::Event::Type::Delta )
+	{
+		x += e.GetDeltaX();
+		y += e.GetDeltaY();
+	}
+
+	if ( ImGui::Begin("Raw Data") )
+	{
+		ImGui::Text( "x: %d",x );
+		ImGui::Text( "y: %d",y );
+	}
+	ImGui::End();
+
 	SpawnDrawableControlWindowMangerWindow();
 	SpawnDrawableControlWindows();
 	SpawnDrawableSpawnWindow();

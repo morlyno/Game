@@ -1,8 +1,13 @@
 #include "Mouse.h"
 
-std::pair<int,int> Mouse::getPos() const noexcept
+std::pair<int,int> Mouse::GetPos() const noexcept
 {
 	return std::make_pair( x,y );
+}
+
+std::pair<int,int> Mouse::GetDelta() const noexcept
+{
+	return std::make_pair( dx,dy );
 }
 
 bool Mouse::LeftIsPresst() const noexcept
@@ -25,7 +30,7 @@ Mouse::Event Mouse::Read() noexcept
 	if ( buffer.size() > 0u )
 	{
 		auto e = buffer.front();
-		TrimBuffer();
+		buffer.pop();
 		return e;
 	}
 	return Mouse::Event();
@@ -43,10 +48,25 @@ bool Mouse::isEmpty() noexcept
 
 void Mouse::OnMouseMove( int newx,int newy ) noexcept
 {
+	dx = newx - x;
+	dy = newy - y;
+
 	x = newx;
 	y = newy;
 
 	buffer.emplace( Mouse::Event::Type::Move,*this );
+	TrimBuffer();
+}
+
+void Mouse::OnRawMouse( int newdx,int newdy ) noexcept
+{
+	dx = newdx;
+	dy = newdy;
+
+	x = 0;
+	y = 0;
+
+	buffer.emplace( Mouse::Event::Type::Delta,*this );
 	TrimBuffer();
 }
 

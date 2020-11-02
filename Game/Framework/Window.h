@@ -58,6 +58,12 @@ public:
 	unsigned int GetWidth() const noexcept;
 	unsigned int GetHeight() const noexcept;
 	void Kill() const noexcept;
+	void ShowMouse() noexcept;
+	void HideMouse() noexcept;
+	void ClipMouse() noexcept;
+	void ReleasMouse() noexcept;
+	void ReadRawInputs() noexcept;
+	void ReadNormalInputs() noexcept;
 public:
 	Mouse mouse;
 	Keyboard kbd;
@@ -71,4 +77,9 @@ private:
 	bool CloseAll;
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
+	UINT size = sizeof( RAWINPUT );
+	RAWINPUT raw;
+	bool MouseDisplayed = true;
+	bool MouseCliped = false;
+	bool RawMouse = false;
 };
