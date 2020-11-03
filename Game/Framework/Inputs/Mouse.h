@@ -103,6 +103,8 @@ public:
 	Mouse& operator=( const Mouse& ) = delete;
 	std::pair<int,int> GetPos() const noexcept;
 	std::pair<int,int> GetDelta() const noexcept;
+	int GetDeltaX() const noexcept;
+	int GetDeltaY() const noexcept;
 	bool LeftIsPresst() const noexcept;
 	bool RightIsPresst() const noexcept;
 	bool inWindow() const noexcept;

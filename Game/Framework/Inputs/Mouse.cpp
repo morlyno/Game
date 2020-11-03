@@ -10,6 +10,16 @@ std::pair<int,int> Mouse::GetDelta() const noexcept
 	return std::make_pair( dx,dy );
 }
 
+int Mouse::GetDeltaX() const noexcept
+{
+	return dx;
+}
+
+int Mouse::GetDeltaY() const noexcept
+{
+	return dy;
+}
+
 bool Mouse::LeftIsPresst() const noexcept
 {
 	return leftispresst;
@@ -48,8 +58,8 @@ bool Mouse::isEmpty() noexcept
 
 void Mouse::OnMouseMove( int newx,int newy ) noexcept
 {
-	dx = newx - x;
-	dy = newy - y;
+	dx = 0;
+	dy = 0;
 
 	x = newx;
 	y = newy;

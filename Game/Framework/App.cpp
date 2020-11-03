@@ -40,6 +40,8 @@ int App::Go()
 void App::DoFrame()
 {
 	wnd.Gfx().SetCamera( cam );
+	const auto e = wnd.mouse.Read();
+	cam.Inputs( e,wnd.kbd );
 	timer.Mark();
 	const auto dt = paused ? 0.0f : timer.LastDuration() * SimulationSpeed;
 	pl.Bind( wnd.Gfx() );
@@ -64,7 +66,6 @@ void App::DoFrame()
 		wnd.ReadNormalInputs();
 	}
 
-	const auto e = wnd.mouse.Read();
 	if ( e.GetType() == Mouse::Event::Type::Delta )
 	{
 		x += e.GetDeltaX();
@@ -73,8 +74,10 @@ void App::DoFrame()
 
 	if ( ImGui::Begin("Raw Data") )
 	{
-		ImGui::Text( "x: %d",x );
-		ImGui::Text( "y: %d",y );
+		ImGui::Text( "x  : %d",x );
+		ImGui::Text( "y  : %d",y );
+		ImGui::Text( "dx : %d",e.GetDeltaX() );
+		ImGui::Text( "dy : %d",e.GetDeltaY() );
 	}
 	ImGui::End();
 
