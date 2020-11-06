@@ -47,7 +47,7 @@ void Camera::Inputs( const Mouse::Event& mouse,const Keyboard& kbd ) noexcept
     // ----- Keyboard ----- //
 
     constexpr float y_speed = 1.0f;
-    constexpr float PIOver2 = MorMath::PI / 2.0f;
+    constexpr float PIOver2 = Mor::PI / 2.0f;
     namespace dx = DirectX;
 
     dx::XMVECTOR vpos = dx::XMLoadFloat3( &pos );
@@ -84,8 +84,8 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
     namespace dx = DirectX;
     constexpr dx::XMVECTOR eyedir_s = { 0.0f,0.0f,1.0f,0.0f };
     constexpr dx::XMVECTOR up = { 0.0f,1.0f,0.0f,0.0f };
-    const float r_pitch = MorMath::ToRadians( d_pitch );
-    const float r_yaw = MorMath::ToRadians( d_yaw );
+    const float r_pitch = Mor::ToRadians( d_pitch );
+    const float r_yaw = Mor::ToRadians( d_yaw );
 
     const dx::XMVECTOR cPos = dx::XMLoadFloat3( &pos );
     const dx::XMMATRIX rotation = dx::XMMatrixRotationRollPitchYaw( r_pitch,r_yaw,0.0f );
@@ -110,6 +110,6 @@ void Camera::Reset() noexcept
 
 void Camera::WrapAngles() noexcept
 {
-    d_pitch = MorMath::wrap_angle( d_pitch );
-    d_yaw = MorMath::wrap_angle( d_yaw );
+    d_pitch = Mor::wrap_angle( d_pitch );
+    d_yaw = Mor::wrap_angle( d_yaw );
 }

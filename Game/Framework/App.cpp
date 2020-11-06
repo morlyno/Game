@@ -133,7 +133,7 @@ void App::SpawnDrawableControlWindowMangerWindow() noexcept
 		}
 		if ( ImGui::Button( "Erase Drawable" ) && index )
 		{
-			erase_by_index( drawables,*index );
+			Mor::erase_by_index( drawables,*index );
 			index.reset();
 		}
 	}

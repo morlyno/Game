@@ -34,9 +34,9 @@ public:
     }
     void WrapAngles() noexcept
     {
-        roll = MorMath::wrap_angle( roll );
-        pitch = MorMath::wrap_angle( pitch );
-        yaw = MorMath::wrap_angle( yaw );
+        roll = Mor::wrap_angle( roll );
+        pitch = Mor::wrap_angle( pitch );
+        yaw = Mor::wrap_angle( yaw );
     }
 	virtual bool SpawnControlWindow() noexcept override
     {
@@ -72,9 +72,9 @@ public:
             ImGui::Text( "Rotation" );
             ImGui::SameLine( offset );
 
-            roll = MorMath::ToDegreees( roll );
-            pitch = MorMath::ToDegreees( pitch );
-            yaw = MorMath::ToDegreees( yaw );
+            roll = Mor::ToDegreees( roll );
+            pitch = Mor::ToDegreees( pitch );
+            yaw = Mor::ToDegreees( yaw );
 
             if ( ImGui::Button( "R##Roll",ImVec2( 20,0 ) ) ) { roll = 0.0f; }
             ImGui::SameLine( 0.0f,0.0f );
@@ -90,9 +90,9 @@ public:
             ImGui::SameLine( 0.0f,0.0f );
             ImGui::DragFloat( "##Yaw",&yaw,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
             
-            roll = MorMath::ToRadians( roll );
-            pitch = MorMath::ToRadians( pitch );
-            yaw = MorMath::ToRadians( yaw );
+            roll = Mor::ToRadians( roll );
+            pitch = Mor::ToRadians( pitch );
+            yaw = Mor::ToRadians( yaw );
 
             // -----Scaling----- //
             ImGui::Text( "Scaling" );
