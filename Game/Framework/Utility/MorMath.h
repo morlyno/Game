@@ -27,6 +27,17 @@ namespace Mor
 	}
 
 	template<typename T>
+	[[nodiscard]] T wrap_angle_Degree( T degree ) noexcept
+	{
+		degree = fmod( degree,(T)360.0f );
+		if ( degree < (T)0.0f )
+		{
+			degree += (T)360.0f;
+		}
+		return degree;
+	}
+
+	template<typename T>
 	[[nodiscard]] T sq( T val ) noexcept
 	{
 		return val * val;

@@ -14,7 +14,6 @@ public:
 	DirectX::XMFLOAT3 GetPos() const noexcept;
 private:
 	void Reset() noexcept;
-	void WrapAngles() noexcept;
 private:
 	DirectX::XMFLOAT3 pos;
 	DirectX::XMVECTOR eyeDir;

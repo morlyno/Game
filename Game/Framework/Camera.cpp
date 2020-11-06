@@ -27,13 +27,15 @@ void Camera::ShowControlWindow() noexcept
 
         ImGui::Text( "Direction" );
         ImGui::SameLine( offset );
-        ImGui::DragFloat( "##pitch",&d_pitch,1.0f,0.0f,360.0f,"%.2f" );
+        ImGui::DragFloat( "##pitch",&d_pitch,1.0f,-89.0f,89.0f,"%.2f" );
         ImGui::SameLine( 0.0f,0.0f );
-        ImGui::DragFloat( "##yaw",&d_yaw,1.0f,0.0f,360.0f,"%.2f" );
+        ImGui::DragFloat( "##yaw",&d_yaw,1.0f,0.0f,0.0f,"%.2f" );
 
         ImGui::PopItemWidth();
     }
     ImGui::End();
+
+    d_yaw = Mor::wrap_angle_Degree( d_yaw );
 }
 
 void Camera::Inputs( const Mouse::Event& mouse,const Keyboard& kbd ) noexcept
@@ -106,10 +108,4 @@ void Camera::Reset() noexcept
     eyeDir = { 0.0f,0.0f,1.0f };
     d_pitch = 0.0f;
     d_yaw = 0.0f;
-}
-
-void Camera::WrapAngles() noexcept
-{
-    d_pitch = Mor::wrap_angle( d_pitch );
-    d_yaw = Mor::wrap_angle( d_yaw );
 }
