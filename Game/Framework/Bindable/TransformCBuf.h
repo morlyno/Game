@@ -30,8 +30,8 @@ namespace Bind
 			DirectX::XMFLOAT4 matirial;
 			float specularIntesity;
 			float specularPower;
-			float buffer0;
-			float buffer1;
+			unsigned int normalMap;
+			float padding;
 		};
 	public:
 		ConstBuffDoubleBoy( Graphics& gfx,const Drawable& parent );

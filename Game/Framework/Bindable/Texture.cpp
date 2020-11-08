@@ -5,9 +5,10 @@
 
 using namespace Bind;
 
-Texture::Texture( Graphics& gfx,const Surface& s )
+Texture::Texture( Graphics& gfx,const Surface& s,UINT slot )
 	:
-	filename( s.GetName() )
+	filename( s.GetName() ),
+	slot( slot )
 {
 	INFOMAN( gfx );
 
@@ -16,7 +17,7 @@ Texture::Texture( Graphics& gfx,const Surface& s )
 	td.Height = s.GetWidht();
 	td.MipLevels = 1u;
 	td.ArraySize = 1u;
-	td.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	td.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	td.SampleDesc.Count = 1u;
 	td.SampleDesc.Quality = 0u;
 	td.Usage = D3D11_USAGE_DEFAULT;
@@ -44,26 +45,26 @@ Texture::Texture( Graphics& gfx,const Surface& s )
 
 void Texture::Bind( Graphics& gfx ) noexcept
 {
-	GetContext( gfx )->PSSetShaderResources( 0u,1u,pTextureView.GetAddressOf() );
+	GetContext( gfx )->PSSetShaderResources( slot,1u,pTextureView.GetAddressOf() );
 }
 
-std::shared_ptr<Texture> Bind::Texture::Resolve( Graphics& gfx,const Surface& s ) noexcept
+std::shared_ptr<Texture> Bind::Texture::Resolve( Graphics& gfx,const Surface& s,UINT slot ) noexcept
 {
-	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( s.GetName() ) ) )
+	if ( const auto& bind = Bind::Codex::Resolve( GenerateKey( s.GetName(),slot ) ) )
 	{
 		return std::dynamic_pointer_cast<Texture>(bind);
 	}
-	const auto& bind = Bind::Codex::Store( std::make_shared<Texture>( gfx,s ) );
+	const auto& bind = Bind::Codex::Store( std::make_shared<Texture>( gfx,s,slot ) );
 	return std::dynamic_pointer_cast<Texture>(bind);
 }
 
-std::string Bind::Texture::GenerateKey( const std::string& filename ) noexcept
+std::string Bind::Texture::GenerateKey( const std::string& filename,UINT slot ) noexcept
 {
 	using namespace std::string_literals;
-	return typeid(Texture).name() + "#"s + filename;
+	return typeid(Texture).name() + "#"s + filename + "#"s + std::to_string( slot );
 }
 
 std::string Bind::Texture::GetKey() const noexcept
 {
-	return GenerateKey( filename );
+	return GenerateKey( filename,slot );
 }

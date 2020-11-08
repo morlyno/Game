@@ -13,6 +13,8 @@ public:
 		Position3D,
 		Normal,
 		Texture2D,
+		Tangent,
+		Bitangent,
 		Count
 	};
 	template<ElementType> struct Map;
@@ -39,6 +41,18 @@ public:
 		using sysType = DirectX::XMFLOAT2;
 		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32_FLOAT;
 		static constexpr const char* lable = "TexCoord";
+	};
+	template<> struct Map<ElementType::Tangent>
+	{
+		using sysType = DirectX::XMFLOAT3;
+		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32B32_FLOAT;
+		static constexpr const char* lable = "Tangent";
+	};
+	template<> struct Map<ElementType::Bitangent>
+	{
+		using sysType = DirectX::XMFLOAT3;
+		static constexpr DXGI_FORMAT format = DXGI_FORMAT_R32G32B32_FLOAT;
+		static constexpr const char* lable = "Bitangent";
 	};
 	class Element
 	{
@@ -72,6 +86,10 @@ public:
 				return sizeof( Map<Normal>::sysType );
 			case Texture2D:
 				return sizeof( Map<Texture2D>::sysType );
+			case Tangent:
+				return sizeof( Map<Tangent>::sysType );
+			case Bitangent:
+				return sizeof( Map<Bitangent>::sysType );
 			default:
 				assert( false && "Invalid Template Type" );
 				return -1;
@@ -133,6 +151,12 @@ public:
 			case Texture2D:
 				ied.back() = { Map<Texture2D>::lable,0u,Map<Texture2D>::format,0u,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0u };
 				break;
+			case Tangent:
+				ied.back() = { Map<Tangent>::lable,0u,Map<Tangent>::format,0u,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0u };
+				break;
+			case Bitangent:
+				ied.back() = { Map<Bitangent>::lable,0u,Map<Bitangent>::format,0u,(UINT)e.GetOffset(),D3D11_INPUT_PER_VERTEX_DATA,0u };
+				break;
 			default:
 				assert( false && "Invalid Tempalte Argument" );
 				break;
@@ -158,6 +182,12 @@ public:
 				break;
 			case Texture2D:
 				str += Map<Texture2D>::lable;
+				break;
+			case Tangent:
+				str += Map<Tangent>::lable;
+				break;
+			case Bitangent:
+				str += Map<Bitangent>::lable;
 				break;
 			default:
 				assert( false && "Invalid Tempalte Argument" );

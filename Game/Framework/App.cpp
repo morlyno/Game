@@ -10,7 +10,7 @@ App::App()
 {
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
 	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),-5.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Sphere>( wnd.Gfx(),5.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
+	drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),2.0f,10.0f,0.0f,10.0f,10.0f,10.0f,(int)drawables.size() ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }
@@ -65,13 +65,11 @@ void App::DoFrame()
 		wnd.ReleasMouse();
 		wnd.ReadNormalInputs();
 	}
-
 	if ( e.GetType() == Mouse::Event::Type::Delta )
 	{
 		x += e.GetDeltaX();
 		y += e.GetDeltaY();
 	}
-
 	if ( ImGui::Begin("Raw Data") )
 	{
 		ImGui::Text( "x  : %d",x );

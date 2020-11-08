@@ -7,7 +7,7 @@
 class DrawableMemberData : public Drawable
 {
 public:
-	DrawableMemberData( float x,float y,float z,float roll,float pitch,float yaw,int index ) noexcept
+    DrawableMemberData( float x,float y,float z,float roll,float pitch,float yaw,int index,float width = 1.0f,float height = 1.0f,float depth = 1.0f ) noexcept
         :
         x( x ),
         y( y ),
@@ -15,7 +15,11 @@ public:
         roll( roll ),
         pitch( pitch ),
         yaw( yaw ),
-        index( index )
+        index( index ),
+        normalmap( false ),
+        scale_width( width ),
+        scale_height( height ),
+        scale_depth( depth )
     {
     }
     void SetPos( const DirectX::XMFLOAT3& pos ) noexcept
@@ -31,6 +35,10 @@ public:
     float GetSpecularIntesity() const noexcept override
     {
         return specularIntesity;
+    }
+    bool GetNormalMap() const noexcept override
+    {
+        return normalmap;
     }
     void WrapAngles() noexcept
     {
@@ -125,6 +133,11 @@ public:
             ImGui::Text( "Power" );
             ImGui::SameLine( offset );
             ImGui::DragFloat( "##Power",&specularPower,0.01f,0.0f,1.0f,"%.4f" );
+
+            ImGui::Text( "NormalMap" );
+            ImGui::SameLine( offset );
+            ImGui::Checkbox( "##NM",&normalmap );
+            ImGui::Text( normalmap ? "true" : "false" );
         }
         ImGui::End();
         return open;
@@ -147,4 +160,6 @@ protected:
     float specularPower = 0.003f;
 
     int index;
+
+    bool normalmap;
 };

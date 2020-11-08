@@ -36,7 +36,7 @@ void PointLight::SpawnControlWindow() noexcept
 
 void PointLight::Reset() noexcept
 {
-	PLConst.pos = { 20.0f,0.0f,0.0f };
+	PLConst.pos = { 4.0f,0.0f,-5.0f };
 	PLConst.falloffmutiplier = 0.177f;
 	PLConst.ambinat = 0.067f;
 }

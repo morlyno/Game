@@ -118,6 +118,7 @@
     <ClCompile Include="Framework\Camera.cpp" />
     <ClCompile Include="Framework\Drawable\Cube.cpp" />
     <ClCompile Include="Framework\Drawable\Drawable.cpp" />
+    <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\SolidSphere.cpp" />
     <ClCompile Include="Framework\Drawable\Sphere.cpp" />
     <ClCompile Include="Framework\ErrorHandle\DxgiInfo.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Framework\Bindable\Topology.h" />
     <ClInclude Include="Framework\Bindable\VertexBuffer.h" />
     <ClInclude Include="Framework\Drawable\CubeTextured.h" />
+    <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\VertexLayout.h" />
     <ClInclude Include="Framework\Bindable\VertexShader.h" />
     <ClInclude Include="Framework\Camera.h" />
@@ -231,6 +233,18 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Framework\Shader\TextureNL_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Framework\Shader\TextureNL_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Framework\Shader\ShaderByteCodes\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Framework\Shader\TexturePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

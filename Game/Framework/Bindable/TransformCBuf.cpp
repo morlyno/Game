@@ -39,7 +39,8 @@ void ConstBuffDoubleBoy::Bind( Graphics& gfx ) noexcept
 	{
 		parent.GetColorXM(),
 		parent.GetSpecularIntesity(),
-		parent.GetSpecularPower()
+		parent.GetSpecularPower(),
+		parent.GetNormalMap() ? 1u : 0u,
 	};
 	pcbuf->Update( gfx,pt );
 	pcbuf->Bind( gfx );

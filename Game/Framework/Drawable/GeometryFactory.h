@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 #include <utility>
 #include "../Utility/MorMath.h"
+#include "../Utility/MorUtility.h"
 #include "../VertexLayout.h"
 
 namespace Geometry
@@ -35,7 +36,7 @@ namespace Geometry
 			assert( latDiv >= 3 );
 			assert( longDiv >= 3 );
 
-			constexpr float radius = 1.0f;
+			constexpr float radius = 0.5f;
 			const auto base = dx::XMVectorSet( 0.0f,0.0f,radius,0.0f );
 			const float lattitudeAngle = Mor::PI / latDiv;
 			const float longitudeAngle = 2.0f * Mor::PI / longDiv;
@@ -124,7 +125,7 @@ namespace Geometry
 			assert( latDiv >= 3 );
 			assert( longDiv >= 3 );
 
-			constexpr float radius = 1.0f;
+			constexpr float radius = 0.5;
 			const auto base = dx::XMVectorSet( 0.0f,0.0f,radius,0.0f );
 			const float lattitudeAngle = Mor::PI / latDiv;
 			const float longitudeAngle = 2.0f * Mor::PI / longDiv;
@@ -210,7 +211,7 @@ namespace Geometry
 		{
 			namespace dx = DirectX;
 
-			constexpr float side = 1.0f;
+			constexpr float side = 0.5f;
 
 			std::vector<V> vertices( 8 );
 			vertices[0].pos = { -side,-side,-side };
@@ -236,7 +237,7 @@ namespace Geometry
 		template<typename V>
 		static IndexTriangleList<V> MakeIndipendent()
 		{
-			constexpr float side = 1.0f;
+			constexpr float side = 0.5f;
 
 			std::vector<V> vertices( 24 );
 			vertices[0].pos = { -side,-side,-side };// 0 near side
@@ -308,7 +309,7 @@ namespace Geometry
 		}
 		static void MakeIndipendent( VertexData& vd )
 		{
-			constexpr float side = 1.0f;
+			constexpr float side = 0.5f;
 
 			vd.Resize( 24 );
 
@@ -358,7 +359,7 @@ namespace Geometry
 		{
 			namespace dx = DirectX;
 
-			constexpr float side = 1.0f;
+			constexpr float side = 0.5f;
 
 			std::vector<V> vertex( 4 );
 			vertex[0].pos = { -side,side,0.0f };
@@ -430,6 +431,51 @@ namespace Geometry
 			XMStoreFloat3( &v0.Get<VertexLayout::Normal>(),n );
 			XMStoreFloat3( &v1.Get<VertexLayout::Normal>(),n );
 			XMStoreFloat3( &v2.Get<VertexLayout::Normal>(),n );
+		}
+	}
+	template<class Indices>
+	static void MakeTanBitan( VertexData& vd,const Indices& indices )
+	{
+		using namespace DirectX;
+		
+		for ( size_t i = 0; i < indices.size(); i += 3 )
+		{
+			const auto& vd0 = vd[indices[i + 0]];
+			const auto& vd1 = vd[indices[i + 1]];
+			const auto& vd2 = vd[indices[i + 2]];
+
+			const auto& v0 = vd0.Get<VertexLayout::Position3D>();
+			const auto& v1 = vd1.Get<VertexLayout::Position3D>();
+			const auto& v2 = vd2.Get<VertexLayout::Position3D>();
+
+			const auto& t0 = vd0.Get<VertexLayout::Texture2D>();
+			const auto& t1 = vd1.Get<VertexLayout::Texture2D>();
+			const auto& t2 = vd2.Get<VertexLayout::Texture2D>();
+
+			const auto edge0 = Mor::XMFloat3Sub( v1,v0 );
+			const auto edge1 = Mor::XMFloat3Sub( v2,v0 );
+			const auto dtex0 = Mor::XMFloat2Sub( t1,t0 );
+			const auto dtex1 = Mor::XMFloat2Sub( t2,t0 );
+
+			float f = 1.0f / (dtex0.x * dtex1.y - dtex1.x * dtex0.y);
+
+			VertexLayout::Map<VertexLayout::Tangent>::sysType tan;
+			tan.x = f * (dtex1.y * edge0.x - dtex0.y * edge1.x);
+			tan.y = f * (dtex1.y * edge0.y - dtex0.y * edge1.y);
+			tan.z = f * (dtex1.y * edge0.z - dtex0.y * edge1.z);
+
+			VertexLayout::Map<VertexLayout::Bitangent>::sysType bitan;
+			bitan.z = f * (-dtex1.x * edge0.z + dtex0.x * edge1.z);
+			bitan.x = f * (-dtex1.x * edge0.x + dtex0.x * edge1.x);
+			bitan.y = f * (-dtex1.x * edge0.y + dtex0.x * edge1.y);
+
+			vd0.Get<VertexLayout::Tangent>() = tan;
+			vd1.Get<VertexLayout::Tangent>() = tan;
+			vd2.Get<VertexLayout::Tangent>() = tan;
+
+			vd0.Get<VertexLayout::Bitangent>() = bitan;
+			vd1.Get<VertexLayout::Bitangent>() = bitan;
+			vd2.Get<VertexLayout::Bitangent>() = bitan;
 		}
 	}
 }

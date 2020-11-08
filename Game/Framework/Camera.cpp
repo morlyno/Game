@@ -104,7 +104,7 @@ DirectX::XMFLOAT3 Camera::GetPos() const noexcept
 
 void Camera::Reset() noexcept
 {
-    pos = { 0.0f,0.0f,0.0f };
+    pos = { 2.0f,0.0f,-10.0f };
     eyeDir = { 0.0f,0.0f,1.0f };
     d_pitch = 0.0f;
     d_yaw = 0.0f;
