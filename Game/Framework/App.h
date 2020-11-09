@@ -7,6 +7,7 @@
 #include "Managers/ImGuiManager.h"
 #include "Camera.h"
 #include "PointLight.h"
+#include "Drawable/Model.h"
 #include <set>
 
 class App
@@ -31,6 +32,7 @@ private:
 	MorTimer timer;
 	PointLight pl;
 	std::vector<std::unique_ptr<Drawable>> drawables;
+	Model mesh;
 	float SimulationSpeed = 1.0f;
 	bool paused = false;
 	std::set<int> DrawableId;

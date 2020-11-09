@@ -6,12 +6,9 @@
 App::App()
     :
     wnd( 1200,800,L"SexyWindow" ),
-	pl( wnd.Gfx(),0.0f,0.0f,0.0f )
+	pl( wnd.Gfx(),0.0f,0.0f,0.0f ),
+	mesh( wnd.Gfx(),"Models/suzanne.obj",0.0f,0.0f,0.0f )
 {
-	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),-5.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-	drawables.push_back( std::make_unique<Sheet>( wnd.Gfx(),2.0f,10.0f,0.0f,10.0f,10.0f,10.0f,(int)drawables.size() ) );
-
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }
 
@@ -50,6 +47,8 @@ void App::DoFrame()
 		d->Update( dt );
 		d->Draw( wnd.Gfx() );
 	}
+	mesh.Update( dt );
+	mesh.Draw( wnd.Gfx() );
 	pl.Draw( wnd.Gfx() );
 
 	const auto c = wnd.kbd.ReadChar();

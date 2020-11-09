@@ -118,6 +118,7 @@
     <ClCompile Include="Framework\Camera.cpp" />
     <ClCompile Include="Framework\Drawable\Cube.cpp" />
     <ClCompile Include="Framework\Drawable\Drawable.cpp" />
+    <ClCompile Include="Framework\Drawable\Model.cpp" />
     <ClCompile Include="Framework\Drawable\Sheet.cpp" />
     <ClCompile Include="Framework\Drawable\SolidSphere.cpp" />
     <ClCompile Include="Framework\Drawable\Sphere.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Framework\Bindable\Topology.h" />
     <ClInclude Include="Framework\Bindable\VertexBuffer.h" />
     <ClInclude Include="Framework\Drawable\CubeTextured.h" />
+    <ClInclude Include="Framework\Drawable\Model.h" />
     <ClInclude Include="Framework\Drawable\Sheet.h" />
     <ClInclude Include="Framework\VertexLayout.h" />
     <ClInclude Include="Framework\Bindable\VertexShader.h" />

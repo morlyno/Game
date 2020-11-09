@@ -38,7 +38,10 @@ std::shared_ptr<VertexBuffer> Bind::VertexBuffer::Resolve( Graphics& gfx,const V
 	{
 		return std::dynamic_pointer_cast<VertexBuffer>(bind);
 	}
-	func();
+	if ( func )
+	{
+		func();
+	}
 	const auto& bind = Bind::Codex::Store( std::make_shared<VertexBuffer>( gfx,vd,tag ) );
 	return std::dynamic_pointer_cast<VertexBuffer>(bind);
 }

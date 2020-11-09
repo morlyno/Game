@@ -331,6 +331,10 @@ public:
 	{
 		buffer.resize( new_size * vl.LayoutSize() );
 	}
+	void Reserve( size_t new_capacity ) noexcept
+	{
+		buffer.reserve( new_capacity * vl.LayoutSize() );
+	}
 private:
 	VertexLayout vl;
 	std::vector<char> buffer;

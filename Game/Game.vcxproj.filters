@@ -117,6 +117,9 @@
     <ClCompile Include="Framework\Drawable\Sheet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Drawable\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Window.h">
@@ -267,6 +270,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Drawable\Sheet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Drawable\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
