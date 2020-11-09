@@ -4,6 +4,8 @@
 #include <assimp/postprocess.h>
 #include "../VertexLayout.h"
 #include "../Bindable/BindableHeaders.h"
+#include "../ImGui/imgui.h"
+#include "../Utility/MorMath.h"
 
 Model::Model( Graphics& gfx,const std::string& path,float x,float y,float z )
     :
@@ -33,14 +35,14 @@ Model::Model( Graphics& gfx,const std::string& path,float x,float y,float z )
             *reinterpret_cast<DirectX::XMFLOAT3*>(&pMesh->mNormals[i])
         );
     }
-    indices.reserve( pMesh->mNumFaces * 3u );
+    indices.reserve( indices.capacity() + (size_t)pMesh->mNumFaces * 3ull );
     for ( size_t i = 0; i < pMesh->mNumFaces; ++i )
     {
         auto& face = pMesh->mFaces[i];
         assert( face.mNumIndices == 3 );
-        indices.emplace_back( face.mIndices[0] );
-        indices.emplace_back( face.mIndices[1] );
-        indices.emplace_back( face.mIndices[2] );
+        indices.emplace_back( (unsigned short)face.mIndices[0] );
+        indices.emplace_back( (unsigned short)face.mIndices[1] );
+        indices.emplace_back( (unsigned short)face.mIndices[2] );
     }
 
     AddBind( Bind::VertexBuffer::Resolve( gfx,vd,nullptr,"Model" + path ) );
