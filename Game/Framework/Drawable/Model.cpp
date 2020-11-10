@@ -1,108 +1,114 @@
 #include "Model.h"
-#include <assimp/Importer.hpp>
 #include <assimp/scene.h>
+#include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include "../VertexLayout.h"
 #include "../Bindable/BindableHeaders.h"
-#include "../ImGui/imgui.h"
-#include "../Utility/MorMath.h"
 
-Model::Model( Graphics& gfx,const std::string& path,float x,float y,float z )
-    :
-    x( x ),
-    y( y ),
-    z( z )
+Model::Mesh::Mesh( Graphics& gfx,std::vector<std::shared_ptr<Bind::Bindable>>&& binds,DirectX::FXMMATRIX matrix )
+	:
+	ParentTransform( matrix )
 {
-    VertexData vd( std::move(
-        VertexLayout{}
-        .Add( VertexLayout::Position3D )
-        .Add( VertexLayout::Normal )
-    ) );
-    std::vector<unsigned short> indices;
-
-    Assimp::Importer importer;
-    auto scene = importer.ReadFile( path,
-        aiProcess_Triangulate |
-        aiProcess_JoinIdenticalVertices
-    );
-    auto pMesh = scene->mMeshes[0];
-
-    vd.Reserve( pMesh->mNumVertices );
-    for ( size_t i = 0; i < pMesh->mNumVertices; ++i )
-    {
-        vd.Emplace_Back(
-            *reinterpret_cast<DirectX::XMFLOAT3*>(&pMesh->mVertices[i]),
-            *reinterpret_cast<DirectX::XMFLOAT3*>(&pMesh->mNormals[i])
-        );
-    }
-    indices.reserve( indices.capacity() + (size_t)pMesh->mNumFaces * 3ull );
-    for ( size_t i = 0; i < pMesh->mNumFaces; ++i )
-    {
-        auto& face = pMesh->mFaces[i];
-        assert( face.mNumIndices == 3 );
-        indices.emplace_back( (unsigned short)face.mIndices[0] );
-        indices.emplace_back( (unsigned short)face.mIndices[1] );
-        indices.emplace_back( (unsigned short)face.mIndices[2] );
-    }
-
-    AddBind( Bind::VertexBuffer::Resolve( gfx,vd,nullptr,"Model" + path ) );
-    AddBind( Bind::IndexBuffer::Resolve( gfx,indices,"Model" + path ) );
-    auto pVs = Bind::VertexShader::Resolve( gfx,"LightVS.cso" );
-    auto pVsBc = pVs->GetBytecode();
-    AddBind( std::move( pVs ) );
-    AddBind( Bind::PixelShader::Resolve( gfx,"LightPS.cso" ) );
-    AddBind( Bind::InputLayout::Resolve( gfx,vd.GetLayout(),pVsBc ) );
-    AddBind( Bind::Topology::Resolve( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-    struct ConstBuffer
-    {
-        DirectX::XMFLOAT4 c = { 0.12f,0.4f,0.2f,1.0f };
-        float specularIntesity = 0.22f;
-        float specularPower = 0.003f;
-        float buffer[2];
-    } consts;
-    AddBind( Bind::PixelConstantBuffer<ConstBuffer>::Resolve( gfx,consts,1u ) );
-    AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
+	for ( auto&& b : binds )
+	{
+		AddBind( std::move( b ) );
+	}
+	AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }
 
-void Model::Update( float dt ) noexcept
+DirectX::XMMATRIX Model::Mesh::GetTransformXM() const noexcept
 {
+	namespace dx = DirectX;
+	return
+		// TODO(Mor)
+		ParentTransform;
 }
 
-DirectX::XMMATRIX Model::GetTransformXM() const noexcept
+bool Model::Mesh::SpawnControlWindow() noexcept
 {
-    namespace dx = DirectX;
-    return
-        dx::XMMatrixScaling( scale_width,scale_height,scale_depth ) *
-        dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
-        dx::XMMatrixTranslation( x,y,z );
+	return
+		// TODO(Mor)
+		false;
 }
 
-DirectX::XMFLOAT4 Model::GetColorXM() const noexcept
+std::string Model::Mesh::GetType() const noexcept
 {
-    return DirectX::XMFLOAT4();
+	return "[ModelChild]";
 }
 
-float Model::GetSpecularPower() const noexcept
+Model::Model( Graphics& gfx,const std::string& path )
+	:
+	gfx( gfx )
 {
-    return 0.0f;
+	auto importer = Assimp::Importer();
+	const auto scene = importer.ReadFile(
+		path,
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices
+	);
+	auto pRootNode = scene->mRootNode;
+	ParseMesh( pRootNode,scene );
 }
 
-float Model::GetSpecularIntesity() const noexcept
+void Model::Draw( Graphics& gfx ) const noexcept(!IS_DEBUG)
 {
-    return 0.0f;
+	for ( const auto& m : meshes )
+	{
+		m->Draw( gfx );
+	}
 }
 
-bool Model::GetNormalMap() const noexcept
+void Model::ParseMesh( const aiNode* pChild,const aiScene* scene )
 {
-    return false;
+	for ( size_t i = 0; i < pChild->mNumMeshes; ++i )
+	{
+		CreateMesh( scene->mMeshes[pChild->mMeshes[i]],*reinterpret_cast<DirectX::FXMMATRIX*>(&pChild->mTransformation) );
+	}
+	for ( size_t i = 0; i < pChild->mNumChildren; ++i )
+	{
+		ParseMesh( pChild->mChildren[i],scene );
+	}
 }
 
-bool Model::SpawnControlWindow() noexcept
+void Model::CreateMesh( aiMesh* mesh,DirectX::FXMMATRIX matrix )
 {
-    return false;
-}
-
-std::string Model::GetType() const noexcept
-{
-    return "[Model]";
+	VertexData vd( std::move(
+		VertexLayout{}
+		.Add( VertexLayout::Position3D )
+		.Add( VertexLayout::Normal )
+	) );
+	std::vector<unsigned short> indices;
+	for ( size_t i = 0; i < mesh->mNumVertices; ++i )
+	{
+		vd.Emplace_Back(
+			*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh->mVertices[i]),
+			*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh->mNormals[i])
+		);
+	}
+	for ( size_t i = 0; i < mesh->mNumFaces; ++i )
+	{
+		auto& face = mesh->mFaces[i];
+		assert( face.mNumIndices == 3u );
+		indices.push_back( face.mIndices[0]);
+		indices.push_back( face.mIndices[1]);
+		indices.push_back( face.mIndices[2]);
+	}
+	std::vector<std::shared_ptr<Bind::Bindable>> binds;
+	binds.push_back( Bind::VertexBuffer::Resolve( gfx,vd,nullptr,mesh->mName.C_Str() ) );
+	binds.push_back( Bind::IndexBuffer::Resolve( gfx,indices,mesh->mName.C_Str() ) );
+	auto pVs = Bind::VertexShader::Resolve( gfx,"LightVS.cso" );
+	auto pVsBc = pVs->GetBytecode();
+	binds.push_back( std::move( pVs ) );
+	binds.push_back( Bind::PixelShader::Resolve( gfx,"LightPS.cso" ) );
+	binds.push_back( Bind::InputLayout::Resolve( gfx,vd.GetLayout(),pVsBc ) );
+	binds.push_back( Bind::Topology::Resolve( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+	struct PSConstants
+	{
+		DirectX::XMFLOAT4 matirial = { 0.2f,0.14f,0.4f,1.0f };
+		float specularIntesity = 0.22f;
+		float specularPower = 0.003f;
+		float padding[2];
+	} PSC;
+	binds.push_back( Bind::PixelConstantBuffer<PSConstants>::Resolve( gfx,PSC,1u ) );
+	meshes.push_back( std::make_unique<Mesh>( gfx,std::move( binds ),matrix ) );
 }

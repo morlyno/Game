@@ -42,11 +42,6 @@ SolidSphere::SolidSphere( Graphics& gfx,float x,float y,float z,float roll,float
     AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }
 
-void SolidSphere::Update( float dt ) noexcept
-{
-    WrapAngles();
-}
-
 DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept
 {
     namespace dx = DirectX;

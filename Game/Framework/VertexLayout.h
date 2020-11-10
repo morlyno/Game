@@ -252,6 +252,10 @@ public:
 		:
 		vl( std::move( vl ) )
 	{}
+	VertexData( const VertexLayout& vl ) noexcept
+		:
+		vl( vl )
+	{}
 	template<typename T>
 	void Emplace_Back( T&& val )
 	{

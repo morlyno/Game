@@ -1,26 +1,25 @@
 #pragma once
 #include "Drawable.h"
 
-class Model : public Drawable
+class Model
 {
+	class Mesh : public Drawable
+	{
+	public:
+		Mesh( Graphics& gfx,std::vector<std::shared_ptr<Bind::Bindable>>&& binds,DirectX::FXMMATRIX matrix );
+		DirectX::XMMATRIX GetTransformXM() const noexcept;
+		bool SpawnControlWindow() noexcept;
+		std::string GetType() const noexcept;
+	private:
+		DirectX::XMMATRIX ParentTransform;
+	};
 public:
-	Model( Graphics& gfx,const std::string& path,float x,float y,float z );
-	void Update( float dt ) noexcept;
-	DirectX::XMMATRIX GetTransformXM() const noexcept;
-	DirectX::XMFLOAT4 GetColorXM() const noexcept;
-	float GetSpecularPower() const noexcept;
-	float GetSpecularIntesity() const noexcept;
-	bool GetNormalMap() const noexcept;
-	bool SpawnControlWindow() noexcept;
-	std::string GetType() const noexcept;
+	Model( Graphics& gfx,const std::string& path );
+	void Draw( Graphics& gfx ) const noexcept(!IS_DEBUG);
 private:
-	float scale_width = 1.0f;;
-	float scale_height = 1.0f;
-	float scale_depth = 1.0f;
-	float x;
-	float y;
-	float z;
-	float roll = 0.0f;
-	float pitch = 0.0f;
-	float yaw = 0.0f;
+	void ParseMesh( const struct aiNode* pChild,const struct aiScene* scene );
+	void CreateMesh( struct aiMesh* mesh,DirectX::FXMMATRIX matrix );
+private:
+	Graphics& gfx;
+	std::vector<std::unique_ptr<Mesh>> meshes;
 };

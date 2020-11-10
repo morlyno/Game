@@ -140,6 +140,7 @@ public:
             ImGui::Text( normalmap ? "true" : "false" );
         }
         ImGui::End();
+        WrapAngles();
         return open;
     }
 protected:

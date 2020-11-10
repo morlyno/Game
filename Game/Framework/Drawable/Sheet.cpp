@@ -58,10 +58,6 @@ Sheet::Sheet( Graphics& gfx,float x,float y,float z,float width,float height,flo
     AddBind( std::make_shared<Bind::ConstBuffDoubleBoy>( gfx,*this ) );
 }
 
-void Sheet::Update( float dt ) noexcept
-{
-}
-
 DirectX::XMMATRIX Sheet::GetTransformXM() const noexcept
 {
     namespace dx = DirectX;

@@ -53,11 +53,6 @@ Sphere::Sphere( Graphics& gfx,float x,float y,float z,float roll,float pitch,flo
     AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
 }
 
-void Sphere::Update( float dt ) noexcept
-{
-    WrapAngles();
-}
-
 DirectX::XMMATRIX Sphere::GetTransformXM() const noexcept
 {
     namespace dx = DirectX;

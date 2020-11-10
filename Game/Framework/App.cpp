@@ -7,7 +7,7 @@ App::App()
     :
     wnd( 1200,800,L"SexyWindow" ),
 	pl( wnd.Gfx(),0.0f,0.0f,0.0f ),
-	mesh( wnd.Gfx(),"Models/suzanne.obj",0.0f,0.0f,0.0f )
+	mesh( wnd.Gfx(),"Models/nanosuit.obj" )
 {
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }
@@ -28,6 +28,8 @@ int App::Go()
 		}
 		wnd.Gfx().ClearBuffer( c[0],c[1],c[2] );
 		imgui.StartFrame();
+		wnd.Gfx().SetCamera( cam );
+		timer.Mark();
 		DoFrame();
 		imgui.Render();
 		wnd.Gfx().EndFrame();
@@ -36,19 +38,13 @@ int App::Go()
 
 void App::DoFrame()
 {
-	wnd.Gfx().SetCamera( cam );
 	const auto e = wnd.mouse.Read();
 	cam.Inputs( e,wnd.kbd );
-	timer.Mark();
-	const auto dt = paused ? 0.0f : timer.LastDuration() * SimulationSpeed;
+
 	pl.Bind( wnd.Gfx() );
-	for ( auto& d : drawables )
-	{
-		d->Update( dt );
-		d->Draw( wnd.Gfx() );
-	}
-	mesh.Update( dt );
+
 	mesh.Draw( wnd.Gfx() );
+
 	pl.Draw( wnd.Gfx() );
 
 	const auto c = wnd.kbd.ReadChar();
@@ -64,23 +60,7 @@ void App::DoFrame()
 		wnd.ReleasMouse();
 		wnd.ReadNormalInputs();
 	}
-	if ( e.GetType() == Mouse::Event::Type::Delta )
-	{
-		x += e.GetDeltaX();
-		y += e.GetDeltaY();
-	}
-	if ( ImGui::Begin("Raw Data") )
-	{
-		ImGui::Text( "x  : %d",x );
-		ImGui::Text( "y  : %d",y );
-		ImGui::Text( "dx : %d",e.GetDeltaX() );
-		ImGui::Text( "dy : %d",e.GetDeltaY() );
-	}
-	ImGui::End();
 
-	SpawnDrawableControlWindowMangerWindow();
-	SpawnDrawableControlWindows();
-	SpawnDrawableSpawnWindow();
 	SpawnSimulationWindow();
 	cam.ShowControlWindow();
 	pl.SpawnControlWindow();
@@ -103,89 +83,6 @@ void App::SpawnSimulationWindow() noexcept
 		ImGui::Checkbox( "Pause",&paused );
 		const float lastdurr = timer.LastDuration();
 		ImGui::Text( paused ? "(Paused)" : ( "ms/Frame:" + std::to_string( lastdurr * 1000.0f ) + "  FPS: " + std::to_string( 1.0f / lastdurr )).c_str() );
-	}
-	ImGui::End();
-}
-
-void App::SpawnDrawableControlWindowMangerWindow() noexcept
-{
-	if ( ImGui::Begin( "Drawables" ) )
-	{
-		if ( ImGui::BeginCombo( "Index",index ? std::to_string( index.value() ).c_str() : "Select Drawable..." ) )
-		{
-			for ( int i = 0; i < drawables.size(); ++i )
-			{
-				const bool selected = i == index;
-				if ( ImGui::Selectable( (std::to_string( i ) + " " + drawables[i]->GetType()).c_str(),selected ) )
-				{
-					index = i;
-				}
-			}
-			ImGui::EndCombo();
-		}
-		if ( ImGui::Button( "Spawn Window" ) && index )
-		{
-			DrawableId.insert( *index );
-			index.reset();
-		}
-		if ( ImGui::Button( "Erase Drawable" ) && index )
-		{
-			Mor::erase_by_index( drawables,*index );
-			index.reset();
-		}
-	}
-	ImGui::End();
-}
-
-void App::SpawnDrawableControlWindows() noexcept
-{
-	for ( auto i = DrawableId.begin(); i != DrawableId.end(); )
-	{
-		if ( !drawables[*i]->SpawnControlWindow() )
-		{
-			i = DrawableId.erase( i );
-			continue;
-		}
-		++i;
-	}
-}
-
-void App::SpawnDrawableSpawnWindow() noexcept
-{
-	const char* Types[] = { "Cube","Sphere" };
-	if ( ImGui::Begin( "Drawable Spawner" ) )
-	{
-		if ( ImGui::BeginCombo( "Types",TypeIndex ? Types[*TypeIndex] : "Chose Type..." ) )
-		{
-			for ( int i = 0; i < IM_ARRAYSIZE( Types ); ++i )
-			{
-				const bool selected = i == TypeIndex;
-				if ( ImGui::Selectable( Types[i],selected ) )
-				{
-					TypeIndex = i;
-				}
-			}
-			ImGui::EndCombo();
-		}
-		if ( TypeIndex )
-		{
-			if ( ImGui::Button( "Spawn Drawable" ) )
-			{
-				switch ( *TypeIndex )
-				{
-				case 0:
-					drawables.push_back( std::make_unique<Cube>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-					DrawableId.insert( (int)drawables.size() - 1 );
-					TypeIndex.reset();
-					break;
-				case 1:
-					drawables.push_back( std::make_unique<Sphere>( wnd.Gfx(),0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,(int)drawables.size() ) );
-					DrawableId.insert( (int)drawables.size() - 1 );
-					TypeIndex.reset();
-					break;
-				}
-			}
-		}
 	}
 	ImGui::End();
 }

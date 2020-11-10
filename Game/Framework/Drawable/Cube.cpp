@@ -41,11 +41,6 @@ Cube::Cube( Graphics& gfx,float x,float y,float z,float roll,float pitch,float y
     AddBind( std::make_shared<Bind::ConstBuffDoubleBoy>( gfx,*this ) );
 }
 
-void Cube::Update( float dt ) noexcept
-{
-    WrapAngles();
-}
-
 DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 {
     namespace dx = DirectX;
