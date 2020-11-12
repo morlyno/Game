@@ -452,10 +452,10 @@ namespace Geometry
 			const auto& t1 = vd1.Get<VertexLayout::Texture2D>();
 			const auto& t2 = vd2.Get<VertexLayout::Texture2D>();
 
-			const auto edge0 = Mor::XMFloat3Sub( v1,v0 );
-			const auto edge1 = Mor::XMFloat3Sub( v2,v0 );
-			const auto dtex0 = Mor::XMFloat2Sub( t1,t0 );
-			const auto dtex1 = Mor::XMFloat2Sub( t2,t0 );
+			const auto edge0 = Mor::DX::XMFloat3Sub( v1,v0 );
+			const auto edge1 = Mor::DX::XMFloat3Sub( v2,v0 );
+			const auto dtex0 = Mor::DX::XMFloat2Sub( t1,t0 );
+			const auto dtex1 = Mor::DX::XMFloat2Sub( t2,t0 );
 
 			float f = 1.0f / (dtex0.x * dtex1.y - dtex1.x * dtex0.y);
 

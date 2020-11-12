@@ -8,6 +8,7 @@ class MorException : public std::exception
 public:
 	MorException( int line,const char* file ) noexcept;
 	MorException( int line,const char* file,const char* msg ) noexcept;
+	MorException( int line,const char* file,const std::string& msg ) noexcept;
 	const char* what() const noexcept override;
 	virtual const char* GetType() const noexcept;
 	int GetLine() const noexcept;

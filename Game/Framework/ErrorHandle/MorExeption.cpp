@@ -17,6 +17,12 @@ MorException::MorException( int line,const char* file,const char* msg ) noexcept
 {
 }
 
+MorException::MorException( int line,const char* file,const std::string& msg ) noexcept
+    :
+    MorException( line,file,msg.c_str() )
+{
+}
+
 const char* MorException::what() const noexcept
 {
     std::ostringstream oss;

@@ -66,4 +66,33 @@ namespace Mor
 		return rad * (T)180.0f / (T)PI;
 	}
 
+	template<class DXFLOAT3>
+	DXFLOAT3 XMFloat3Add( DXFLOAT3 f0,DXFLOAT3 f1 )
+	{
+		return { f0.x + f1.x,f0.y + f1.y,f0.z + f1.z };
+	}
+
+	namespace DX
+	{
+
+		template<class DXFLOAT3>
+		DXFLOAT3 XMFloat3Sub( DXFLOAT3 f0,DXFLOAT3 f1 )
+		{
+			return { f0.x - f1.x,f0.y - f1.y,f0.z - f1.z };
+		}
+
+		template<class DXFLOAT2>
+		DXFLOAT2 XMFloat2Add( DXFLOAT2 f0,DXFLOAT2 f1 )
+		{
+			return { f0.x + f1.x,f0.y + f1.y };
+		}
+
+		template<class DXFLOAT2>
+		DXFLOAT2 XMFloat2Sub( DXFLOAT2 f0,DXFLOAT2 f1 )
+		{
+			return { f0.x - f1.x,f0.y - f1.y };
+		}
+
+	}
+
 }

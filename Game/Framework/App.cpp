@@ -7,7 +7,9 @@ App::App()
     :
     wnd( 1200,800,L"SexyWindow" ),
 	pl( wnd.Gfx(),0.0f,0.0f,0.0f ),
-	mesh( wnd.Gfx(),"Models/nanosuit.obj" )
+	//mesh( wnd.Gfx(),"Models/nano_hierarchy.gltf" )
+	//mesh( wnd.Gfx(),"Models/nanosuit.obj" )
+	mesh( wnd.Gfx(),"Models/nano/nano.gltf" )
 {
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f,(float)wnd.GetHeight() / (float)wnd.GetWidth(),0.5f,400.0f ) );
 }
@@ -42,10 +44,10 @@ void App::DoFrame()
 	cam.Inputs( e,wnd.kbd );
 
 	pl.Bind( wnd.Gfx() );
-
 	mesh.Draw( wnd.Gfx() );
-
 	pl.Draw( wnd.Gfx() );
+
+	mesh.SpawnControllWindow();
 
 	const auto c = wnd.kbd.ReadChar();
 	if ( c == 'e' )
@@ -60,6 +62,7 @@ void App::DoFrame()
 		wnd.ReleasMouse();
 		wnd.ReadNormalInputs();
 	}
+
 
 	SpawnSimulationWindow();
 	cam.ShowControlWindow();
