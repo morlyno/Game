@@ -7,9 +7,116 @@
 #include "../ImGui/imgui.h"
 #include "../Utility/MorMath.h"
 
-Model::Model( Graphics& gfx,const std::string& path )
+Mesh::Mesh( Graphics& gfx,std::vector<std::shared_ptr<Bind::Bindable>> binds )
+{
+	for ( auto& b : binds )
+	{
+		AddBind( b );
+	}
+	AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
+}
+
+DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
+{
+	return Transformation;
+}
+
+std::string Mesh::GetType() const noexcept
+{
+	return "[Model_Mesh]";
+}
+
+void Mesh::RefrenzTransformation( DirectX::FXMMATRIX matrix )
+{
+	Transformation = matrix;
+}
+
+Node::Node( Node* pParent,DirectX::FXMMATRIX matrix,const std::string& name )
 	:
-	gfx( gfx )
+	pParent( pParent ),
+	RelativeNodeTransformation( matrix ),
+	name( name )
+{
+}
+
+void Node::AddChildren(Ref<Node> pChild )
+{
+	Children.push_back( std::move( pChild ) );
+}
+
+std::shared_ptr<Node> Node::CreateChild( Node* pParent,DirectX::FXMMATRIX matrix,const std::string& name )
+{
+	return std::make_shared<Node>( pParent,matrix,name );
+}
+
+void Node::AddMesh( Ref<Mesh> pMesh )
+{
+	Meshes.push_back( pMesh );
+}
+
+std::vector<Node::Ref<Mesh>> Node::GetMeshes() const noexcept
+{
+	return Meshes;
+}
+
+std::vector<Node::Ref<Node>> Node::GetChildren() const noexcept
+{
+	return Children;
+}
+
+DirectX::XMMATRIX Node::GetTransform() const noexcept
+{
+	namespace dx = DirectX;
+	return
+		dx::XMMatrixRotationRollPitchYaw( pitch,yaw,roll ) *
+		RelativeNodeTransformation *
+		(pParent ? pParent->GetTransform() : DirectX::XMMatrixIdentity());
+}
+
+
+void Node::ControlWindow() noexcept
+{
+	// -----Rotation----- //
+	ImGui::Text( "Rotation" );
+
+	constexpr float DragSpeed_Rotation = 1.0f;
+	const auto texwidth = ImGui::CalcTextSize( "Rotation" ).x;
+	const float item_width = (ImGui::GetColumnWidth() - texwidth) / 3.0f - 20.0f - 8.0f;
+	
+	ImGui::PushItemWidth( item_width );
+
+	ImGui::SameLine( texwidth,15.0f );
+
+	roll = Mor::ToDegreees( roll );
+	pitch = Mor::ToDegreees( pitch );
+	yaw = Mor::ToDegreees( yaw );
+
+	if ( ImGui::Button( "R##Roll",ImVec2( 20,0 ) ) ) { roll = 0.0f; }
+	ImGui::SameLine( 0.0f,0.0f );
+	ImGui::DragFloat( "##Roll",&roll,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
+
+	ImGui::SameLine();
+	if ( ImGui::Button( "P##Pitch",ImVec2( 20,0 ) ) ) { pitch = 0.0f; }
+	ImGui::SameLine( 0.0f,0.0f );
+	ImGui::DragFloat( "##Pitch",&pitch,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
+
+	ImGui::SameLine();
+	if ( ImGui::Button( "Y##Yaw",ImVec2( 20,0 ) ) ) { yaw = 0.0f; }
+	ImGui::SameLine( 0.0f,0.0f );
+	ImGui::DragFloat( "##Yaw",&yaw,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
+
+	roll = Mor::ToRadians( roll );
+	pitch = Mor::ToRadians( pitch );
+	yaw = Mor::ToRadians( yaw );
+
+	roll = Mor::wrap_angle( roll );
+	pitch = Mor::wrap_angle( pitch );
+	yaw = Mor::wrap_angle( yaw );
+
+	ImGui::PopItemWidth();
+}
+
+Model::Model( Graphics& gfx,const std::string& path )
 {
 	auto imp = Assimp::Importer();
 	const auto pScene = imp.ReadFile(
@@ -24,57 +131,77 @@ Model::Model( Graphics& gfx,const std::string& path )
 		using namespace std::string_literals;
 		throw MorException( __LINE__,__FILE__,"[Assimp Exceptiom]\n"s + imp.GetErrorString() );
 	}
-	AnalyseScene( pScene->mRootNode,pScene,pScene->mRootNode->mTransformation );
+	
+	for ( size_t i = 0; i < pScene->mNumMeshes; ++i )
+	{
+		Meshptr.push_back( std::move(
+			ParseMesh( gfx,pScene->mMeshes[i] )
+		) );
+	}
+	const auto pRN = pScene->mRootNode;
+	Nodes.push_back( std::make_shared<Node>( nullptr,DirectX::XMMatrixTranspose( *reinterpret_cast<DirectX::FXMMATRIX*>(&pRN->mTransformation) ),pRN->mName.C_Str() ) );
+	AnalyseScene( pRN,Nodes.back().get() );
 }
 
-void Model::Draw( Graphics& gfx ) const noexcept(!IS_DEBUG)
+void Model::Draw( Graphics& gfx ) noexcept
 {
-	for ( const auto& m : pMeshes )
+	for ( const auto& n : Nodes )
 	{
-		m->Draw( gfx );
+		const auto NodeTransform = n->GetTransform();
+		for ( auto& m : n->GetMeshes() )
+		{
+			m->RefrenzTransformation( NodeTransform );
+			m->Draw( gfx );
+		}
 	}
 }
 
-void Model::SpawnControllWindow() noexcept
+void Model::ControlTree() noexcept
 {
 	if ( ImGui::Begin( "Model" ) )
 	{
-		for ( size_t i = 0; i < pMeshes.size(); ++i )
+		ImGui::Columns( 2 );
+		ImGui::SetColumnOffset( 1,150 );
+
+		CreateBranches( Nodes.front() );
+
+		ImGui::NextColumn();
+		if ( ControlledNode )
 		{
-			if ( ImGui::TreeNode( pMeshes[i]->GetType().c_str() ) )
-			{
-				pMeshes[i]->SpawnControlWindow();
-				ImGui::TreePop();
-			}
+			ImGui::Text( ControlledNode->GetName().c_str() );
+			ControlledNode->ControlWindow();
 		}
+		ImGui::NextColumn();
 	}
 	ImGui::End();
 }
 
-void Model::AnalyseScene( const aiNode* pNode,const aiScene* pScene,const aiMatrix4x4 parentmatrix )
+void Model::CreateBranches( Ref<Node> pNode ) noexcept
 {
-	assert( pNode != nullptr );
-	assert( pScene != nullptr );
-	const auto transform = pNode->mTransformation * parentmatrix;
-	for ( size_t i = 0; i < pNode->mNumMeshes; ++i )
+	auto flags = ImGuiTreeNodeFlags_OpenOnDoubleClick |
+				 ImGuiTreeNodeFlags_OpenOnArrow |
+				 ImGuiTreeNodeFlags_SpanFullWidth;
+
+	if ( pNode->GetChildren().size() == 0 )
 	{
-		const auto mesh = pScene->mMeshes[pNode->mMeshes[i]];
-		pMeshes.push_back(
-			std::make_unique<Mesh>(
-				gfx,
-				ParseMesh( mesh ),
-				DirectX::XMMatrixTranspose( *reinterpret_cast<DirectX::FXMMATRIX*>(&transform) ),
-				mesh->mName.C_Str()
-			)
-		);
+		flags |= ImGuiTreeNodeFlags_Bullet;
 	}
-	for ( size_t i = 0; i < pNode->mNumChildren; ++i )
+	auto open = ImGui::TreeNodeEx( pNode->GetName().c_str(),flags );
+	if ( ImGui::IsItemClicked() )
 	{
-		AnalyseScene( pNode->mChildren[i],pScene,transform );
+		ControlledNode = pNode;
+	}
+	if ( open )
+	{
+		for ( Ref<Node> child : pNode->GetChildren() )
+		{
+			CreateBranches( child );
+		}
+		ImGui::TreePop();
 	}
 }
 
-std::vector<std::shared_ptr<Bind::Bindable>> Model::ParseMesh( const aiMesh* pMesh )
+std::shared_ptr<Mesh> Model::ParseMesh( Graphics& gfx,const aiMesh* pMesh )
 {
 	VertexData vd( std::move(
 		VertexLayout{}
@@ -115,94 +242,29 @@ std::vector<std::shared_ptr<Bind::Bindable>> Model::ParseMesh( const aiMesh* pMe
 		float padding[2] = { 0.0f };
 	} PSC;
 	binds.push_back( Bind::PixelConstantBuffer<PSConst>::Resolve( gfx,PSC,1u ) );
-	return std::move( binds );
+	return std::make_shared<Mesh>( gfx,std::move( binds ) );
 }
 
-Mesh::Mesh( Graphics& gfx,std::vector<std::shared_ptr<Bind::Bindable>> binds,DirectX::FXMMATRIX matrix,const std::string& name )
-	:
-	ParentTransform( matrix ),
-	name( name )
+void Model::AnalyseScene( const aiNode* pNode,Node* pNodeInterface )
 {
-	for ( auto& b : binds )
+	assert( pNode != nullptr );
+	assert( pNodeInterface != nullptr );
+
+	// Mesh Part
+	for ( size_t i = 0; i < pNode->mNumMeshes; ++i )
 	{
-		AddBind( b );
+		const auto index = pNode->mMeshes[i];
+		pNodeInterface->AddMesh( Meshptr[index] );
 	}
-	AddBind( std::make_shared<Bind::TransformCBuf>( gfx,*this ) );
-}
 
-DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
-{
-	namespace dx = DirectX;
-	return
-		dx::XMMatrixRotationRollPitchYaw( roll,pitch,yaw ) *
-		ParentTransform *
-		dx::XMMatrixRotationRollPitchYaw( Mor::PI,0.0f,0.0f ) *
-		dx::XMMatrixTranslation( x,y,z );
-}
-
-bool Mesh::SpawnControlWindow() noexcept
-{
-	bool open = true;
-	if ( ImGui::Begin( GetType().c_str(),&open ) )
+	// Children Part
+	for ( size_t i = 0; i < pNode->mNumChildren; ++i )
 	{
-		constexpr float offset = 100.0f;
-		constexpr float DragSpeed_Position = 0.1f;
-		constexpr float DragSpeed_Rotation = 1.0f;
-		constexpr float DragSpeed_Scaling = 0.1f;
-		const float item_width = (ImGui::GetWindowSize().x - offset) / 3.0f - 20.0f - 8.0f;
-
-		// -----Position----- //
-		ImGui::Text( "Position" );
-		ImGui::PushItemWidth( item_width );
-
-		ImGui::SameLine( offset );
-		if ( ImGui::Button( "X",ImVec2( 20,0 ) ) ) { x = 0.0f; }
-		ImGui::SameLine( 0.0f,0.0f );
-		ImGui::DragFloat( "##X",&x,DragSpeed_Position,0.0f,0.0f,"%.2f" );
-
-		ImGui::SameLine();
-		if ( ImGui::Button( "Y",ImVec2( 20,0 ) ) ) { y = 0.0f; }
-		ImGui::SameLine( 0.0f,0.0f );
-		ImGui::DragFloat( "##Y",&y,DragSpeed_Position,0.0f,0.0f,"%.2f" );
-
-		ImGui::SameLine();
-		if ( ImGui::Button( "Z",ImVec2( 20,0 ) ) ) { z = 0.0f; }
-		ImGui::SameLine( 0.0f,0.0f );
-		ImGui::DragFloat( "##Z",&z,DragSpeed_Position,0.0f,0.0f,"%.2f" );
-
-		// -----Rotation----- //
-		ImGui::Text( "Rotation" );
-		ImGui::SameLine( offset );
-
-		roll = Mor::ToDegreees( roll );
-		pitch = Mor::ToDegreees( pitch );
-		yaw = Mor::ToDegreees( yaw );
-
-		if ( ImGui::Button( "R##Roll",ImVec2( 20,0 ) ) ) { roll = 0.0f; }
-		ImGui::SameLine( 0.0f,0.0f );
-		ImGui::DragFloat( "##Roll",&roll,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
-
-		ImGui::SameLine();
-		if ( ImGui::Button( "P##Pitch",ImVec2( 20,0 ) ) ) { pitch = 0.0f; }
-		ImGui::SameLine( 0.0f,0.0f );
-		ImGui::DragFloat( "##Pitch",&pitch,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
-
-		ImGui::SameLine();
-		if ( ImGui::Button( "Y##Yaw",ImVec2( 20,0 ) ) ) { yaw = 0.0f; }
-		ImGui::SameLine( 0.0f,0.0f );
-		ImGui::DragFloat( "##Yaw",&yaw,DragSpeed_Rotation,0.0f,0.0f,"%.2f" );
-
-		roll = Mor::ToRadians( roll );
-		pitch = Mor::ToRadians( pitch );
-		yaw = Mor::ToRadians( yaw );
-
-		ImGui::PopItemWidth();
+		auto pNodeChild = pNode->mChildren[i];
+		const auto dxmatrix = DirectX::XMMatrixTranspose( *reinterpret_cast<DirectX::FXMMATRIX*>(&pNodeChild->mTransformation) );
+		auto pChild = Node::CreateChild( pNodeInterface,dxmatrix,pNodeChild->mName.C_Str() );
+		Nodes.push_back( pChild );
+		pNodeInterface->AddChildren( pChild );
+		AnalyseScene( pNodeChild,pChild.get() );
 	}
-	ImGui::End();
-	return open;
-}
-
-std::string Mesh::GetType() const noexcept
-{
-	return "[Model_Mesh]" + name;
 }

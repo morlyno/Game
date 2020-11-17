@@ -23,7 +23,7 @@ public:
 	virtual float GetSpecularPower() const noexcept { return 0.0f; }
 	virtual float GetSpecularIntesity() const noexcept { return 0.0f; }
 	virtual bool GetNormalMap() const noexcept { return false; }
-	virtual bool SpawnControlWindow() noexcept = 0;
+	virtual bool SpawnControlWindow() noexcept { return 0; };
 	virtual std::string GetType() const noexcept = 0;
 private:
 	const Bind::IndexBuffer* pIndexBuffer = nullptr;

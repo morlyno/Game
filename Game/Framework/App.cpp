@@ -47,7 +47,7 @@ void App::DoFrame()
 	mesh.Draw( wnd.Gfx() );
 	pl.Draw( wnd.Gfx() );
 
-	mesh.SpawnControllWindow();
+	mesh.ControlTree();
 
 	const auto c = wnd.kbd.ReadChar();
 	if ( c == 'e' )
